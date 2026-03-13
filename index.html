@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delight Domestics — Pakistan's Trusted Appliance Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6fb; --bg-white: #ffffff; --bg-section: #f8f0f0;
+    --brand: #1a1a1a; --brand-dark: #000000; --brand-light: #f5e8e8;
+    --action: #cc0000; --action-hover: #aa0000;
+    --trust-blue: #cc0000;
+    --text-dark: #1a1a1a; --text-body: #444444; --text-muted: #888888;
+    --border: #e8d8d8;
+    --shadow-sm: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-md: 0 8px 32px rgba(0,0,0,0.12);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,0.16);
+    --green: #00a651;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text-dark); font-family: 'Nunito', sans-serif; overflow-x: hidden; }
+
+  /* TOP BAR */
+  .topbar { background: #1a1a1a; color: white; padding: 8px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; font-weight: 600; }
+  .topbar-left { display: flex; align-items: center; gap: 24px; }
+  .topbar-right { display: flex; align-items: center; gap: 20px; }
+  .topbar a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color .2s; }
+  .topbar a:hover { color: white; }
+  .topbar-highlight { background: var(--action); padding: 3px 10px; border-radius: 2px; font-weight: 700; letter-spacing: .03em; }
+
+  /* NAVBAR */
+  nav { background: var(--bg-white); border-bottom: 3px solid var(--action); position: sticky; top: 0; z-index: 200; box-shadow: var(--shadow-sm); }
+  .nav-inner { max-width: 1300px; margin: 0 auto; padding: 0 32px; height: 70px; display: flex; align-items: center; gap: 24px; }
+  .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; flex-shrink: 0; position: relative; }
+
+  /* PARALLELOGRAM BEHIND LOGO */
+  .logo-parallelogram { position: absolute; left: -8px; top: 50%; transform: translateY(-50%) skewX(-12deg); width: calc(100% + 16px); height: 38px; background: linear-gradient(135deg, #1a1a1a 0%, #cc0000 100%); border-radius: 3px; z-index: 0; }
+  .logo-icon { width: 36px; height: 36px; background: transparent; display: flex; align-items: center; justify-content: center; border-radius: 4px; position: relative; z-index: 1; flex-shrink: 0; }
+  .logo-text { font-size: 1.15rem; font-weight: 900; letter-spacing: -.01em; position: relative; z-index: 1; white-space: nowrap; }
+  .logo-text .d1 { color: #ffffff; }
+  .logo-text .d2 { color: #ffcccc; }
+
+  .nav-search { flex: 1; display: flex; align-items: center; background: var(--bg); border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+  .nav-search:focus-within { border-color: var(--action); box-shadow: 0 0 0 3px rgba(204,0,0,0.1); }
+  .nav-search input { flex: 1; border: none; background: transparent; padding: 10px 16px; font-family: 'Nunito', sans-serif; font-size: .9rem; color: var(--text-dark); outline: none; }
+  .nav-search input::placeholder { color: var(--text-muted); }
+  .nav-search button { background: var(--action); color: white; border: none; padding: 10px 20px; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .82rem; transition: background .2s; }
+  .nav-search button:hover { background: var(--action-hover); }
+  .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .nav-icon-btn { width: 42px; height: 42px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; position: relative; color: var(--text-body); }
+  .nav-icon-btn:hover { border-color: var(--action); color: var(--action); }
+  .badge-count { position: absolute; top: -6px; right: -6px; background: var(--action); color: white; font-size: .65rem; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: scale(0); transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
+  .badge-count.show { transform: scale(1); }
+  .wishlist-nav-badge { position: absolute; top: -6px; right: -6px; background: #e53935; color: white; font-size: .65rem; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: scale(0); transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
+  .wishlist-nav-badge.show { transform: scale(1); }
+  .whatsapp-nav { background: var(--green); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .8rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background .2s, transform .2s; }
+  .whatsapp-nav:hover { background: #008a43; transform: translateY(-1px); }
+
+  /* CATEGORY NAV */
+  .cat-nav { background: #1a1a1a; }
+  .cat-nav-inner { max-width: 1300px; margin: 0 auto; padding: 0 32px; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .cat-nav-inner::-webkit-scrollbar { display: none; }
+  .cat-nav-item { color: rgba(255,255,255,.7); font-size: .82rem; font-weight: 700; padding: 12px 16px; white-space: nowrap; cursor: pointer; transition: all .2s; border: none; border-bottom: 3px solid transparent; background: none; font-family: 'Nunito', sans-serif; }
+  .cat-nav-item:hover, .cat-nav-item.active { color: white; border-bottom-color: var(--action); background: rgba(204,0,0,.15); }
+
+
+  /* Brand logo images */
+  .brand-img { width: 80px; height: 40px; object-fit: contain; filter: grayscale(30%); transition: filter .2s; }
+  .brand-logo-card:hover .brand-img { filter: grayscale(0%); }
+
+  /* BRAND LOGOS STRIP */
+  .brands-section { background: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 0; }
+  .brands-inner { max-width: 1300px; margin: 0 auto; padding: 0 32px; }
+  .brands-title { text-align: center; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--text-muted); margin-bottom: 22px; }
+  .brands-track-wrap { overflow: hidden; position: relative; }
+  .brands-track-wrap::before, .brands-track-wrap::after { content:''; position:absolute; top:0; width:80px; height:100%; z-index:2; pointer-events:none; }
+  .brands-track-wrap::before { left:0; background: linear-gradient(to right, var(--bg-white), transparent); }
+  .brands-track-wrap::after  { right:0; background: linear-gradient(to left, var(--bg-white), transparent); }
+  .brands-track { display: flex; gap: 16px; animation: brandScroll 28s linear infinite; width: max-content; align-items: center; }
+  .brands-track:hover { animation-play-state: paused; }
+  @keyframes brandScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .brand-logo-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .25s; background: white; min-width: 120px; flex-shrink: 0; }
+  .brand-logo-card:hover { border-color: var(--action); box-shadow: 0 4px 18px rgba(204,0,0,.12); transform: translateY(-2px); }
+  .brand-logo-icon { font-size: 2rem; line-height: 1; }
+  .brand-logo-name { font-size: .78rem; font-weight: 800; color: var(--text-dark); letter-spacing: .02em; }
+  .brand-logo-count { font-size: .62rem; color: var(--text-muted); font-weight: 600; }
+
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* HERO */
+  .hero-wrap { max-width: 1300px; margin: 24px auto; padding: 0 32px; display: grid; grid-template-columns: 1fr 300px; gap: 18px; }
+  .hero-main { background: linear-gradient(120deg, #1a1a1a 0%, #2d0000 50%, #cc0000 100%); border-radius: 12px; padding: 48px 52px; display: flex; align-items: center; justify-content: space-between; overflow: hidden; position: relative; min-height: 320px; }
+  .hero-main::before { content: ''; position: absolute; top: -80px; right: 200px; width: 280px; height: 280px; border-radius: 50%; background: rgba(255,255,255,.04); }
+  .hero-tag { display: inline-block; background: white; color: var(--action); font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 5px 12px; border-radius: 3px; margin-bottom: 16px; animation: fadeUp .6s ease both; }
+  .hero-main h1 { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900; color: white; line-height: 1.15; letter-spacing: -.02em; margin-bottom: 10px; animation: fadeUp .6s .1s ease both; }
+  .hero-main h1 span { color: #ffcccc; }
+  .hero-sub { color: rgba(255,255,255,.7); font-size: .9rem; margin-bottom: 24px; animation: fadeUp .6s .15s ease both; }
+  .hero-cta-row { display: flex; gap: 10px; flex-wrap: wrap; animation: fadeUp .6s .2s ease both; }
+  .btn-orange { background: var(--action); color: white; border: none; padding: 12px 26px; border-radius: 6px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .88rem; cursor: pointer; transition: background .2s, transform .2s, box-shadow .2s; }
+  .btn-orange:hover { background: var(--action-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(204,0,0,.4); }
+  .btn-ghost { background: rgba(255,255,255,.12); color: white; border: 1.5px solid rgba(255,255,255,.3); padding: 12px 26px; border-radius: 6px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .88rem; cursor: pointer; transition: all .2s; }
+  .btn-ghost:hover { background: rgba(255,255,255,.22); }
+  .hero-img-wrap { width: 320px; height: 320px; flex-shrink: 0; position: relative; z-index: 1; animation: heroFloat 4s ease-in-out infinite; }
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,0,0,.5)); opacity: 0; transition: opacity 1.5s ease-in-out; }
+  .hero-img.active { opacity: 1; }
+  @keyframes heroFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+  .hero-side { display: flex; flex-direction: column; gap: 14px; }
+  .side-card { flex: 1; border-radius: 10px; padding: 22px 18px; cursor: pointer; overflow: hidden; position: static; transition: transform .2s, box-shadow .2s; }  
+  .side-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .side-card:first-child { background: linear-gradient(135deg, #fff0f0, #ffd6d6); }
+  .side-card:last-child { background: linear-gradient(135deg, #f0f0f0, #e0e0e0); }
+  .side-tag { font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--action); margin-bottom: 6px; }
+  .side-card:last-child .side-tag { color: #333; }
+  .side-card h3 { font-size: 1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
+  .side-card p { font-size: .76rem; color: var(--text-body); }
+  .side-card-img { width: 100%; height: 120px; object-fit: cover; border-radius: 6px; margin-top: 10px; display: block; }
+
+
+
+  /* TRUST BAR */
+  .trust-bar { background: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .trust-inner { max-width: 1300px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(3,1fr); }
+  .trust-item { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .trust-item:last-child { border-right: none; }
+  .trust-icon { width: 40px; height: 40px; background: #fff0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; }
+  .trust-label { font-weight: 800; font-size: .84rem; color: var(--text-dark); }
+  .trust-sub { font-size: .71rem; color: var(--text-muted); margin-top: 2px; }
+  .delivery-day-trust { cursor: pointer; transition: background .2s; border-radius: 8px; }
+  .delivery-day-trust:hover { background: #fff0f0; }
+  .delivery-day-trust:hover .trust-label { color: var(--action); }
+
+  /* DELIVERY MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 900; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .25s; backdrop-filter: blur(4px); }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-box { background: white; border-radius: 14px; padding: 30px 28px 26px; width: 440px; max-width: 92vw; box-shadow: 0 24px 80px rgba(0,0,0,.3); transform: translateY(30px) scale(.97); transition: transform .3s cubic-bezier(.34,1.56,.64,1); border-top: 4px solid var(--action); }
+  .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+  .modal-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px; }
+  .modal-head h3 { font-size: 1.05rem; font-weight: 900; color: var(--text-dark); }
+  .modal-head p { font-size: .78rem; color: var(--text-muted); margin-top: 3px; }
+  .modal-close { width: 30px; height: 30px; border: none; background: var(--bg); border-radius: 50%; cursor: pointer; font-size: 1rem; color: var(--text-muted); transition: background .2s; flex-shrink: 0; }
+  .modal-close:hover { background: var(--border); }
+  .modal-section-label { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin: 18px 0 10px; }
+  .days-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .day-pill { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 6px; text-align: center; cursor: pointer; transition: all .2s; background: white; font-family: 'Nunito', sans-serif; }
+  .day-pill:hover { border-color: var(--action); background: #fff0f0; }
+  .day-pill.selected { border-color: var(--action); background: var(--action); color: white; }
+  .day-today::before { content: 'TODAY'; display: block; font-size: .55rem; font-weight: 800; background: var(--action); color: white; border-radius: 3px; padding: 1px 4px; margin-bottom: 4px; letter-spacing: .06em; }
+  .day-pill.selected.day-today::before { background: rgba(255,255,255,.3); }
+  .day-name { font-size: .7rem; font-weight: 700; }
+  .day-date { font-size: .88rem; font-weight: 900; margin: 2px 0; }
+  .day-slots { font-size: .6rem; color: var(--text-muted); }
+  .day-pill.selected .day-slots { color: rgba(255,255,255,.8); }
+  .times-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+  .time-pill { border: 1.5px solid var(--border); border-radius: 6px; padding: 9px 4px; text-align: center; cursor: pointer; transition: all .2s; background: white; font-family: 'Nunito', sans-serif; font-size: .78rem; font-weight: 700; color: var(--text-body); }
+  .time-pill:hover { border-color: var(--action); background: #fff0f0; }
+  .time-pill.selected { border-color: var(--action); background: var(--action); color: white; }
+  .modal-confirm { width: 100%; background: var(--action); color: white; border: none; padding: 13px; border-radius: 8px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .9rem; cursor: pointer; margin-top: 20px; transition: background .2s, transform .15s; }
+  .modal-confirm:hover { background: var(--action-hover); transform: translateY(-1px); }
+  .modal-confirm:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; }
+
+  /* PROMO */
+  .promo-section { background: var(--bg-section); padding: 24px 0; margin: 8px 0; }
+  .promo-inner { max-width: 1300px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .promo-card { background: var(--bg-white); border: 1.5px solid var(--border); border-radius: 10px; padding: 20px 22px; display: flex; align-items: center; gap: 16px; transition: box-shadow .2s, transform .2s; cursor: pointer; }
+  .promo-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  .promo-card:nth-child(1) { border-top: 3px solid var(--action); }
+  .promo-card:nth-child(2) { border-top: 3px solid #1a1a1a; }
+  .promo-icon { width: 52px; height: 52px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+  .promo-card:nth-child(1) .promo-icon { background: #fff0f0; }
+  .promo-card:nth-child(2) .promo-icon { background: #f0f0f0; }
+  .promo-label { font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-bottom: 3px; }
+  .promo-title { font-size: .95rem; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
+  .promo-sub { font-size: .76rem; color: var(--text-muted); }
+
+  /* SECTION */
+  .section-wrap { max-width: 1300px; margin: 0 auto; padding: 0 32px; }
+  .section-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-top: 28px; }
+  .section-title { font-size: 1.3rem; font-weight: 900; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
+  .section-title::before { content: ''; display: inline-block; width: 4px; height: 20px; background: var(--action); border-radius: 3px; }
+  .view-all-link { color: var(--action); font-size: .82rem; font-weight: 700; text-decoration: none; }
+  .view-all-link:hover { text-decoration: underline; }
+
+  /* SHOP LAYOUT: sidebar + grid */
+  .shop-layout { display: grid; grid-template-columns: 260px 1fr; gap: 24px; padding-bottom: 48px; align-items: start; }
+
+  /* ---- FILTER SIDEBAR ---- */
+  .filter-sidebar { background: var(--bg-white); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; position: sticky; top: 82px; }
+  .filter-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1.5px solid var(--border); background: #1a1a1a; }
+  .filter-header h3 { font-size: .88rem; font-weight: 900; color: white; display: flex; align-items: center; gap: 8px; }
+  .filter-clear-all { font-size: .72rem; font-weight: 700; color: var(--action); background: none; border: none; cursor: pointer; font-family: 'Nunito',sans-serif; padding: 3px 8px; border-radius: 4px; transition: background .2s; }
+  .filter-clear-all:hover { background: rgba(204,0,0,.1); }
+
+  .filter-group { border-bottom: 1px solid var(--border); }
+  .filter-group:last-child { border-bottom: none; }
+  .filter-group-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; cursor: pointer; user-select: none; transition: background .15s; }
+  .filter-group-head:hover { background: var(--bg); }
+  .filter-group-head h4 { font-size: .8rem; font-weight: 800; color: var(--text-dark); text-transform: uppercase; letter-spacing: .06em; }
+  .filter-arrow { font-size: .7rem; color: var(--text-muted); transition: transform .25s; }
+  .filter-group.open .filter-arrow { transform: rotate(180deg); }
+  .filter-body { display: none; padding: 4px 18px 14px; }
+  .filter-group.open .filter-body { display: block; }
+
+  /* Price range */
+  .price-range-wrap { padding: 6px 0 4px; }
+  .price-inputs { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .price-input { width: 90px; border: 1.5px solid var(--border); border-radius: 6px; padding: 7px 10px; font-family: 'Nunito',sans-serif; font-size: .8rem; color: var(--text-dark); outline: none; transition: border-color .2s; }
+  .price-input:focus { border-color: var(--action); }
+  .price-sep { font-size: .75rem; color: var(--text-muted); font-weight: 700; }
+  .price-apply { width: 100%; background: var(--action); color: white; border: none; padding: 8px; border-radius: 6px; font-family: 'Nunito',sans-serif; font-weight: 800; font-size: .78rem; cursor: pointer; transition: background .2s; }
+  .price-apply:hover { background: var(--action-hover); }
+
+  /* Checkbox filters */
+  .filter-check-item { display: flex; align-items: center; gap: 10px; padding: 5px 0; cursor: pointer; }
+  .filter-check-item input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--action); cursor: pointer; flex-shrink: 0; }
+  .filter-check-label { font-size: .82rem; color: var(--text-body); font-weight: 600; flex: 1; }
+  .filter-check-count { font-size: .68rem; color: var(--text-muted); font-weight: 600; background: var(--bg); padding: 1px 6px; border-radius: 10px; }
+  .filter-check-item:hover .filter-check-label { color: var(--action); }
+
+  /* Rating stars filter */
+  .rating-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; cursor: pointer; }
+  .rating-stars { color: #f57c00; font-size: .85rem; letter-spacing: 1px; }
+  .rating-label { font-size: .8rem; color: var(--text-body); font-weight: 600; }
+  .rating-row:hover .rating-label { color: var(--action); }
+  .rating-row input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--action); cursor: pointer; }
+
+  /* Active filters chips */
+  .active-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 18px; border-bottom: 1px solid var(--border); min-height: 0; }
+  .active-filters:empty { display: none; }
+  .filter-chip { display: flex; align-items: center; gap: 5px; background: #fff0f0; border: 1px solid #ffcccc; color: var(--action); font-size: .7rem; font-weight: 700; padding: 4px 8px; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .filter-chip:hover { background: #ffe0e0; }
+  .filter-chip-x { font-size: .8rem; font-weight: 900; }
+
+  /* Sort bar */
+  .sort-bar { display: flex; align-items: center; justify-content: space-between; background: var(--bg-white); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; }
+  .sort-bar-left { font-size: .82rem; color: var(--text-muted); font-weight: 600; }
+  .sort-bar-left strong { color: var(--text-dark); }
+  .sort-select { border: 1.5px solid var(--border); border-radius: 6px; padding: 6px 12px; font-family: 'Nunito',sans-serif; font-size: .82rem; color: var(--text-dark); background: var(--bg); outline: none; cursor: pointer; font-weight: 600; }
+  .sort-select:focus { border-color: var(--action); }
+
+  /* PRODUCT GRID */
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+
+  /* Mobile filter toggle */
+  .filter-toggle-btn { display: none; background: var(--action); color: white; border: none; width: 42px; height: 42px; border-radius: 8px; cursor: pointer; align-items: center; justify-content: center; position: fixed; top: 80px; left: 16px; z-index: 600; box-shadow: var(--shadow-md); }
+  .mobile-filter-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 699; }
+  .mobile-filter-overlay.open { display: block; }
+  @media (max-width: 480px) {
+    .shop-layout { grid-template-columns: 1fr; }
+    .filter-sidebar { position: fixed; left: -100%; top: 0; height: 100vh; width: 75%; max-width: 280px; z-index: 700; overflow-y: auto; transition: left .3s ease; border-radius: 0; }
+    .filter-sidebar.mobile-open { left: 0; display: block; }
+    .filter-toggle-btn { display: flex; }
+  }
+
+  /* PRODUCT CARD */
+  .product-card { background: var(--bg-white); border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, border-color .3s; cursor: pointer; position: relative; opacity: 0; transform: translateY(24px); animation: cardIn .5s ease forwards; }
+  @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+  .product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--action); }
+  .card-badges { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
+  .badge { font-size: .62rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; width: fit-content; display: flex; align-items: center; gap: 3px; }
+  .badge-sale { background: #ff3b30; color: white; }
+  .badge-new { background: var(--action); color: white; }
+  .badge-warranty { background: #1a1a1a; color: white; }
+  .badge-cod { background: var(--green); color: white; }
+  .wishlist-card { position: absolute; top: 10px; right: 10px; z-index: 2; width: 32px; height: 32px; background: white; border: 1.5px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .2s, transform .2s; }
+  .wishlist-card:hover { border-color: #e53935; transform: scale(1.12); }
+  .wishlist-card svg { transition: fill .25s, stroke .25s, transform .25s cubic-bezier(.34,1.56,.64,1); }
+  .wishlist-card.liked { border-color: #e53935; background: #fff5f5; }
+  .wishlist-card.liked svg { fill: #e53935; stroke: #e53935; transform: scale(1.2); }
+  .card-img-wrap { background: #ffffff; height: 190px; display: flex; align-items: center; justify-content: center; padding: 16px; border-bottom: 1px solid var(--border); overflow: hidden; }
+  .card-img-wrap img { width: 100%; height: 100%; object-fit: contain; transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+  .product-card:hover .card-img-wrap img { transform: scale(1.08); }
+  .card-no-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem; background: #f9f9f9; border-radius: 6px; }
+  .card-body { padding: 14px 16px 16px; }
+  .card-brand { font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--action); margin-bottom: 4px; }
+  .card-title { font-size: .9rem; font-weight: 800; color: var(--text-dark); line-height: 1.35; margin-bottom: 5px; }
+  .card-desc { font-size: .76rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-pricing { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .price-pkr { font-size: 1.1rem; font-weight: 900; color: var(--text-dark); }
+  .price-old { font-size: .76rem; color: var(--text-muted); text-decoration: line-through; }
+  .price-discount { font-size: .7rem; font-weight: 800; background: #fff0f0; color: var(--action); padding: 2px 6px; border-radius: 3px; }
+  .card-trust { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 11px; }
+  .micro-badge { font-size: .6rem; font-weight: 700; padding: 3px 6px; border-radius: 3px; display: flex; align-items: center; gap: 2px; }
+  .micro-badge.warranty { background: #f0f0f0; color: #333; }
+  .micro-badge.cod { background: #e8f5e9; color: var(--green); }
+  .micro-badge.stars { background: #fff8e1; color: #f57c00; }
+  .card-cta { display: flex; gap: 8px; }
+  .btn-add-cart { flex: 1; background: var(--action); color: white; border: none; padding: 10px; border-radius: 6px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .77rem; cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s; display: flex; align-items: center; justify-content: center; gap: 4px; }
+  .btn-add-cart:hover { background: var(--action-hover); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(204,0,0,.3); }
+  .btn-whatsapp { width: 38px; background: var(--green); color: white; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background .2s, transform .15s; }
+  .btn-whatsapp:hover { background: #008a43; transform: translateY(-1px); }
+
+  /* Brand logo images */
+  .brand-img { width: 90px; height: 44px; object-fit: contain; filter: grayscale(15%); transition: filter .2s; display: block; }
+  .brand-logo-card:hover .brand-img { filter: grayscale(0%) drop-shadow(0 2px 6px rgba(0,0,0,.15)); }
+  .brand-fb-logo { font-size: 1.15rem; font-weight: 900; letter-spacing: -.01em; line-height: 1; }
+
+  /* Delivery locked state */
+  .delivery-locked { opacity: .5; cursor: not-allowed !important; filter: grayscale(50%); }
+  .delivery-locked:hover { background: transparent !important; }
+  .delivery-locked:hover .trust-label { color: var(--text-dark) !important; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+
+  /* PAYMENT METHODS SECTION */
+  .payment-section { background: var(--bg-white); border-top: 2px solid var(--border); border-bottom: 2px solid var(--border); padding: 36px 0 32px; }
+  .payment-inner { max-width: 1300px; margin: 0 auto; padding: 0 32px; }
+  .payment-title { text-align: center; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .18em; color: var(--text-muted); margin-bottom: 24px; }
+  .payment-grid { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .payment-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 22px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; min-width: 130px; transition: all .22s; cursor: default; }
+  .payment-card:hover { border-color: var(--action); box-shadow: 0 4px 18px rgba(204,0,0,.1); transform: translateY(-3px); }
+  .payment-icon-wrap { width: 64px; height: 46px; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .payment-name { font-size: .8rem; font-weight: 800; color: var(--text-dark); text-align: center; }
+  .payment-sub { font-size: .65rem; color: var(--text-muted); font-weight: 600; text-align: center; }
+
+  /* FOOTER */
+  footer { background: #1a1a1a; color: white; margin-top: 40px; }
+  .footer-inner { max-width: 1300px; margin: 0 auto; padding: 44px 32px 32px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 36px; }
+  .footer-logo { font-size: 1.4rem; font-weight: 900; color: white; letter-spacing: -.02em; margin-bottom: 10px; display: block; }
+  .footer-logo span { color: var(--action); }
+  .footer-about { color: rgba(255,255,255,.6); font-size: .84rem; line-height: 1.7; margin-bottom: 18px; }
+  .footer-social { display: flex; gap: 8px; }
+  .social-btn { width: 34px; height: 34px; background: rgba(255,255,255,.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .2s; font-size: .82rem; }
+  .social-btn:hover { background: var(--action); }
+  .footer-col h4 { font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: white; margin-bottom: 16px; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 9px; }
+  .footer-col a { color: rgba(255,255,255,.55); font-size: .84rem; text-decoration: none; transition: color .2s; }
+  .footer-col a:hover { color: white; }
+  .footer-bottom { background: rgba(204,0,0,.2); overflow: hidden; border-top: 1px solid rgba(204,0,0,.3); }
+  .footer-bottom-marquee { display: flex; animation: marquee 28s linear infinite; width: max-content; padding: 14px 0; }
+  .footer-bottom-item { display: flex; align-items: center; gap: 10px; padding: 0 28px; font-size: .72rem; font-weight: 700; color: rgba(255,255,255,.4); white-space: nowrap; letter-spacing: .06em; text-transform: uppercase; border-right: 1px solid rgba(255,255,255,.1); transition: color .2s; }
+  .footer-bottom-item:hover { color: rgba(255,255,255,.8); }
+  .footer-bottom-item .bdot { color: var(--action); }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 28px; right: 28px; background: white; border: 1.5px solid var(--border); border-left: 4px solid var(--action); border-radius: 8px; padding: 14px 20px; box-shadow: var(--shadow-lg); z-index: 1000; transform: translateX(120%); opacity: 0; transition: all .4s cubic-bezier(.34,1.56,.64,1); display: flex; align-items: center; gap: 12px; max-width: 300px; }
+  .toast.show { transform: translateX(0); opacity: 1; }
+  .toast-icon { width: 34px; height: 34px; background: #fff0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .95rem; flex-shrink: 0; }
+  .toast strong { font-size: .84rem; color: var(--text-dark); display: block; }
+  .toast span { font-size: .74rem; color: var(--text-muted); }
+
+  /* SCROLL TOP */
+  .scroll-top-btn { position: fixed; bottom: 28px; left: 28px; width: 42px; height: 42px; background: var(--action); color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(20px); transition: all .3s; z-index: 500; box-shadow: var(--shadow-md); }
+  .scroll-top-btn.show { opacity: 1; transform: translateY(0); }
+  .scroll-top-btn:hover { background: var(--action-hover); transform: translateY(-3px); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 1024px) { .hero-wrap { grid-template-columns: 1fr; } .hero-side { flex-direction: row; } }
+  @media (max-width: 768px) {
+    .topbar { padding: 6px 16px; font-size: .72rem; } .topbar-right { display: none; }
+    .nav-inner { padding: 0 16px; gap: 10px; } .whatsapp-nav { display: none; }
+    .nav-search input { font-size: .8rem; padding: 8px 10px; }
+    .nav-search button { padding: 8px 12px; font-size: .75rem; }
+    .nav-icon-btn { width: 36px; height: 36px; }
+    .cat-nav-inner { padding: 0 16px; }
+    .hero-wrap { padding: 0 16px; margin: 16px auto; }
+    .hero-main { padding: 28px 20px; flex-direction: column; gap: 20px; min-height: auto; }
+    .hero-img-wrap { display: none; }
+    .trust-inner { grid-template-columns: 1fr; }
+    .trust-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .promo-inner { grid-template-columns: 1fr; }
+    .section-wrap { padding: 0 16px; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .card-img-wrap { height: 150px; padding: 8px; }
+    .card-body { padding: 8px 10px 10px; }
+    .card-title { font-size: .72rem; line-height: 1.2; -webkit-line-clamp: 1; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-desc { display: none; }
+    .card-brand { font-size: .58rem; margin-bottom: 2px; }
+    .price-pkr { font-size: .88rem; }
+    .price-old { display: none; }
+    .price-discount { font-size: .62rem; }
+    .btn-add-cart { font-size: .65rem; padding: 7px 4px; }
+    .btn-whatsapp { width: 30px; }
+    .card-trust { display: none; }
+    .card-pricing { margin-bottom: 6px; gap: 4px; }
+    .footer-inner { grid-template-columns: 1fr; padding: 28px 16px; gap: 24px; }
+    .hero-side { flex-direction: column; }
+  }  
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span>📞 WhatsApp: 03008076625</span>
+    <span class="topbar-highlight">🔥 Eid Sale: Up to 40% OFF</span>
+  </div>
+  <div class="topbar-right">
+    <a href="https://wa.me/923008076625?text=Hi! I want to track my order." target="_blank">Track Order</a>
+    <a href="https://wa.me/923008076625?text=Hi! Where are your stores?" target="_blank">Store Locator</a>
+    <a href="https://wa.me/923008076625" target="_blank">Contact Us</a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-parallelogram"></div>
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <span class="logo-text"><span class="d1">Delight</span>&nbsp;<span class="d2">Domestics</span></span>
+    </a>
+    <div class="nav-search">
+      <input type="text" id="navSearch" placeholder="Search fans, AC, kitchen appliances..." onkeyup="applyFilters()" />
+      <button onclick="applyFilters()">Search</button>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-icon-btn" title="Wishlist">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="wishlist-nav-badge" id="wishlistCount">0</span>
+      </div>
+      <div class="nav-icon-btn" onclick="openCart()" title="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="badge-count" id="cartCount">0</span>
+      </div>
+      <button class="whatsapp-nav" onclick="window.open('https://wa.me/923008076625','_blank')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.118.549 4.107 1.51 5.833L0 24l6.336-1.48A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 0 1-5.002-1.367l-.357-.213-3.757.877.924-3.65-.235-.374A9.82 9.82 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12c0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+        WhatsApp Order
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- CATEGORY NAV -->
+<div class="cat-nav">
+  <div class="cat-nav-inner">
+    <button class="cat-nav-item active" onclick="goCategory(this,'all')">All Products</button>
+    <button class="cat-nav-item" onclick="goCategory(this,'Kitchen')">Kitchen</button>
+    <button class="cat-nav-item" onclick="goCategory(this,'Summer Mix')">Summer Mix ☀️</button>
+    <button class="cat-nav-item" onclick="goCategory(this,'Washing')">Washing</button>
+    <button class="cat-nav-item" onclick="goCategory(this,'Audio')">Audio &amp; TV</button>
+    <button class="cat-nav-item" onclick="goCategory(this,'Winter Mix')">Winter Mix ❄️</button>
+    <button class="cat-nav-item" onclick="goCategory(this,'Fans')">Fans</button>
+    <button class="cat-nav-item" onclick="goCategory(this,'Furniture')">Furniture 🪑</button>
+    <button class="cat-nav-item" onclick="goCategory(this,'House Essentials')">House Essentials 🏠</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero-main">
+    <div style="z-index:1">
+      <div class="hero-tag">Eid Mega Sale — Limited Time</div>
+      <h1>Premium Appliances<br>at <span>Pakistan's Best Prices</span></h1>
+      <p class="hero-sub">Official warranty &bull; Cash on delivery &bull; Nationwide shipping</p>
+      <div class="hero-cta-row">
+        <button class="btn-orange" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+        <button class="btn-ghost" onclick="window.open('https://wa.me/923008076625','_blank')">Order on WhatsApp</button>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <img class="hero-img active" src="images/logos/shop1.jpg" alt="Appliance 1" />
+      <img class="hero-img" src="images/logos/shop2.jpg" alt="Appliance 2" />
+    </div>
+  </div>
+  <div class="hero-side">
+    <div class="side-card" onclick="goCategory(null,'Summer Mix')">
+      <div class="side-tag">Summer Deals</div>
+      <h3>Fans &amp; Coolers</h3>
+      <p>Beat the heat — up to 30% off</p>
+      <img class="side-card-img" src="images/logos/winter.png" alt="" />
+    </div>
+    <div class="side-card" onclick="goCategory(null,'Winter Mix')">
+      <div class="side-tag">Winter Ready</div>
+      <h3>Heaters &amp; Geysers</h3>
+      <p>Stay warm all season long</p>
+      <img class="side-card-img" src="images/logos/summer.png" alt="" />
+    </div>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <div class="trust-icon">🚚</div>
+      <div>
+        <div class="trust-label">Genuine Products</div>
+        <div class="trust-sub">From Authorized Brands</div>
+      </div>
+    </div>
+
+    <div class="trust-item">
+      <div class="trust-icon">💵</div>
+      <div>
+        <div class="trust-label">Cash on Delivery</div>
+        <div class="trust-sub">Pay when you receive</div>
+      </div>
+    </div>
+    <div class="trust-item delivery-day-trust delivery-locked" onclick="tryOpenDeliveryModal()" title="Add items to cart first">
+      <div class="trust-icon">📅</div>
+      <div>
+        <div class="trust-label">Choose Delivery Day</div>
+        <div class="trust-sub" id="deliverySubLabel">Pick your preferred date &amp; time →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELIVERY MODAL -->
+<div class="modal-overlay" id="deliveryModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3>📅 Choose Your Delivery Day</h3>
+        <p>Select a date and time slot that suits you</p>
+      </div>
+      <button class="modal-close" onclick="closeDeliveryModal()">✕</button>
+    </div>
+    <div class="modal-section-label">Select Day</div>
+    <div class="days-grid" id="daysGrid"></div>
+    <div class="modal-section-label">Select Time Slot</div>
+    <div class="times-grid">
+      <div class="time-pill" onclick="selectTime(this)">9 AM – 12 PM</div>
+      <div class="time-pill" onclick="selectTime(this)">12 PM – 3 PM</div>
+      <div class="time-pill" onclick="selectTime(this)">3 PM – 6 PM</div>
+      <div class="time-pill" onclick="selectTime(this)">6 PM – 9 PM</div>
+      <div class="time-pill" onclick="selectTime(this)">Morning Any</div>
+      <div class="time-pill" onclick="selectTime(this)">Evening Any</div>
+    </div>
+    <button class="modal-confirm" id="confirmDelivery" onclick="confirmDelivery()" disabled>Confirm Delivery Slot</button>
+  </div>
+</div>
+
+<!-- BRAND LOGOS STRIP -->
+<div class="brands-section">
+  <div class="brands-inner">
+    <div class="brands-title">Our Authorized Brands</div>
+    <div class="brands-track-wrap">
+      <div class="brands-track" id="brandsTrack">
+
+        <!-- Samsung -->
+        <div class="brand-logo-card" onclick="filterByBrand('Samsung')">
+          <img class="brand-img" src="images/logos/samsung.png" alt="Samsung">
+          <div class="brand-logo-name">Samsung</div>
+        </div>
+        <!-- Haier -->
+        <div class="brand-logo-card" onclick="filterByBrand('Haier')">
+          <img class="brand-img" src="images/logos/haier.png" alt="Haier">
+          
+          <div class="brand-logo-name">Haier</div>
+        </div>
+        <!-- Philips -->
+        <div class="brand-logo-card" onclick="filterByBrand('Philips')">
+          <img class="brand-img" src="images/logos/Philips.png" alt="Philips">
+          <div class="brand-logo-name">Philips</div>
+        </div>
+        <!-- PAK FANS-->
+        <div class="brand-logo-card" onclick="filterByBrand('Pak Fans')">
+          <img class="brand-img" src="images/logos/pakfans.jpg" alt="Pak Fans">
+          <div class="brand-logo-name">PAK FANS</div>
+        </div>
+        <!-- ROYAL FANS -->
+        <div class="brand-logo-card" onclick="filterByBrand('Royal Fans')">
+          <img class="brand-img" src="images/logos/RF_InverterFans.webp" alt="Royal Fans">
+          <div class="brand-logo-name">Royal Fans</div>
+        </div>
+        <!-- Dawlance — styled wordmark (Wikipedia image is low quality) -->
+        <div class="brand-logo-card" onclick="filterByBrand('Dawlance')">
+          <img class="brand-img" src="images/logos/dawlance_logo.png" alt="Dawlance">
+          <div class="brand-logo-name">Dawlance</div>
+        </div>
+        <!-- PEL -->
+        <div class="brand-logo-card" onclick="filterByBrand('PEL')">>
+          <img class="brand-img" src="images/logos/pel.png" alt="PEL">
+          <div class="brand-logo-name">Pak Elektron</div>
+        </div>
+        <!-- Orient -->
+        <div class="brand-logo-card" onclick="filterByBrand('Orient')">
+          <img class="brand-img" src="images/logos/orient.png" alt="Orient">
+          <div class="brand-logo-name">Orient</div>
+        </div>
+        <!-- GFC -->
+        <div class="brand-logo-card" onclick="filterByBrand('GFC')">
+          <img class="brand-img" src="images/logos/gfc.png" alt="GFC">
+          <div class="brand-logo-name">GFC Fans</div>
+        </div>
+        <!-- Nasgas -->
+        <div class="brand-logo-card" onclick="filterByBrand('Nasgas')">
+          <img class="brand-img" src="images/logos/nasgas.webp" alt="Nasgas">
+          <div class="brand-logo-name">Nasgas</div>
+        </div>
+        <!-- Cannon -->
+        <div class="brand-logo-card" onclick="filterByBrand('Cannon')">
+          <img class="brand-img" src="images/logos/canon.jpg" alt="Cannon">
+          <div class="brand-logo-name">Cannon</div>
+        </div>
+        <!-- Super Asia -->
+        <div class="brand-logo-card" onclick="filterByBrand('Super Asia')">
+          <img class="brand-img" src="images/logos/superasia.avif" alt="Super Asia">
+          <div class="brand-logo-name">Super Asia</div>
+        </div>
+
+        <!-- ---- DUPLICATE for seamless loop ---- -->
+        <div class="brand-logo-card" onclick="filterByBrand('Samsung')">
+          <img class="brand-img" src="images/logos/samsung.png" alt="Samsung">
+          <div class="brand-logo-name">Samsung</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Haier')">
+          <img class="brand-img" src="images/logos/haier.png" alt="Haier">
+          <div class="brand-logo-name">Haier</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Philips')">
+          <img class="brand-img" src="images/logos/Philips.png" alt="Philips">
+          <div class="brand-logo-name">Philips</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Pak Fans')">
+          <img class="brand-img" src="images/logos/pakfans.jpg" alt="Pak Fans">
+          <div class="brand-logo-name">PAK FANS</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Royal Fans')">
+          <img class="brand-img" src="images/logos/RF_InverterFans.webp" alt="Royal Fans">
+          <div class="brand-logo-name">Royal Fans</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Dawlance')">
+          <img class="brand-img" src="images/logos/dawlance_logo.png" alt="Dawlance">
+          <div class="brand-logo-name">Dawlance</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('PEL')">
+          <img class="brand-img" src="images/logos/pel.png" alt="PEL">
+          <div class="brand-logo-name">Pak Elektron</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Orient')">
+          <img class="brand-img" src="images/logos/orient.png" alt="Orient">
+          <div class="brand-logo-name">Orient</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('GFC')">
+          <img class="brand-img" src="images/logos/gfc.png" alt="GFC">
+          <div class="brand-logo-name">GFC Fans</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Nasgas')">
+          <img class="brand-img" src="images/logos/nasgas.webp" alt="Nasgas">
+          <div class="brand-logo-name">Nasgas</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Cannon')">
+          <img class="brand-img" src="images/logos/canon.jpg" alt="Cannon">
+          <div class="brand-logo-name">Cannon</div>
+        </div>
+        <div class="brand-logo-card" onclick="filterByBrand('Super Asia')">
+          <img class="brand-img" src="images/logos/superasia.avif" alt="Super Asia">
+          <div class="brand-logo-name">Super Asia</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMO CARDS -->
+<div class="promo-section">
+  <div class="promo-inner">
+    <div class="promo-card" onclick="goCategory(null,'all')">
+      <div class="promo-icon">🔥</div>
+      <div>
+        <div class="promo-label">Flash Sale</div>
+        <div class="promo-title">Today's Hot Deals</div>
+        <div class="promo-sub">Limited time — Grab Now!</div>
+      </div>
+    </div>
+    <div class="promo-card" onclick="goCategory(null,'Kitchen')">
+      <div class="promo-icon">📦</div>
+      <div>
+        <div class="promo-label">Bundle &amp; Save</div>
+        <div class="promo-title">Buy 2, Save 15%</div>
+        <div class="promo-sub">Mix &amp; match any two appliances</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section-wrap" id="products">
+  <div class="section-title-row">
+    <div class="section-title"><span id="sectionTitleText">Featured Products</span></div>
+    <a href="#products" class="view-all-link" onclick="goCategory(null,'all')">View All &rarr;</a>
+  </div>
+
+  <!-- Mobile filter toggle -->
+  <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleMobileFilter()">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+</button>
+<div class="mobile-filter-overlay" id="mobileFilterOverlay" onclick="closeMobileFilter()"></div>
+  <div class="shop-layout">
+
+    <!-- ===== FILTER SIDEBAR ===== -->
+    <aside class="filter-sidebar" id="filterSidebar">
+      <div class="filter-header">
+        <h3>⚙️ Filter Products</h3>
+        <button class="filter-clear-all" onclick="clearAllFilters()">Clear All</button>
+      </div>
+
+      <!-- Active filter chips -->
+      <div class="active-filters" id="activeFilters"></div>
+
+      <!-- Category -->
+      <div class="filter-group open" id="fg-category">
+        <div class="filter-group-head" onclick="toggleGroup('fg-category')">
+          <h4>Category</h4><span class="filter-arrow">▼</span>
+        </div>
+        <div class="filter-body">
+         
+          <label class="filter-check-item"><input type="checkbox" name="category" value="all" checked onchange="syncCategoryFilter()"><span class="filter-check-label">All Products</span><span class="filter-check-count">60</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="category" value="Kitchen" onchange="syncCategoryFilter()"><span class="filter-check-label">Kitchen</span><span class="filter-check-count">10</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="category" value="Summer Mix" onchange="syncCategoryFilter()"><span class="filter-check-label">Summer Mix ☀️</span><span class="filter-check-count">10</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="category" value="Washing" onchange="syncCategoryFilter()"><span class="filter-check-label">Washing</span><span class="filter-check-count">10</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="category" value="Audio" onchange="syncCategoryFilter()"><span class="filter-check-label">Audio &amp; TV</span><span class="filter-check-count">10</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="category" value="Winter Mix" onchange="syncCategoryFilter()"><span class="filter-check-label">Winter Mix ❄️</span><span class="filter-check-count">10</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="category" value="Fans" onchange="syncCategoryFilter()"><span class="filter-check-label">Fans</span><span class="filter-check-count">10</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="category" value="Furniture" onchange="syncCategoryFilter()"><span class="filter-check-label">Furniture 🪑</span><span class="filter-check-count">10</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="category" value="House Essentials" onchange="syncCategoryFilter()"><span class="filter-check-label">House Essentials 🏠</span><span class="filter-check-count">10</span></label>
+         
+        </div>
+      </div>
+
+      <!-- Brand -->
+      <div class="filter-group open" id="fg-brand">
+        <div class="filter-group-head" onclick="toggleGroup('fg-brand')">
+          <h4>Brand</h4><span class="filter-arrow">▼</span>
+        </div>
+        <div class="filter-body">
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="PEL" onchange="applyFilters()"><span class="filter-check-label">PEL</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Dawlance" onchange="applyFilters()"><span class="filter-check-label">Dawlance</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Haier" onchange="applyFilters()"><span class="filter-check-label">Haier</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Samsung" onchange="applyFilters()"><span class="filter-check-label">Samsung</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Orient" onchange="applyFilters()"><span class="filter-check-label">Orient</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="GFC" onchange="applyFilters()"><span class="filter-check-label">GFC</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Philips" onchange="applyFilters()"><span class="filter-check-label">Philips</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Cannon" onchange="applyFilters()"><span class="filter-check-label">Cannon</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Nasgas" onchange="applyFilters()"><span class="filter-check-label">Nasgas</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Super Asia" onchange="applyFilters()"><span class="filter-check-label">Super Asia</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Pak Fans" onchange="applyFilters()"><span class="filter-check-label">Pak Fans</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Super Kinza" onchange="applyFilters()"><span class="filter-check-label">Super Kinza</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="TCL" onchange="applyFilters()"><span class="filter-check-label">TCL</span></label>
+          <label class="filter-check-item"><input type="checkbox" name="brand" value="Royal Fans" onchange="applyFilters()"><span class="filter-check-label">Royal Fans</span></label>
+        </div>
+      </div>
+
+      <!-- Price Range -->
+      <div class="filter-group open" id="fg-price">
+        <div class="filter-group-head" onclick="toggleGroup('fg-price')">
+          <h4>Price (Rs.)</h4><span class="filter-arrow">▼</span>
+        </div>
+        <div class="filter-body">
+          <div class="price-range-wrap">
+            <div class="price-inputs">
+              <input class="price-input" type="number" id="priceMin" placeholder="Min" min="0" />
+              <span class="price-sep">—</span>
+              <input class="price-input" type="number" id="priceMax" placeholder="Max" min="0" />
+            </div>
+            <button class="price-apply" onclick="applyFilters()">Apply Price</button>
+          </div>
+          <label class="filter-check-item"><input type="radio" name="priceRange" value="0-10000" onchange="setQuickPrice(0,10000)"><span class="filter-check-label">Under Rs. 10,000</span></label>
+          <label class="filter-check-item"><input type="radio" name="priceRange" value="10000-30000" onchange="setQuickPrice(10000,30000)"><span class="filter-check-label">Rs. 10,000 – 30,000</span></label>
+          <label class="filter-check-item"><input type="radio" name="priceRange" value="30000-80000" onchange="setQuickPrice(30000,80000)"><span class="filter-check-label">Rs. 30,000 – 80,000</span></label>
+          <label class="filter-check-item"><input type="radio" name="priceRange" value="80000-999999" onchange="setQuickPrice(80000,999999)"><span class="filter-check-label">Above Rs. 80,000</span></label>
+        </div>
+      </div>
+
+
+
+      <!-- Offers -->
+      <div class="filter-group" id="fg-offers">
+        <div class="filter-group-head" onclick="toggleGroup('fg-offers')">
+          <h4>Offers</h4><span class="filter-arrow">▼</span>
+        </div>
+        <div class="filter-body">
+          <label class="filter-check-item"><input type="checkbox" id="filterOnSale" onchange="applyFilters()"><span class="filter-check-label">🔥 On Sale</span></label>
+          <label class="filter-check-item"><input type="checkbox" id="filterNew" onchange="applyFilters()"><span class="filter-check-label">✨ New Arrivals</span></label>
+          <label class="filter-check-item"><input type="checkbox" id="filterHot" onchange="applyFilters()"><span class="filter-check-label">🔴 Hot Deals</span></label>
+        </div>
+      </div>
+
+      <!-- Rating -->
+      <div class="filter-group" id="fg-rating">
+        <div class="filter-group-head" onclick="toggleGroup('fg-rating')">
+          <h4>Customer Rating</h4><span class="filter-arrow">▼</span>
+        </div>
+        <div class="filter-body">
+          <label class="rating-row"><input type="checkbox" name="rating" value="4.8" onchange="applyFilters()"><span class="rating-stars">★★★★★</span><span class="rating-label">4.8 &amp; above</span></label>
+          <label class="rating-row"><input type="checkbox" name="rating" value="4.5" onchange="applyFilters()"><span class="rating-stars">★★★★☆</span><span class="rating-label">4.5 &amp; above</span></label>
+          <label class="rating-row"><input type="checkbox" name="rating" value="4.0" onchange="applyFilters()"><span class="rating-stars">★★★★☆</span><span class="rating-label">4.0 &amp; above</span></label>
+        </div>
+      </div>
+
+    </aside>
+    <!-- ===== END SIDEBAR ===== -->
+
+    <!-- Right: sort bar + product grid -->
+    <div>
+      <div class="sort-bar">
+        <div class="sort-bar-left">Showing <strong id="resultCount">0</strong> products</div>
+        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+          <option value="default">Sort: Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="newest">New Arrivals</option>
+          <option value="discount">Biggest Discount</option>
+        </select>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAYMENT METHODS SECTION -->
+<div class="payment-section">
+  <div class="payment-inner">
+    <div class="payment-title">We Accept</div>
+    <div class="payment-grid">
+
+      <!-- Cash on Delivery -->
+      <div class="payment-card">
+        <div class="payment-icon-wrap" style="background:#f0f9f0">
+          <img src="images/logos/cod.jpg" style="width:70px;height:40px;object-fit:contain;">
+        </div>
+        <div class="payment-name">Cash on Delivery</div>
+        <div class="payment-sub">Pay when you receive</div>
+      </div>
+
+      <!-- JazzCash -->
+      <div class="payment-card">
+        <div class="payment-icon-wrap" style="background:#fff3e0">
+          <img src="images/logos/jazz.png" style="width:56px;height:38px;object-fit:contain;">
+        </div>
+        <div class="payment-name">JazzCash</div>
+        <div class="payment-sub">Mobile wallet transfer</div>
+      </div>
+
+
+      <!-- MCB Bank -->
+      <div class="payment-card">
+        <div class="payment-icon-wrap" style="background:#e8f0fe">
+          <img src="images/logos/Mcb.png" style="width:56px;height:38px;object-fit:contain;">
+        </div>
+        <div class="payment-name">MCB Bank</div>
+        <div class="payment-sub">Bank transfer</div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <span class="footer-logo">Delight<span> Domestics</span></span>
+      <p class="footer-about">Pakistan's trusted destination for premium electric appliances. Authorized dealer for PEL, Dawlance, Samsung, Haier, and more. Serving customers nationwide since 1987.</p>
+      <div class="footer-social">
+        <div class="social-btn" onclick="window.open('https://facebook.com','_blank')" title="Facebook">f</div>
+        <div class="social-btn" onclick="window.open('https://instagram.com','_blank')" title="Instagram">in</div>
+        <div class="social-btn" onclick="window.open('https://youtube.com','_blank')" title="YouTube">yt</div>
+        <div class="social-btn" onclick="window.open('https://wa.me/923008076625','_blank')" title="WhatsApp">wa</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#products" onclick="goCategory(null,'Kitchen')">Kitchen Appliances</a></li>
+        <li><a href="#products" onclick="goCategory(null,'Summer Mix')">Summer Mix</a></li>
+        <li><a href="#products" onclick="goCategory(null,'Winter Mix')">Winter Mix</a></li>
+        <li><a href="#products" onclick="goCategory(null,'Washing')">Washing Machines</a></li>
+        <li><a href="#products" onclick="goCategory(null,'Fans')">Fans</a></li>
+        <li><a href="#products" onclick="goCategory(null,'Audio')">Audio &amp; TV</a></li>
+        <li><a href="#products" onclick="goCategory(null,'Furniture')">Furniture</a></li>
+        <li><a href="#products" onclick="goCategory(null,'House Essentials')">House Essentials</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="https://wa.me/923008076625?text=Hi! I want to track my order." target="_blank">Track Order</a></li>
+        <li><a href="https://wa.me/923008076625?text=Hi! I need to claim warranty." target="_blank">Warranty Claim</a></li>
+        <li><a href="https://wa.me/923008076625?text=Hi! I want to return a product." target="_blank">Return Policy</a></li>
+        <li><a href="https://wa.me/923008076625?text=Hi! Where is the nearest service center?" target="_blank">Service Centers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://wa.me/923008076625" target="_blank">WhatsApp: 03008076625</a></li>
+        <li><a href="mailto:toheedahmed918@gmail.com">toheedahmed918@gmail.com</a></li>
+        <li><a href="mailto:fasihtoheed918@gmail.com">fasihtoheed918@gmail.com</a></li>
+        <li><a href="https://wa.me/923008076625?text=Hi! Where are your stores located?" target="_blank">Store Locator</a></li>
+        <li><a href="https://wa.me/923008076625?text=Hi! I'm interested in corporate/bulk orders." target="_blank">Corporate Sales</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-marquee">
+      <div class="footer-bottom-item"><span class="bdot">✦</span> &copy; 2026 Delight Domestics Pakistan</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: PEL</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Dawlance</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Samsung</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Haier</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Orient</div>
+      <div class="footer-bottom-item"><span class="bdot">💵</span> Cash on Delivery</div>
+      <div class="footer-bottom-item"><span class="bdot">📱</span> JazzCash Accepted</div>
+      <div class="footer-bottom-item"><span class="bdot">🏦</span> MCB Bank Transfer</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> All Rights Reserved</div>
+      <!-- Duplicate for loop -->
+      <div class="footer-bottom-item"><span class="bdot">✦</span> &copy; 2026 Delight Domestics Pakistan</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: PEL</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Dawlance</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Samsung</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Haier</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Orient</div>
+      <div class="footer-bottom-item"><span class="bdot">💵</span> Cash on Delivery</div>
+      <div class="footer-bottom-item"><span class="bdot">📱</span> JazzCash Accepted</div>
+      <div class="footer-bottom-item"><span class="bdot">🏦</span> MCB Bank Transfer</div>
+      <div class="footer-bottom-item"><span class="bdot">✦</span> All Rights Reserved</div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon">🛒</div>
+  <div>
+    <strong id="toastName">Added!</strong>
+    <span id="toastSub">View cart to checkout.</span>
+  </div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script>
+// ============================================================
+// PRODUCT DATA
+// ============================================================
+var products = [
+  // KITCHEN
+  {id:1,  category:"Kitchen",          brand:"Super Kinza",  name:"Double Burner Gas Cabinet Stove",         desc:"Stainless steel top, auto-ignition, cast iron grates, easy-clean surface.",        price:"Rs. 8,500",   oldPrice:"Rs. 11,000",  discount:"23% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.8, emoji:"🍳"},
+  {id:2,  category:"Kitchen",          brand:"Dawlance",     name:"Microwave Oven (DW-MD-4-N) 20L(700W)",    desc:"solo modes,Mechanical rotary controls, child lock.", price:"Rs. 24,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.5, emoji:"📦"},
+  {id:3,  category:"Kitchen",          brand:"Kenwood",       name:"Blender 2in1(blender+juicer,grinder) 350W Blender ",         desc:"Stainless steel blades, 2-speed settings,bleder+juicer/grinder, 1.7L jar.",   price:"Rs. 12,900",  oldPrice:"Rs. 16,000",  discount:"19% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🥤"},
+  {id:4,  category:"Kitchen",          brand:"Dawlence",  name:"Dry Iron(1000W)",               desc:"6Heat setting,Auto-trip,Thermostatic Pilot Lamp,Copper wire,Non-Stick Coated Sole Plate",                     price:"Rs. 5,200",   oldPrice:"Rs. 6,500",   discount:"20% OFF", badge:"Sale", warranty:"6 Month", cod:true,  rating:4.4, emoji:"🥘"},
+  {id:5,  category:"Kitchen",          brand:"Philips",      name:"Hand Blender+Egg beater 600W",                  desc:"2-speed settings,Whipper/egg beater, eject button, ergonomic grip.",                  price:"Rs. 6,800",   oldPrice:"",            discount:"",        badge:"New",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🍰"},
+  {id:6,  category:"Kitchen",          brand:"Philips",        name:"Electric Kettle",     desc:"1.5L,Quick boil(60sec),2000W",          price:"Rs. 78,000",  oldPrice:"Rs. 92,000",  discount:"15% OFF", badge:"Hot",  warranty:"5 Year",  cod:false, rating:4.9, emoji:"❄️"},
+  {id:7,  category:"Kitchen",          brand:"Anex",     name:"Electric Kettle",              desc:"2.0L,Quick boil(60sec),2000W,(1Year Warranty)",              price:"Rs. 45,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:false, rating:4.6, emoji:"🧊"},
+  {id:8,  category:"Kitchen",          brand:"Silver Crest",     name:"2 Slice Bread Toaster",    desc:"Multifunctional 2 Slice Bread Toaster with Warming Rack 850 Watt",             price:"Rs. 38,500",  oldPrice:"Rs. 46,000",  discount:"16% OFF", badge:"Sale", warranty:"1 Year",  cod:false, rating:4.8, emoji:"🔥"},
+  {id:9,  category:"Kitchen",          brand:"Kenwood",      name:"Meat and Vegetable Chopper",           desc:"4 Stainless steel blades,Copper Motor,3Litre,700W",                 price:"Rs. 22,000",  oldPrice:"Rs. 27,000",  discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.8, emoji:"🍟"},
+  {id:10, category:"Kitchen",          brand:"RAF", name:"Coffe Machine",             desc:"Multifunctional coffe grinder,300W,Energy efficent,Washable,Stainless steel baldes",          price:"Rs. 4,500",   oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.5, emoji:"☕"},
+  {id:81,  category:"Kitchen",          brand:"Dawlance",     name:"Microwave Oven (DW-MD-15) 20L(700W)",    desc:"solo modes,Mechanical rotary controls, child lock.", price:"Rs. 24,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.5, emoji:"📦"},
+  
+  // SUMMER MIX
+  {id:11, category:"Summer Mix",       brand:"GFC",          name:"Pedestal Fan 18 inch Power Cool",  desc:"High-speed motor, 3-speed control, adjustable height, oscillation.",               price:"Rs. 7,200",   oldPrice:"Rs. 9,000",   discount:"20% OFF", badge:"Hot",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🌀"},
+  {id:12, category:"Summer Mix",       brand:"PEL",          name:"Inverter Split AC 1.5 Ton",        desc:"5-star energy rating, auto-clean, turbo cool, UV sterilization.",                  price:"Rs. 89,000",  oldPrice:"Rs. 110,000", discount:"19% OFF", badge:"Hot",  warranty:"5 Year",  cod:true,  rating:4.9, emoji:"❄️"},
+  {id:13, category:"Summer Mix",       brand:"Super Asia",   name:"Room Air Cooler 40L",              desc:"Honeycomb cooling pads, dual fan speed, large water tank, ice compartment.",       price:"Rs. 16,500",  oldPrice:"Rs. 20,000",  discount:"18% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.5, emoji:"💨"},
+  {id:14, category:"Summer Mix",       brand:"Dawlance",     name:"Chest Freezer 10 CFT",             desc:"Fast freeze, recessed handle, interior light, foam insulated lid.",                price:"Rs. 38,000",  oldPrice:"Rs. 45,000",  discount:"16% OFF", badge:"Sale", warranty:"2 Year",  cod:false, rating:4.6, emoji:"🧊"},
+  {id:15, category:"Summer Mix",       brand:"Orient",       name:"DC Inverter Ceiling Fan 56 inch",  desc:"Brushless DC motor, 70% energy saving, remote control, 5 speeds.",                price:"Rs. 18,500",  oldPrice:"Rs. 22,000",  discount:"16% OFF", badge:"New",  warranty:"3 Year",  cod:true,  rating:4.8, emoji:"🌬️"},
+  {id:16, category:"Summer Mix",       brand:"GFC",          name:"Table Fan 12 inch Breeze",         desc:"Copper wound motor, 3-speed settings, tilt adjustment, stable base.",              price:"Rs. 3,200",   oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:true,  rating:4.5, emoji:"🌀"},
+  {id:17, category:"Summer Mix",       brand:"PEL",          name:"Window AC 1 Ton",                  desc:"Auto restart, sleep mode, dehumidify, fresh air intake, dust filter.",             price:"Rs. 58,000",  oldPrice:"Rs. 68,000",  discount:"15% OFF", badge:"Sale", warranty:"3 Year",  cod:false, rating:4.6, emoji:"❄️"},
+  {id:18, category:"Summer Mix",       brand:"Pak Fans",     name:"Exhaust Fan 12 inch Kitchen",      desc:"Rust-proof body, copper motor, auto shutter, high-speed airflow.",                 price:"Rs. 2,800",   oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:true,  rating:4.4, emoji:"💨"},
+  {id:19, category:"Summer Mix",       brand:"Orient",       name:"Tower Fan 42 inch Slim",           desc:"60 degree oscillation, 12-speed settings, remote control, 8hr timer.",             price:"Rs. 12,500",  oldPrice:"Rs. 15,000",  discount:"17% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🌬️"},
+  {id:20, category:"Summer Mix",       brand:"Super Asia",   name:"Portable Air Cooler 20L",          desc:"Compact design, honeycomb pad, USB charging port, 3-speed.",                      price:"Rs. 9,800",   oldPrice:"Rs. 12,000",  discount:"18% OFF", badge:"Hot",  warranty:"1 Year",  cod:true,  rating:4.4, emoji:"💨"},
+  // WASHING
+  {id:21, category:"Washing",          brand:"Haier",        name:"Front Load Washer 8KG",            desc:"1400 RPM, 15 wash programs, steam care, auto-dosing detergent.",                  price:"Rs. 72,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:false, rating:4.7, emoji:"🫧"},
+  {id:22, category:"Washing",          brand:"PEL",          name:"Top Load Washer 10KG Semi-Auto",   desc:"Stainless steel drum, twin-tub, lint filter, spin dry, soaking function.",        price:"Rs. 28,000",  oldPrice:"Rs. 34,000",  discount:"18% OFF", badge:"Sale", warranty:"2 Year",  cod:true,  rating:4.5, emoji:"🫧"},
+  {id:23, category:"Washing",          brand:"Samsung",      name:"Fully Auto Top Load 8KG",          desc:"Diamond drum, wobble technology, eco tub clean, child lock.",                     price:"Rs. 58,000",  oldPrice:"Rs. 68,000",  discount:"15% OFF", badge:"New",  warranty:"3 Year",  cod:false, rating:4.8, emoji:"🫧"},
+  {id:24, category:"Washing",          brand:"Dawlance",     name:"Washing Machine 6KG Twin Tub",     desc:"Spin and wash tub, powerful motor, gentle wash cycle, timer control.",            price:"Rs. 22,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.4, emoji:"🫧"},
+  {id:25, category:"Washing",          brand:"Haier",        name:"Front Load Washer 6KG Slim",       desc:"Slim 45cm depth, 1000 RPM, quick wash 15 mins, anti-crease.",                    price:"Rs. 55,000",  oldPrice:"Rs. 65,000",  discount:"15% OFF", badge:"Hot",  warranty:"2 Year",  cod:false, rating:4.6, emoji:"🫧"},
+  {id:27, category:"Washing",          brand:"Super Asia",   name:"Dryer Machine 7KG Spin",           desc:"High-speed spin, stainless steel drum, overflow safety, delay timer.",            price:"Rs. 18,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.3, emoji:"💨"},
+  {id:28, category:"Washing",          brand:"Orient",       name:"Fully Auto Front Load 7KG",        desc:"Inverter motor, 16 programs, anti-vibration, child lock, LED display.",           price:"Rs. 64,000",  oldPrice:"Rs. 76,000",  discount:"16% OFF", badge:"Sale", warranty:"3 Year",  cod:false, rating:4.7, emoji:"🫧"},
+  {id:29, category:"Washing",          brand:"Dawlance",     name:"Washing Machine 12KG Top Load",    desc:"Large family load, fuzzy logic control, auto restart, self-clean drum.",          price:"Rs. 42,000",  oldPrice:"Rs. 50,000",  discount:"16% OFF", badge:"Sale", warranty:"2 Year",  cod:true,  rating:4.5, emoji:"🫧"},
+  {id:30, category:"Washing",          brand:"Kenwood",      name:"Portable Washing Machine 3KG",     desc:"Mini washer for small loads, 2 wash modes, drain hose included.",                 price:"Rs. 9,800",   oldPrice:"",            discount:"",        badge:"New",  warranty:"1 Year",  cod:true,  rating:4.2, emoji:"🫧"},
+  // AUDIO & TV
+  {id:31, category:"Audio",            brand:"Samsung",      name:"Crystal 4K UHD Smart TV 55 inch",  desc:"PurColor display, Crystal Processor 4K, built-in Alexa, SmartThings hub, HDR.",  price:"Rs. 145,000", oldPrice:"Rs. 175,000", discount:"17% OFF", badge:"New",  warranty:"1 Year",  cod:false, rating:4.8, emoji:"📺"},
+  {id:32, category:"Audio",            brand:"TCL",          name:"QLED 4K Smart TV 50 inch",         desc:"Quantum dot display, Dolby Vision, Google TV, 60Hz refresh rate.",               price:"Rs. 98,000",  oldPrice:"Rs. 118,000", discount:"17% OFF", badge:"Hot",  warranty:"1 Year",  cod:false, rating:4.7, emoji:"📺"},
+  {id:33, category:"Audio",            brand:"Royal Fans",         name:"Bravia 43 inch Full HD Smart TV",  desc:"X-Reality PRO, Android TV, built-in Chromecast, X-Protection PRO.",             price:"Rs. 82,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:false, rating:4.8, emoji:"📺"},
+  {id:34, category:"Audio",            brand:"JBL",          name:"Soundbar 2.1 with Subwoofer",      desc:"300W power, Dolby Atmos, HDMI ARC, Bluetooth 5.0, wall-mountable.",             price:"Rs. 38,000",  oldPrice:"Rs. 46,000",  discount:"17% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.9, emoji:"🔊"},
+  {id:35, category:"Audio",            brand:"Royal Fans",         name:"Home Theatre System 5.1 1000W",    desc:"1000W output, HDMI, Bluetooth, USB, FM radio, karaoke, Dolby Digital.",         price:"Rs. 52,000",  oldPrice:"Rs. 62,000",  discount:"16% OFF", badge:"Sale", warranty:"1 Year",  cod:false, rating:4.7, emoji:"🔊"},
+  {id:36, category:"Audio",            brand:"Anker",        name:"Portable Bluetooth Speaker",       desc:"360 degree sound, IPX7 waterproof, 24hr battery, BassUp technology.",           price:"Rs. 12,500",  oldPrice:"",            discount:"",        badge:"New",  warranty:"1 Year",  cod:true,  rating:4.8, emoji:"🎵"},
+  {id:37, category:"Audio",            brand:"Samsung",      name:"QLED 8K 65 inch Smart TV",         desc:"8K AI upscaling, Quantum HDR 32X, Neural Quantum Processor 8K.",                price:"Rs. 380,000", oldPrice:"Rs. 430,000", discount:"12% OFF", badge:"Hot",  warranty:"1 Year",  cod:false, rating:4.9, emoji:"📺"},
+  {id:39, category:"Audio",            brand:"Haier",        name:"LED TV 32 inch HD Smart Android",  desc:"Android 9 OS, Google Assistant, HDMI x2, built-in WiFi, voice control.",        price:"Rs. 38,000",  oldPrice:"Rs. 45,000",  discount:"16% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.5, emoji:"📺"},
+  {id:40, category:"Audio",            brand:"Bose",         name:"Wireless Headphones Noise Cancel", desc:"QuietComfort technology, 24hr battery, Aware mode, foldable, Bluetooth 5.1.",   price:"Rs. 45,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.9, emoji:"🎧"},
+  // WINTER MIX
+  {id:41, category:"Winter Mix",       brand:"Cannon",       name:"Electric Water Heater 30L",        desc:"Fast heating, anti-rust tank, safety valve, energy saving thermostat.",          price:"Rs. 14,500",  oldPrice:"Rs. 18,000",  discount:"19% OFF", badge:"Hot",  warranty:"2 Year",  cod:true,  rating:4.7, emoji:"🚿"},
+  {id:42, category:"Winter Mix",       brand:"Nasgas",       name:"Instant Gas Geyser 12L",           desc:"Electronic ignition, overheating protection, copper heat exchanger.",            price:"Rs. 9,800",   oldPrice:"Rs. 12,000",  discount:"18% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.5, emoji:"🔥"},
+  {id:43, category:"Winter Mix",       brand:"Philips",      name:"Oil Filled Radiator 2000W",        desc:"9 fins, 3 heat settings, thermostat, overheat protection, timer.",              price:"Rs. 18,500",  oldPrice:"Rs. 22,000",  discount:"16% OFF", badge:"New",  warranty:"2 Year",  cod:true,  rating:4.6, emoji:"♨️"},
+  {id:44, category:"Winter Mix",       brand:"Osaka",        name:"Quartz Heater 2000W",              desc:"Instant heat, 2 heat settings, safety tip-over switch, cool-touch cabinet.",    price:"Rs. 4,800",   oldPrice:"Rs. 6,000",   discount:"20% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.3, emoji:"🔆"},
+  {id:45, category:"Winter Mix",       brand:"Dawlance",     name:"Chest Freezer 15 CFT Deep Freeze", desc:"R600a eco refrigerant, fast freeze, secure lock, foam insulated lid.",          price:"Rs. 52,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:false, rating:4.6, emoji:"🧊"},
+  {id:46, category:"Winter Mix",       brand:"Panasonic",    name:"Fan Heater 2000W Ceramic",         desc:"PTC ceramic element, 2 heat settings, cool air mode, tip-over protection.",     price:"Rs. 7,500",   oldPrice:"Rs. 9,500",   discount:"21% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.5, emoji:"♨️"},
+  {id:47, category:"Winter Mix",       brand:"Cannon",       name:"Electric Geyser 50L Storage",      desc:"Magnesium anode, pressure relief valve, digital temp display.",                 price:"Rs. 24,000",  oldPrice:"Rs. 29,000",  discount:"17% OFF", badge:"Hot",  warranty:"3 Year",  cod:false, rating:4.8, emoji:"🚿"},
+  {id:48, category:"Winter Mix",       brand:"Nasgas",       name:"Gas Heater Room Double Burner",    desc:"Cast iron burners, oxygen depletion sensor, piezo ignition, wheels.",           price:"Rs. 12,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.4, emoji:"🔥"},
+  {id:49, category:"Winter Mix",       brand:"Philips",      name:"Electric Blanket Double Bed",      desc:"10 heat settings, machine washable, auto shut-off, dual zone control.",         price:"Rs. 8,900",   oldPrice:"Rs. 11,000",  discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🛏️"},
+  {id:50, category:"Winter Mix",       brand:"Orient",       name:"Halogen Heater 1200W Freestand",   desc:"3 halogen tubes, 3 heat levels, tip-over safety, carry handle.",               price:"Rs. 5,200",   oldPrice:"Rs. 6,500",   discount:"20% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.2, emoji:"💡"},
+  // FANS
+  {id:51, category:"Fans",             brand:"GFC",          name:"Ceiling Fan 56 inch Premium",      desc:"Copper wound motor, 3-speed, high air delivery, anti-rust coating.",            price:"Rs. 6,800",   oldPrice:"Rs. 8,500",   discount:"20% OFF", badge:"Hot",  warranty:"2 Year",  cod:true,  rating:4.8, emoji:"🌀"},
+  {id:52, category:"Fans",             brand:"Pak Fans",     name:"Pedestal Fan 18 inch Super Breeze",desc:"Powerful motor, adjustable height and tilt, 3-speed, oscillation.",            price:"Rs. 7,500",   oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:true,  rating:4.6, emoji:"🌀"},
+  {id:53, category:"Fans",             brand:"Orient",       name:"DC Inverter Ceiling Fan 56 inch",  desc:"70% energy saving, BLDC motor, remote, 5-speed, silent operation.",            price:"Rs. 18,500",  oldPrice:"Rs. 22,000",  discount:"16% OFF", badge:"New",  warranty:"3 Year",  cod:true,  rating:4.9, emoji:"🌬️"},
+  {id:54, category:"Fans",             brand:"GFC",          name:"Bracket Fan 14 inch Wall Mount",   desc:"Space-saving wall mount, 3-speed, oscillating, copper motor.",                  price:"Rs. 4,200",   oldPrice:"Rs. 5,500",   discount:"24% OFF", badge:"Sale", warranty:"2 Year",  cod:true,  rating:4.5, emoji:"🌀"},
+  {id:55, category:"Fans",             brand:"Sunbeam",      name:"Table Fan 12 inch Desk",           desc:"360 degree rotation, quiet operation, 3-speed, compact for desk or bedside.",   price:"Rs. 3,800",   oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.4, emoji:"🌀"},
+  {id:56, category:"Fans",             brand:"Pak Fans",     name:"Exhaust Fan 12 inch Ventilation",  desc:"Rust-proof ABS blades, auto shutter, copper motor, 1450 RPM.",                 price:"Rs. 2,600",   oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:true,  rating:4.3, emoji:"💨"},
+  {id:57, category:"Fans",             brand:"GFC",          name:"Ceiling Fan 48 inch Economy",      desc:"Energy-saving design, robust copper motor, 3-speed, rust-free finish.",         price:"Rs. 4,900",   oldPrice:"Rs. 6,200",   discount:"21% OFF", badge:"Sale", warranty:"2 Year",  cod:true,  rating:4.6, emoji:"🌀"},
+  {id:58, category:"Fans",             brand:"Orient",       name:"Tower Fan 44 inch Digital",        desc:"12-speed, sleep mode, 8hr timer, 75 degree oscillation, remote, LED display.",  price:"Rs. 14,500",  oldPrice:"Rs. 17,000",  discount:"15% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🌬️"},
+  {id:59, category:"Fans",             brand:"Crescent",     name:"Decorative Ceiling Fan 56 inch",   desc:"Designer blades, remote control, 3-speed, LED light kit included.",             price:"Rs. 9,800",   oldPrice:"Rs. 12,000",  discount:"18% OFF", badge:"Hot",  warranty:"2 Year",  cod:true,  rating:4.7, emoji:"🌀"},
+  {id:60, category:"Fans",             brand:"Pak Fans",     name:"Exhaust Fan 9 inch Slim",          desc:"Ultra-slim profile, silent motor, auto shutter, ABS blade.",                   price:"Rs. 1,900",   oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.2, emoji:"💨"},
+  // FURNITURE
+  {id:61, category:"Furniture",        brand:"Interwood",    name:"Sofa Set 5-Seater L-Shape",        desc:"Premium fabric upholstery, solid wood frame, high-density foam, removable covers.",price:"Rs. 85,000",  oldPrice:"Rs. 105,000", discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:false, rating:4.8, emoji:"🛋️"},
+  {id:62, category:"Furniture",        brand:"Master",       name:"King Size Bed with Headboard",     desc:"Solid sheesham wood, lacquer finish, slat support, elegant design.",             price:"Rs. 48,000",  oldPrice:"Rs. 60,000",  discount:"20% OFF", badge:"Sale", warranty:"1 Year",  cod:false, rating:4.7, emoji:"🛏️"},
+  {id:63, category:"Furniture",        brand:"Workspace",    name:"Ergonomic Office Chair Mesh",      desc:"Lumbar support, adjustable height and armrests, breathable mesh, 360 swivel.",  price:"Rs. 18,500",  oldPrice:"Rs. 24,000",  discount:"23% OFF", badge:"Hot",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🪑"},
+  {id:64, category:"Furniture",        brand:"Interwood",    name:"Dining Table 6-Seater",            desc:"Solid wood top, metal legs, scratch-resistant finish, easy clean.",             price:"Rs. 35,000",  oldPrice:"Rs. 42,000",  discount:"17% OFF", badge:"New",  warranty:"1 Year",  cod:false, rating:4.7, emoji:"🍽️"},
+  {id:65, category:"Furniture",        brand:"Master",       name:"Wardrobe 3-Door Sliding Mirror",   desc:"Mirrored sliding doors, 3 compartments, hanging rail, shelves.",               price:"Rs. 42,000",  oldPrice:"Rs. 52,000",  discount:"19% OFF", badge:"Sale", warranty:"1 Year",  cod:false, rating:4.5, emoji:"🚪"},
+  {id:66, category:"Furniture",        brand:"Workspace",    name:"Study Desk with Bookshelf",        desc:"L-shaped design, built-in shelving, cable management, sturdy metal frame.",     price:"Rs. 14,500",  oldPrice:"Rs. 18,000",  discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"📚"},
+  {id:67, category:"Furniture",        brand:"Interwood",    name:"Center Table Glass Top",           desc:"Tempered glass top, chrome-finish steel frame, lower shelf.",                  price:"Rs. 12,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"6 Month", cod:true,  rating:4.4, emoji:"🔲"},
+  {id:68, category:"Furniture",        brand:"Master",       name:"Kids Bunk Bed with Ladder",        desc:"Solid wood, safety rails, space-saving, fits standard mattress.",              price:"Rs. 28,000",  oldPrice:"Rs. 35,000",  discount:"20% OFF", badge:"Hot",  warranty:"1 Year",  cod:false, rating:4.8, emoji:"🛏️"},
+  {id:69, category:"Furniture",        brand:"Workspace",    name:"Bookshelf 5-Tier Display Unit",    desc:"Open display design, MDF shelves, metal frame, holds 50kg per shelf.",         price:"Rs. 9,500",   oldPrice:"Rs. 12,000",  discount:"21% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.5, emoji:"📚"},
+  {id:70, category:"Furniture",        brand:"Interwood",    name:"TV Console Cabinet 60 inch",       desc:"Cable management holes, 2 drawers, open shelves, fits TVs up to 65 inch.",     price:"Rs. 22,000",  oldPrice:"Rs. 27,000",  discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"📺"},
+  // HOUSE ESSENTIALS
+  {id:71, category:"House Essentials", brand:"Philips",      name:"LED Bulb Pack of 6 9W",            desc:"Energy-saving LED, 800 lumen, warm white 3000K, 15000hr lifespan, E27 base.",   price:"Rs. 1,200",   oldPrice:"Rs. 1,800",   discount:"33% OFF", badge:"Hot",  warranty:"1 Year",  cod:true,  rating:4.9, emoji:"💡"},
+  {id:72, category:"House Essentials", brand:"3M",           name:"Multipurpose Hooks Damage-Free",   desc:"Holds up to 3kg, no drilling, removes cleanly, waterproof, pack of 10.",        price:"Rs. 950",     oldPrice:"",            discount:"",        badge:"New",  warranty:"",        cod:true,  rating:4.7, emoji:"🪝"},
+  {id:73, category:"House Essentials", brand:"Kenwood",      name:"Vacuum Cleaner 2000W Bagless",     desc:"HEPA filter, 2L dust cup, telescopic handle, 4 attachments, 5m cord.",         price:"Rs. 16,500",  oldPrice:"Rs. 21,000",  discount:"21% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🧹"},
+  {id:74, category:"House Essentials", brand:"Milton",       name:"Water Dispenser Hot and Cold",     desc:"Dual tap hot/cold, stainless steel tank, safety valve, child lock hot tap.",    price:"Rs. 14,000",  oldPrice:"Rs. 17,500",  discount:"20% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.5, emoji:"🚰"},
+  {id:75, category:"House Essentials", brand:"Anex",         name:"Steam Iron 2400W Ceramic",         desc:"Ceramic soleplate, variable steam, self-cleaning, anti-drip, 300ml tank.",     price:"Rs. 3,800",   oldPrice:"Rs. 5,000",   discount:"24% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.7, emoji:"👔"},
+  {id:76, category:"House Essentials", brand:"Philips",      name:"Air Purifier HEPA 3-Stage",        desc:"True HEPA + carbon + pre-filter, covers 300 sq ft, AQI display, sleep mode.",  price:"Rs. 28,000",  oldPrice:"Rs. 35,000",  discount:"20% OFF", badge:"New",  warranty:"1 Year",  cod:false, rating:4.8, emoji:"🌿"},
+  {id:77, category:"House Essentials", brand:"Anex",         name:"Food Steamer 3-Tier 9L",           desc:"9L capacity, 3 stackable baskets, 60min timer, boil-dry protection, 800W.",    price:"Rs. 5,500",   oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.5, emoji:"🥦"},
+  {id:78, category:"House Essentials", brand:"Milton",       name:"Stainless Steel Flask 1L",         desc:"Double-wall insulation, hot 24hr/cold 48hr, leak-proof lid, BPA-free.",        price:"Rs. 2,200",   oldPrice:"Rs. 3,000",   discount:"27% OFF", badge:"Hot",  warranty:"6 Month", cod:true,  rating:4.8, emoji:"🫙"},
+  {id:79, category:"House Essentials", brand:"Kenwood",      name:"Spin Mop and Bucket Set 360",      desc:"360 spinning mop, easy-wring pedal bucket, microfibre mop head, 10L bucket.", price:"Rs. 4,200",   oldPrice:"Rs. 5,500",   discount:"24% OFF", badge:"Sale", warranty:"",        cod:true,  rating:4.6, emoji:"🧺"},
+  {id:80, category:"House Essentials", brand:"Philips",      name:"Mosquito Killer Lamp UV",          desc:"UV LED attraction, no chemicals, silent operation, 20sqm coverage.",           price:"Rs. 3,500",   oldPrice:"Rs. 4,500",   discount:"22% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🔆"}
+];
+
+var FEATURED_IDS = [2, 12, 21, 31, 46, 51, 62, 74];
+var cartTotal = 0, wishTotal = 0, selDay = null, selTime = null;
+
+function pNum(str) {
+  return parseInt((str || '').replace(/[^0-9]/g, '')) || 0;
+}
+var categoryBrands = {
+  'all':             ['PEL','Dawlance','Haier','Samsung','Orient','GFC','Philips','Cannon','Nasgas','Super Asia','Pak Fans','Super Kinza','TCL','Royal Fans','Anker','JBL','Bose','Black+Decker','National','Kenwood','Interwood','Master','Workspace','Sunbeam','Crescent','Panasonic','Osaka','Anex','Milton','3M'],
+  'Kitchen':         ['Dawlance','Haier','Orient','Philips','Super Kinza','Black+Decker','National'],
+  'Summer Mix':      ['PEL','GFC','Orient','Pak Fans','Super Asia','Dawlance'],
+  'Washing':         ['Haier','PEL','Samsung','Dawlance','Super Asia','Orient','Kenwood'],
+  'Audio':           ['Samsung','TCL','Royal Fans','JBL','Anker','Bose','Haier'],
+  'Winter Mix':      ['Cannon','Nasgas','Philips','Osaka','Dawlance','Panasonic','Orient'],
+  'Fans':            ['GFC','Pak Fans','Orient','Sunbeam','Crescent'],
+  'Furniture':       ['Interwood','Master','Workspace'],
+  'House Essentials':['Philips','Kenwood','Anex','Milton','3M']
+};
+function updateBrandFilter(cat) {
+  var allowed = categoryBrands[cat] || categoryBrands['all'];
+  document.querySelectorAll('#fg-brand .filter-check-item').forEach(function(item) {
+    var val = item.querySelector('input').value;
+    item.style.display = allowed.indexOf(val) !== -1 ? '' : 'none';
+    if (allowed.indexOf(val) === -1) item.querySelector('input').checked = false;
+  });
+}
+function syncCategoryFilter() {
+  var catChecks = [].slice.call(document.querySelectorAll('input[name="category"]:checked')).map(function(i){ return i.value; });
+  var cat = catChecks.length === 0 || catChecks.indexOf('all') !== -1 ? 'all' : catChecks[0];
+  updateBrandFilter(cat);
+  applyFilters();
+}
+// ============================================================
+// APPLY FILTERS
+// ============================================================
+function applyFilters() {
+  var catChecks    = [].slice.call(document.querySelectorAll('input[name="category"]:checked')).map(function(i){return i.value;});
+  var brandChecks  = [].slice.call(document.querySelectorAll('input[name="brand"]:checked')).map(function(i){return i.value;});
+  var minP         = parseInt(document.getElementById('priceMin').value) || 0;
+  var maxPRaw      = document.getElementById('priceMax').value;
+  var maxP         = maxPRaw ? parseInt(maxPRaw) : 9999999;
+  var codOnly      = false;
+  var saleOnly     = document.getElementById('filterOnSale').checked;
+  var newOnly      = document.getElementById('filterNew').checked;
+  var hotOnly      = document.getElementById('filterHot').checked;
+  var ratingChecks = [].slice.call(document.querySelectorAll('input[name="rating"]:checked')).map(function(i){return parseFloat(i.value);});
+  var sort         = document.getElementById('sortSelect').value;
+  var searchQ      = (document.getElementById('navSearch').value || '').toLowerCase().trim();
+  var allCat   = catChecks.length === 0 || catChecks.indexOf('all') !== -1;
+  var noFilter = allCat && brandChecks.length===0 && !codOnly && !saleOnly && !newOnly && !hotOnly && ratingChecks.length===0 && minP===0 && maxP===9999999 && searchQ==='';
+  var list;
+  if (noFilter) {
+    list = products.filter(function(p){ return FEATURED_IDS.indexOf(p.id) !== -1; });
+    document.getElementById('sectionTitleText').textContent = 'Featured Products';
+    document.querySelector('.view-all-link').style.display = '';
+  } else {
+    document.querySelector('.view-all-link').style.display = 'none';
+    list = products.slice();
+  if (searchQ) {
+      var searchWords = searchQ.split(/\s+/).filter(Boolean);
+      list = list.filter(function(p){
+        var haystack = (p.name+' '+p.brand+' '+p.category+' '+p.desc).toLowerCase();
+        return searchWords.every(function(w){ return haystack.indexOf(w) !== -1; });
+      });
+      document.getElementById('sectionTitleText').textContent = 'Search Results';
+      setTimeout(function(){ document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+    }
+    if (!allCat) list = list.filter(function(p){ return catChecks.indexOf(p.category) !== -1; });
+    if (brandChecks.length > 0) list = list.filter(function(p){ return brandChecks.indexOf(p.brand) !== -1; });
+    list = list.filter(function(p){ var n = pNum(p.price); return n >= minP && n <= maxP; });
+    if (codOnly)  list = list.filter(function(p){ return p.cod; });
+    if (saleOnly) list = list.filter(function(p){ return p.badge === 'Sale'; });
+    if (newOnly)  list = list.filter(function(p){ return p.badge === 'New'; });
+    if (hotOnly)  list = list.filter(function(p){ return p.badge === 'Hot'; });
+    if (ratingChecks.length > 0) {
+      var minR = Math.min.apply(null, ratingChecks);
+      list = list.filter(function(p){ return p.rating >= minR; });
+    }
+    var catLabel = (!allCat && catChecks.length === 1) ? catChecks[0] + ' Products' : 'Filtered Results';
+    document.getElementById('sectionTitleText').textContent = catLabel;
+  }
+
+  if (sort === 'price-asc')  list.sort(function(a,b){ return pNum(a.price) - pNum(b.price); });
+  if (sort === 'price-desc') list.sort(function(a,b){ return pNum(b.price) - pNum(a.price); });
+  if (sort === 'rating')     list.sort(function(a,b){ return b.rating - a.rating; });
+  if (sort === 'newest')     list = list.filter(function(p){return p.badge==='New';}).concat(list.filter(function(p){return p.badge!=='New';}));
+  if (sort === 'discount')   list.sort(function(a,b){ return (parseInt(b.discount)||0)-(parseInt(a.discount)||0); });
+
+  document.getElementById('resultCount').textContent = list.length;
+  renderGrid(list);
+  updateChips(brandChecks, minP, maxP===9999999?0:maxP, codOnly, saleOnly, newOnly, hotOnly);
+}
+
+function updateChips(brands, minP, maxP, cod, sale, nw, hot) {
+  var chips = document.getElementById('activeFilters');
+  var html = '';
+  brands.forEach(function(b){ html += '<span class="filter-chip" onclick="uncheckBrand(\''+b+'\')">'+b+' <span class="filter-chip-x">x</span></span>'; });
+  if (minP||maxP) html += '<span class="filter-chip" onclick="clearPrice()">Rs.'+minP+(maxP?'-'+maxP:'+')+'<span class="filter-chip-x">x</span></span>';
+  if (cod)  html += '<span class="filter-chip" onclick="uncheckId(\'filterCOD\')">COD <span class="filter-chip-x">x</span></span>';
+  if (sale) html += '<span class="filter-chip" onclick="uncheckId(\'filterOnSale\')">Sale <span class="filter-chip-x">x</span></span>';
+  if (nw)   html += '<span class="filter-chip" onclick="uncheckId(\'filterNew\')">New <span class="filter-chip-x">x</span></span>';
+  if (hot)  html += '<span class="filter-chip" onclick="uncheckId(\'filterHot\')">Hot <span class="filter-chip-x">x</span></span>';
+  chips.innerHTML = html;
+}
+
+function uncheckBrand(val) {
+  var el = document.querySelector('input[name="brand"][value="'+val+'"]');
+  if (el) el.checked = false;
+  applyFilters();
+}
+function uncheckId(id) { document.getElementById(id).checked = false; applyFilters(); }
+function clearPrice() {
+  document.getElementById('priceMin').value = '';
+  document.getElementById('priceMax').value = '';
+  document.querySelectorAll('input[name="priceRange"]').forEach(function(r){ r.checked=false; });
+  applyFilters();
+}
+function setQuickPrice(min, max) {
+  document.getElementById('priceMin').value = min;
+  document.getElementById('priceMax').value = max >= 9999999 ? '' : max;
+  applyFilters();
+}
+function clearAllFilters() {
+  document.querySelectorAll('.filter-sidebar input').forEach(function(i){ i.checked = false; });
+  var allCb = document.querySelector('input[name="category"][value="all"]');
+  if (allCb) allCb.checked = true;
+  document.getElementById('priceMin').value = '';
+  document.getElementById('priceMax').value = '';
+  document.getElementById('sortSelect').value = 'default';
+  applyFilters();
+}
+function toggleGroup(id) { document.getElementById(id).classList.toggle('open'); }
+function toggleMobileFilter() {
+  document.getElementById('filterSidebar').classList.toggle('mobile-open');
+  document.getElementById('mobileFilterOverlay').classList.toggle('open');
+}
+function closeMobileFilter() {
+  document.getElementById('filterSidebar').classList.remove('mobile-open');
+  document.getElementById('mobileFilterOverlay').classList.remove('open');
+}
+// ============================================================
+// RENDER
+// ============================================================
+function renderGrid(list) {
+  var grid = document.getElementById('productGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:#888;font-size:.9rem;font-weight:700;">No products match. <button onclick="clearAllFilters()" style="color:#cc0000;background:none;border:none;cursor:pointer;font-weight:800;font-family:Nunito,sans-serif;">Clear filters</button></div>';
+    return;
+  }
+  grid.innerHTML = list.map(function(p, i){ return renderCard(p, i); }).join('');
+}
+
+function renderCard(p, i) {
+  var wa = encodeURIComponent(p.name);
+  return '<div class="product-card" style="animation-delay:'+(i*0.04)+'s" onclick="window.location.href=\'product.html?id='+p.id+'\'">'
+    +'<div class="card-badges">'
+    +(p.badge==='Sale'?'<span class="badge badge-sale">Sale</span>':'')
+    +(p.badge==='New'?'<span class="badge badge-new">New</span>':'')
+    +(p.badge==='Hot'?'<span class="badge badge-new">Hot</span>':'')
+    +(p.warranty?'<span class="badge badge-warranty">'+p.warranty+'</span>':'')
+    +(p.cod?'<span class="badge badge-cod">COD</span>':'')
+    +'</div>'
+    +'<button class="wishlist-card" onclick="toggleWish(this)">'
+    +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e53935" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>'
+    +'</button>'
+    +'<div class="card-img-wrap"><img src="images/products/'+p.id+'/'+p.id+' (1).jpg" alt="'+p.name+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'" style="width:100%;height:100%;object-fit:contain;padding:8px;"><div class="card-no-img" style="display:none">'+p.emoji+'</div></div>'
+    +'<div class="card-body">'
+    +'<div class="card-brand">'+p.brand+'</div>'
+    +'<div class="card-title">'+p.name+'</div>'
+    +'<div class="card-desc">'+p.desc+'</div>'
+    +'<div class="card-pricing">'
+    +'<span class="price-pkr">'+p.price+'</span>'
+    +(p.oldPrice?'<span class="price-old">'+p.oldPrice+'</span>':'')
+    +(p.discount?'<span class="price-discount">'+p.discount+'</span>':'')
+    +'</div>'
+    +'<div class="card-trust">'
+    +(p.rating?'<span class="micro-badge stars">'+p.rating+'</span>':'')
+    +(p.warranty?'<span class="micro-badge warranty">'+p.warranty+'</span>':'')
+    +(p.cod?'<span class="micro-badge cod">Cash on Delivery</span>':'')
+    +'</div>'
+    +'<div class="card-cta">'
+    +'<button class="btn-add-cart" onclick="addToCart(\''+p.name.replace(/'/g,"\\'")+'\')">'
+    +'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="margin-right:4px"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>'
+    +'Add to Cart</button>'
+    +'<button class="btn-whatsapp" onclick="window.open(\'https://wa.me/923008076625?text=Hi! I want to order: '+wa+'\',\'_blank\')">'
+    +'<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.118.549 4.107 1.51 5.833L0 24l6.336-1.48A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 01-5.002-1.367l-.357-.213-3.757.877.924-3.65-.235-.374A9.82 9.82 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12c0 5.43-4.388 9.818-9.818 9.818z"/></svg>'
+    +'</button></div></div></div>';
+}
+
+// ============================================================
+// CATEGORY NAV
+// ============================================================
+function goCategory(btn, cat) {
+  document.querySelectorAll('.cat-nav-item').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    document.querySelectorAll('.cat-nav-item').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (cat === 'all' && b.textContent.trim().indexOf('All') === 0) b.classList.add('active');
+      else if (oc.indexOf("'"+cat+"'") !== -1) b.classList.add('active');
+    });
+  }
+  // Sync sidebar checkbox
+  document.querySelectorAll('input[name="category"]').forEach(function(c){
+    c.checked = (cat === 'all') ? c.value === 'all' : c.value === cat;
+  });
+  updateBrandFilter(cat);
+  applyFilters();
+  setTimeout(function(){ document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'}); }, 50);
+}
+function filterCat(btn, cat) { goCategory(btn, cat); }
+
+// ============================================================
+// CART & WISHLIST
+// ============================================================
+function addToCart(name) {
+  cartTotal++;
+  var el = document.getElementById('cartCount');
+  el.textContent = cartTotal;
+  el.classList.add('show');
+  showToast('🛒', name + ' added!', 'View cart to checkout.');
+  updateDeliveryLock();
+}
+function openCart() { addToCart('Cart'); }
+
+function toggleWish(btn) {
+  var wasLiked = btn.classList.contains('liked');
+  btn.classList.toggle('liked');
+  if (!wasLiked) { wishTotal++; showToast('❤️','Added to Wishlist!', wishTotal+' item(s) saved.'); }
+  else { wishTotal = Math.max(0, wishTotal - 1); }
+  var wc = document.getElementById('wishlistCount');
+  wc.textContent = wishTotal;
+  wishTotal > 0 ? wc.classList.add('show') : wc.classList.remove('show');
+}
+
+function showToast(icon, title, sub) {
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastName').textContent = title;
+  document.getElementById('toastSub').textContent  = sub;
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+// ============================================================
+// DELIVERY MODAL
+// ============================================================
+function tryOpenDeliveryModal() {
+  if (cartTotal === 0) {
+    showToast('🛒', 'Cart is empty!', 'Add items to your cart first.');
+    var el = document.querySelector('.delivery-day-trust');
+    if (el) {
+      el.style.transition = 'none';
+      el.style.transform = 'translateX(-7px)';
+      setTimeout(function(){ el.style.transform='translateX(7px)'; }, 80);
+      setTimeout(function(){ el.style.transform='translateX(-5px)'; }, 160);
+      setTimeout(function(){ el.style.transform='translateX(0)'; el.style.transition=''; }, 240);
+    }
+    return;
+  }
+  openDeliveryModal();
+}
+
+function updateDeliveryLock() {
+  var el = document.querySelector('.delivery-day-trust');
+  if (!el) return;
+  if (cartTotal === 0) {
+    el.classList.add('delivery-locked');
+  } else {
+    el.classList.remove('delivery-locked');
+  }
+}
+
+function openDeliveryModal() {
+  buildDaysGrid();
+  selDay = null; selTime = null;
+  document.querySelectorAll('.time-pill').forEach(function(p){ p.classList.remove('selected'); });
+  document.getElementById('confirmDelivery').disabled = true;
+  document.getElementById('deliveryModal').classList.add('open');
+}
+function closeDeliveryModal() { document.getElementById('deliveryModal').classList.remove('open'); }
+document.getElementById('deliveryModal').addEventListener('click', function(e){ if (e.target === this) closeDeliveryModal(); });
+
+function buildDaysGrid() {
+  var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var today = new Date();
+  var html = '';
+  for (var i = 0; i < 8; i++) {
+    var d = new Date(today);
+    d.setDate(today.getDate() + i);
+    html += '<div class="day-pill'+(i===0?' day-today':'')+'" onclick="selectDay(this,\''+days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]+'\')">'
+      +'<div class="day-name">'+days[d.getDay()]+'</div>'
+      +'<div class="day-date">'+d.getDate()+' '+months[d.getMonth()]+'</div>'
+      +'<div class="day-slots">'+(i===0?'Fast dispatch':'4 slots left')+'</div>'
+      +'</div>';
+  }
+  document.getElementById('daysGrid').innerHTML = html;
+}
+
+function selectDay(pill, label) {
+  document.querySelectorAll('.day-pill').forEach(function(p){ p.classList.remove('selected'); });
+  pill.classList.add('selected'); selDay = label; checkReady();
+}
+function selectTime(pill) {
+  document.querySelectorAll('.time-pill').forEach(function(p){ p.classList.remove('selected'); });
+  pill.classList.add('selected'); selTime = pill.textContent.trim(); checkReady();
+}
+function checkReady() { document.getElementById('confirmDelivery').disabled = !(selDay && selTime); }
+function confirmDelivery() {
+  closeDeliveryModal();
+  document.getElementById('deliverySubLabel').textContent = selDay + ' · ' + selTime + ' ✓';
+  showToast('📅', 'Delivery Scheduled!', selDay + ' · ' + selTime);
+}
+// ============================================================
+// FILTER BY BRAND (from logo strip click)
+// ============================================================
+function filterByBrand(brand) {
+  document.querySelectorAll('.filter-sidebar input').forEach(function(i){ i.checked = false; });
+  document.getElementById('priceMin').value = '';
+  document.getElementById('priceMax').value = '';
+  document.getElementById('sortSelect').value = 'default';
+  var el = document.querySelector('input[name="brand"][value="'+brand+'"]');
+  if (el) { el.checked = true; }
+  applyFilters();
+  setTimeout(function(){ document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+}
+// ============================================================
+// SCROLL TOP
+// ============================================================
+window.addEventListener('scroll', function(){
+  var btn = document.getElementById('scrollTop');
+  window.scrollY > 400 ? btn.classList.add('show') : btn.classList.remove('show');
+});
+// ============================================================
+// HERO IMAGE SLIDESHOW
+// ============================================================
+(function startHeroSlideshow() {
+  var imgs = document.querySelectorAll('.hero-img-wrap .hero-img');
+  var cur = 0;
+  setInterval(function() {
+    imgs[cur].classList.remove('active');
+    cur = (cur + 1) % imgs.length;
+    imgs[cur].classList.add('active');
+  }, 4000);
+})();
+// ============================================================
+// INIT — runs immediately, no DOMContentLoaded needed
+// (script is at end of body so DOM is already available)
+// ============================================================
+(function init() {
+  var allCb = document.querySelector('input[name="category"][value="all"]');
+  if (allCb) allCb.checked = true;
+  updateBrandFilter('all');
+  applyFilters();
+  updateDeliveryLock();
+})();
+</script>
+</body>
+</html>
