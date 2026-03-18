@@ -131,7 +131,7 @@
     .table-head,.order-row{grid-template-columns:100px 1fr 100px 80px;}
   }
 </style>
-<script src="product-data.js"></script>        
+<script src="product-data.js"></script>
 </head>
 <body>
 
@@ -622,8 +622,7 @@ window.uploadAllProducts = async function() {
     log.scrollTop = log.scrollHeight;
   }
 
-  var prods = typeof products !== 'undefined' ? products : [];
-  addLog('Found ' + prods.length + ' products...', '#333');
+var prods = typeof window.products !== 'undefined' ? window.products : (typeof products !== 'undefined' ? products : []);  addLog('Found ' + prods.length + ' products...', '#333');
 
   var success = 0;
   var errors = 0;
