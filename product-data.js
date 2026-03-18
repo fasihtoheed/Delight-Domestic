@@ -1,4 +1,4 @@
-var products = [
+window.products = [
   // KITCHEN
   {id:1,  category:"Kitchen",          brand:"Super Kinza",  name:"Double Burner Gas Cabinet Stove",         desc:"Stainless steel top, auto-ignition, cast iron grates, easy-clean surface.",        price:"Rs. 8,500",   oldPrice:"Rs. 11,000",  discount:"23% OFF", badge:"New",  warranty:"",  cod:true,  rating:4.8, emoji:"🍳", stock:10,
    specs:{"Burners":"2","Top Material":"Stainless Steel","Ignition":"Auto Ignition","Grates":"Cast Iron","Fuel Type":"Gas","Easy Clean":"Yes"}},
@@ -244,5 +244,4 @@ var products = [
   {id:80, category:"House Essentials", brand:"Philips",      name:"Mosquito Killer Lamp UV",          desc:"UV LED attraction, no chemicals, silent operation, 20sqm coverage.",           price:"Rs. 3,500",   oldPrice:"Rs. 4,500",   discount:"22% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🔆", stock:20,
    specs:{"Type":"UV LED Trap","Chemicals":"None","Operation":"Silent","Coverage":"20 Sq Metres"}}
 ];
-
-var FEATURED_IDS = [2, 12, 21, 31, 46, 51, 62, 74];
+window.FEATURED_IDS = [2, 12, 21, 31, 46, 51, 62, 74];
