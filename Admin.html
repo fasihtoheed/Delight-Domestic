@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Delight Domestics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f4f6fb; --bg-white:#fff; --action:#cc0000; --action-hover:#aa0000;
+    --text-dark:#1a1a1a; --text-body:#444; --text-muted:#888;
+    --border:#e8d8d8; --green:#00a651;
+    --shadow-sm:0 2px 12px rgba(0,0,0,.08);
+    --shadow-md:0 8px 32px rgba(0,0,0,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text-dark);}
+
+  /* LOGIN SCREEN */
+  .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a1a 0%,#2d0000 60%,#cc0000 100%);}
+  .login-card{background:white;border-radius:16px;padding:48px 40px;width:400px;max-width:92vw;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,.4);}
+  .login-logo{font-size:1.4rem;font-weight:900;margin-bottom:8px;}
+  .login-logo span{color:var(--action);}
+  .login-sub{font-size:.85rem;color:var(--text-muted);margin-bottom:32px;font-weight:600;}
+  .login-title{font-size:1.1rem;font-weight:900;color:var(--text-dark);margin-bottom:24px;}
+  .btn-google-login{width:100%;background:white;border:2px solid var(--border);border-radius:10px;padding:14px 20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:all .2s;color:var(--text-dark);}
+  .btn-google-login:hover{border-color:var(--action);box-shadow:0 4px 18px rgba(204,0,0,.15);}
+  .google-icon{width:22px;height:22px;}
+  .login-note{font-size:.72rem;color:var(--text-muted);margin-top:20px;font-weight:600;}
+  .login-error{background:#fff0f0;border:1px solid #ffcccc;color:var(--action);font-size:.78rem;font-weight:700;padding:10px 14px;border-radius:8px;margin-top:16px;display:none;}
+
+  /* ADMIN LAYOUT */
+  .admin-wrap{display:none;min-height:100vh;}
+  .admin-sidebar{width:240px;background:#1a1a1a;position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:100;}
+  .sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .sidebar-logo-text{font-size:1rem;font-weight:900;color:white;}
+  .sidebar-logo-text span{color:#ffcccc;}
+  .sidebar-logo-sub{font-size:.68rem;color:rgba(255,255,255,.4);font-weight:600;margin-top:2px;}
+  .sidebar-nav{flex:1;padding:16px 0;}
+  .sidebar-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.6);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;border-left:3px solid transparent;}
+  .sidebar-item:hover{background:rgba(255,255,255,.08);color:white;}
+  .sidebar-item.active{background:rgba(204,0,0,.2);color:white;border-left-color:var(--action);}
+  .sidebar-item-icon{font-size:1rem;width:20px;text-align:center;}
+  .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1);}
+  .admin-user-info{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .admin-avatar{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.2);}
+  .admin-name{font-size:.75rem;font-weight:800;color:white;}
+  .admin-email{font-size:.62rem;color:rgba(255,255,255,.4);}
+  .btn-logout{width:100%;background:rgba(204,0,0,.3);color:white;border:none;padding:9px;border-radius:6px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;transition:background .2s;}
+  .btn-logout:hover{background:var(--action);}
+
+  /* MAIN CONTENT */
+  .admin-main{margin-left:240px;padding:28px;min-height:100vh;}
+  .admin-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+  .admin-topbar h1{font-size:1.3rem;font-weight:900;color:var(--text-dark);}
+  .admin-topbar-sub{font-size:.78rem;color:var(--text-muted);font-weight:600;margin-top:2px;}
+
+  /* STATS */
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+  .stat-card{background:white;border:1.5px solid var(--border);border-radius:12px;padding:20px;border-top:3px solid var(--action);}
+  .stat-icon{font-size:1.5rem;margin-bottom:10px;}
+  .stat-value{font-size:1.6rem;font-weight:900;color:var(--text-dark);}
+  .stat-label{font-size:.72rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+
+  /* TABS/SECTIONS */
+  .section{display:none;}
+  .section.active{display:block;}
+  .section-title{font-size:1rem;font-weight:900;color:var(--text-dark);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .section-title::before{content:'';display:inline-block;width:4px;height:18px;background:var(--action);border-radius:3px;}
+
+  /* ORDERS TABLE */
+  .table-wrap{background:white;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;}
+  .table-head{display:grid;grid-template-columns:120px 1fr 120px 100px 100px 80px;gap:0;background:#1a1a1a;padding:12px 16px;font-size:.72rem;font-weight:800;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em;}
+  .order-row{display:grid;grid-template-columns:120px 1fr 120px 100px 100px 80px;gap:0;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s;}
+  .order-row:last-child{border-bottom:none;}
+  .order-row:hover{background:#fafafa;}
+  .order-cell{font-size:.78rem;color:var(--text-body);font-weight:600;padding-right:8px;}
+  .order-num{font-weight:900;color:var(--action);}
+  .order-status{display:inline-block;padding:3px 8px;border-radius:20px;font-size:.65rem;font-weight:800;background:#e8f5e9;color:var(--green);}
+  .order-status.pending{background:#fff8e1;color:#f57c00;}
+  .btn-view-order{background:none;border:1.5px solid var(--border);border-radius:5px;padding:5px 10px;font-family:'Nunito',sans-serif;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text-body);}
+  .btn-view-order:hover{border-color:var(--action);color:var(--action);}
+
+  /* ORDER DETAIL MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:900;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+  .modal-overlay.open{opacity:1;pointer-events:all;}
+  .modal-box{background:white;border-radius:14px;padding:28px;width:560px;max-width:94vw;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);border-top:4px solid var(--action);}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+  .modal-head h3{font-size:1rem;font-weight:900;}
+  .modal-close{width:30px;height:30px;border:none;background:var(--bg);border-radius:50%;cursor:pointer;font-size:1rem;color:var(--text-muted);}
+  .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.83rem;}
+  .detail-row:last-child{border-bottom:none;}
+  .detail-label{color:var(--text-muted);font-weight:600;}
+  .detail-value{font-weight:800;color:var(--text-dark);text-align:right;max-width:60%;}
+
+  /* PRODUCTS SECTION */
+  .products-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+  .product-admin-card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:18px;transition:box-shadow .2s;}
+  .product-admin-card:hover{box-shadow:var(--shadow-md);}
+  .pac-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .pac-emoji{font-size:2rem;}
+  .pac-name{font-size:.85rem;font-weight:800;color:var(--text-dark);line-height:1.3;}
+  .pac-brand{font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--action);letter-spacing:.08em;}
+  .pac-field{margin-bottom:10px;}
+  .pac-field label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);display:block;margin-bottom:4px;}
+  .pac-input{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:8px 10px;font-family:'Nunito',sans-serif;font-size:.82rem;color:var(--text-dark);outline:none;transition:border-color .2s;}
+  .pac-input:focus{border-color:var(--action);}
+  .btn-save-product{width:100%;background:var(--action);color:white;border:none;padding:9px;border-radius:6px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;transition:background .2s;margin-top:8px;}
+  .btn-save-product:hover{background:var(--action-hover);}
+  .btn-save-product.saved{background:var(--green);}
+
+  /* STOCK BADGES */
+  .stock-badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.65rem;font-weight:800;}
+  .stock-in{background:#e8f5e9;color:var(--green);}
+  .stock-low{background:#fff8e1;color:#f57c00;}
+  .stock-out{background:#fff0f0;color:var(--action);}
+
+  /* SEARCH & FILTER BAR */
+  .admin-bar{display:flex;gap:12px;margin-bottom:16px;align-items:center;}
+  .admin-search{flex:1;border:1.5px solid var(--border);border-radius:7px;padding:9px 14px;font-family:'Nunito',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s;}
+  .admin-search:focus{border-color:var(--action);}
+  .admin-filter-select{border:1.5px solid var(--border);border-radius:7px;padding:9px 14px;font-family:'Nunito',sans-serif;font-size:.82rem;outline:none;background:white;cursor:pointer;}
+
+  /* LOADING */
+  .loading-spinner{text-align:center;padding:48px;color:var(--text-muted);font-size:.9rem;font-weight:700;}
+
+  @media(max-width:900px){
+    .admin-sidebar{width:200px;}
+    .admin-main{margin-left:200px;}
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
+    .table-head,.order-row{grid-template-columns:100px 1fr 100px 80px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">Delight<span> Domestics</span></div>
+    <div class="login-sub">Admin Dashboard</div>
+    <div class="login-title">Sign in to continue</div>
+    <button class="btn-google-login" onclick="loginWithGoogle()">
+      <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Sign in with Google
+    </button>
+    <div class="login-error" id="loginError">Access denied. Only the admin account can log in.</div>
+    <div class="login-note">Only the store owner can access this dashboard.</div>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div class="admin-wrap" id="adminWrap">
+
+  <!-- SIDEBAR -->
+  <div class="admin-sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-text">Delight<span> Domestics</span></div>
+      <div class="sidebar-logo-sub">Admin Dashboard</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-item active" onclick="showSection('dashboard')">
+        <span class="sidebar-item-icon">📊</span> Dashboard
+      </div>
+      <div class="sidebar-item" onclick="showSection('orders')">
+        <span class="sidebar-item-icon">📦</span> Orders
+      </div>
+      <div class="sidebar-item" onclick="showSection('products')">
+        <span class="sidebar-item-icon">🏷️</span> Products & Prices
+      </div>
+      <div class="sidebar-item" onclick="showSection('stock')">
+        <span class="sidebar-item-icon">📋</span> Stock
+      </div>
+      <div class="sidebar-item" onclick="window.open('index.html','_blank')">
+        <span class="sidebar-item-icon">🌐</span> View Website
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="admin-user-info">
+        <img class="admin-avatar" id="adminAvatar" src="" alt="">
+        <div>
+          <div class="admin-name" id="adminName">Admin</div>
+          <div class="admin-email" id="adminEmail"></div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logoutAdmin()">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="admin-main">
+
+    <!-- DASHBOARD -->
+    <div class="section active" id="sec-dashboard">
+      <div class="admin-topbar">
+        <div>
+          <h1>Dashboard</h1>
+          <div class="admin-topbar-sub" id="dashDate"></div>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-value" id="statOrders">0</div>
+          <div class="stat-label">Total Orders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-value" id="statRevenue">Rs. 0</div>
+          <div class="stat-label">Total Revenue</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🛍️</div>
+          <div class="stat-value" id="statProducts">0</div>
+          <div class="stat-label">Total Products</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-value" id="statToday">0</div>
+          <div class="stat-label">Orders Today</div>
+        </div>
+      </div>
+      <div class="section-title">Recent Orders</div>
+      <div id="recentOrdersList" class="loading-spinner">Loading orders...</div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="section" id="sec-orders">
+      <div class="admin-topbar">
+        <div><h1>All Orders</h1></div>
+      </div>
+      <div class="admin-bar">
+        <input class="admin-search" type="text" placeholder="Search by order number, name or phone..." oninput="filterOrders(this.value)">
+        <select class="admin-filter-select" onchange="filterOrdersByStatus(this.value)">
+          <option value="all">All Orders</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <div class="table-head">
+          <div>Order #</div>
+          <div>Customer</div>
+          <div>Payment</div>
+          <div>Total</div>
+          <div>Date</div>
+          <div>Action</div>
+        </div>
+        <div id="ordersTableBody" class="loading-spinner">Loading orders...</div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS & PRICES -->
+    <div class="section" id="sec-products">
+      <div class="admin-topbar">
+        <div><h1>Products & Prices</h1><div class="admin-topbar-sub">Edit prices and product details</div></div>
+      </div>
+      <div class="admin-bar">
+        <input class="admin-search" type="text" placeholder="Search products..." oninput="filterProducts(this.value)">
+        <select class="admin-filter-select" onchange="filterProductsByCategory(this.value)">
+          <option value="all">All Categories</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="Summer Mix">Summer Mix</option>
+          <option value="Washing">Washing</option>
+          <option value="Audio">Audio & TV</option>
+          <option value="Winter Mix">Winter Mix</option>
+          <option value="Fans">Fans</option>
+          <option value="Furniture">Furniture</option>
+          <option value="House Essentials">House Essentials</option>
+        </select>
+      </div>
+      <div class="products-admin-grid" id="productsAdminGrid">
+        <div class="loading-spinner">Loading products...</div>
+      </div>
+    </div>
+
+    <!-- STOCK -->
+    <div class="section" id="sec-stock">
+      <div class="admin-topbar">
+        <div><h1>Stock Management</h1><div class="admin-topbar-sub">Update stock quantities</div></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-head" style="grid-template-columns:60px 1fr 120px 120px 100px">
+          <div>ID</div><div>Product</div><div>Category</div><div>Stock</div><div>Action</div>
+        </div>
+        <div id="stockTableBody" class="loading-spinner">Loading stock...</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalOrderTitle">Order Details</h3>
+      <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    </div>
+    <div id="modalOrderBody"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBwvJO0xnSZsZrgS9HH8WvPRnHGfdxssHY",
+  authDomain: "delight-domestics.firebaseapp.com",
+  projectId: "delight-domestics",
+  storageBucket: "delight-domestics.firebasestorage.app",
+  messagingSenderId: "173273036262",
+  appId: "1:173273036262:web:1483a4a86783cc82279227"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+// ADMIN EMAIL — change this to your Gmail
+const ADMIN_EMAIL = "fasihtoheed918@gmail.com";
+
+var allOrders = [];
+var allProducts = [];
+var currentUser = null;
+
+// ============================================================
+// AUTH
+// ============================================================
+window.loginWithGoogle = async function() {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    if (user.email !== ADMIN_EMAIL) {
+      await signOut(auth);
+      document.getElementById('loginError').style.display = 'block';
+      return;
+    }
+  } catch(e) {
+    console.error(e);
+  }
+};
+
+window.logoutAdmin = async function() {
+  await signOut(auth);
+};
+
+onAuthStateChanged(auth, function(user) {
+  if (user && user.email === ADMIN_EMAIL) {
+    currentUser = user;
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminWrap').style.display = 'flex';
+    document.getElementById('adminName').textContent = user.displayName || 'Admin';
+    document.getElementById('adminEmail').textContent = user.email;
+    document.getElementById('adminAvatar').src = user.photoURL || '';
+    document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-PK', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    loadAllData();
+  } else {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminWrap').style.display = 'none';
+  }
+});
+
+// ============================================================
+// LOAD DATA
+// ============================================================
+async function loadAllData() {
+  await Promise.all([loadOrders(), loadProducts()]);
+  updateStats();
+  renderDashboard();
+}
+
+async function loadOrders() {
+  try {
+    const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    allOrders = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderOrdersTable(allOrders);
+  } catch(e) {
+    // If no orders yet
+    allOrders = [];
+    document.getElementById('ordersTableBody').innerHTML = '<div style="padding:32px;text-align:center;color:#888;font-size:.85rem;font-weight:700;">No orders yet.</div>';
+  }
+}
+
+async function loadProducts() {
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    if (snap.empty) {
+      // Load from products-data.js via script tag
+      allProducts = typeof product !== 'undefined' ? product : [];
+    } else {
+      allProducts = snap.docs.map(d => ({firestoreId: d.id, ...d.data()}));
+    }
+    renderProductsAdmin(allProducts);
+    renderStockTable(allProducts);
+  } catch(e) {
+    allProducts = typeof product !== 'undefined' ? product : [];
+    renderProductsAdmin(allProducts);
+    renderStockTable(allProducts);
+  }
+}
+
+function updateStats() {
+  document.getElementById('statOrders').textContent = allOrders.length;
+  var revenue = allOrders.reduce(function(s,o){ return s + (o.total||0); }, 0);
+  document.getElementById('statRevenue').textContent = 'Rs. ' + revenue.toLocaleString();
+  document.getElementById('statProducts').textContent = allProducts.length;
+  var today = new Date().toDateString();
+  var todayOrders = allOrders.filter(function(o){
+    if (!o.createdAt) return false;
+    var d = o.createdAt.toDate ? o.createdAt.toDate() : new Date(o.createdAt);
+    return d.toDateString() === today;
+  }).length;
+  document.getElementById('statToday').textContent = todayOrders;
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard() {
+  var recent = allOrders.slice(0, 5);
+  if (!recent.length) {
+    document.getElementById('recentOrdersList').innerHTML = '<div style="padding:32px;text-align:center;color:#888;font-size:.85rem;font-weight:700;">No orders yet.</div>';
+    return;
+  }
+  var html = '<div class="table-wrap"><div class="table-head" style="grid-template-columns:120px 1fr 120px 100px 100px 80px"><div>Order #</div><div>Customer</div><div>Payment</div><div>Total</div><div>Date</div><div>Action</div></div>';
+  recent.forEach(function(o) {
+    html += renderOrderRow(o);
+  });
+  html += '</div>';
+  document.getElementById('recentOrdersList').innerHTML = html;
+}
+
+// ============================================================
+// ORDERS
+// ============================================================
+function renderOrdersTable(orders) {
+  if (!orders.length) {
+    document.getElementById('ordersTableBody').innerHTML = '<div style="padding:32px;text-align:center;color:#888;font-size:.85rem;font-weight:700;">No orders found.</div>';
+    return;
+  }
+  document.getElementById('ordersTableBody').innerHTML = orders.map(renderOrderRow).join('');
+}
+
+function renderOrderRow(o) {
+  var date = '';
+  if (o.createdAt) {
+    var d = o.createdAt.toDate ? o.createdAt.toDate() : new Date(o.createdAt);
+    date = d.toLocaleDateString('en-PK');
+  }
+  return '<div class="order-row">'
+    +'<div class="order-cell order-num">'+o.orderNumber+'</div>'
+    +'<div class="order-cell"><div style="font-weight:800;font-size:.8rem">'+o.name+'</div><div style="font-size:.7rem;color:#888">'+o.phone+'</div></div>'
+    +'<div class="order-cell">'+o.payment+'</div>'
+    +'<div class="order-cell" style="font-weight:900">Rs. '+(o.total||0).toLocaleString()+'</div>'
+    +'<div class="order-cell">'+date+'</div>'
+    +'<div class="order-cell"><button class="btn-view-order" onclick="openOrderModal(\''+o.id+'\')">View</button></div>'
+    +'</div>';
+}
+
+window.filterOrders = function(q) {
+  var filtered = allOrders.filter(function(o){
+    return (o.orderNumber+o.name+o.phone).toLowerCase().indexOf(q.toLowerCase()) !== -1;
+  });
+  renderOrdersTable(filtered);
+};
+
+window.filterOrdersByStatus = function(status) {
+  if (status === 'all') { renderOrdersTable(allOrders); return; }
+  renderOrdersTable(allOrders.filter(function(o){ return (o.status||'pending') === status; }));
+};
+
+window.openOrderModal = function(id) {
+  var o = allOrders.find(function(x){ return x.id === id; });
+  if (!o) return;
+  document.getElementById('modalOrderTitle').textContent = 'Order #' + o.orderNumber;
+  var itemsHtml = (o.items||[]).map(function(item){
+    return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:.8rem"><span>'+item.name+' × '+item.qty+'</span><span style="font-weight:800">'+item.price+'</span></div>';
+  }).join('');
+  document.getElementById('modalOrderBody').innerHTML =
+    '<div class="detail-row"><span class="detail-label">Order Number</span><span class="detail-value" style="color:#cc0000;font-size:1.1rem">'+o.orderNumber+'</span></div>'
+    +'<div class="detail-row"><span class="detail-label">Customer Name</span><span class="detail-value">'+o.name+'</span></div>'
+    +'<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">'+o.phone+'</span></div>'
+    +'<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">'+o.email+'</span></div>'
+    +'<div class="detail-row"><span class="detail-label">Address</span><span class="detail-value">'+o.address+'</span></div>'
+    +'<div class="detail-row"><span class="detail-label">Payment</span><span class="detail-value">'+o.payment+'</span></div>'
+    +'<div class="detail-row"><span class="detail-label">Total</span><span class="detail-value" style="font-size:1.1rem">Rs. '+(o.total||0).toLocaleString()+'</span></div>'
+    +(o.notes ? '<div class="detail-row"><span class="detail-label">Notes</span><span class="detail-value">'+o.notes+'</span></div>' : '')
+    +'<div style="margin-top:16px;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:8px;">Order Items</div>'
+    + itemsHtml;
+  document.getElementById('orderModal').classList.add('open');
+};
+
+window.closeOrderModal = function() {
+  document.getElementById('orderModal').classList.remove('open');
+};
+
+document.getElementById('orderModal').addEventListener('click', function(e){ if(e.target===this) window.closeOrderModal(); });
+
+// ============================================================
+// PRODUCTS ADMIN
+// ============================================================
+function renderProductsAdmin(prods) {
+  if (!prods.length) { document.getElementById('productsAdminGrid').innerHTML = '<div class="loading-spinner">No products found.</div>'; return; }
+  document.getElementById('productsAdminGrid').innerHTML = prods.map(function(p, i) {
+    return '<div class="product-admin-card">'
+      +'<div class="pac-header"><div class="pac-emoji">'+p.emoji+'</div><div><div class="pac-name">'+p.name+'</div><div class="pac-brand">'+p.brand+'</div></div></div>'
+      +'<div class="pac-field"><label>Price (Rs.)</label><input class="pac-input" id="price_'+p.id+'" value="'+p.price+'" placeholder="Rs. 0"></div>'
+      +'<div class="pac-field"><label>Old Price (Rs.)</label><input class="pac-input" id="oldprice_'+p.id+'" value="'+(p.oldPrice||'')+'" placeholder="Leave empty if no discount"></div>'
+      +'<div class="pac-field"><label>Discount Label</label><input class="pac-input" id="discount_'+p.id+'" value="'+(p.discount||'')+'" placeholder="e.g. 20% OFF"></div>'
+      +'<div class="pac-field"><label>Badge</label>'
+      +'<select class="pac-input" id="badge_'+p.id+'"><option value="">None</option><option value="New"'+(p.badge==='New'?' selected':'')+'>New</option><option value="Sale"'+(p.badge==='Sale'?' selected':'')+'>Sale</option><option value="Hot"'+(p.badge==='Hot'?' selected':'')+'>Hot</option></select></div>'
+      +'<button class="btn-save-product" id="savebtn_'+p.id+'" onclick="saveProduct('+p.id+')">💾 Save Changes</button>'
+      +'</div>';
+  }).join('');
+}
+
+window.saveProduct = async function(id) {
+  var p = allProducts.find(function(x){ return x.id === id; });
+  if (!p) return;
+  var newPrice = document.getElementById('price_'+id).value;
+  var newOldPrice = document.getElementById('oldprice_'+id).value;
+  var newDiscount = document.getElementById('discount_'+id).value;
+  var newBadge = document.getElementById('badge_'+id).value;
+  var btn = document.getElementById('savebtn_'+id);
+  btn.textContent = 'Saving...';
+  try {
+    await setDoc(doc(db, 'products', String(id)), {
+      ...p, price: newPrice, oldPrice: newOldPrice, discount: newDiscount, badge: newBadge, updatedAt: new Date().toISOString()
+    });
+    p.price = newPrice; p.oldPrice = newOldPrice; p.discount = newDiscount; p.badge = newBadge;
+    btn.textContent = '✓ Saved!'; btn.classList.add('saved');
+    setTimeout(function(){ btn.textContent = '💾 Save Changes'; btn.classList.remove('saved'); }, 2000);
+  } catch(e) {
+    btn.textContent = '❌ Error — try again';
+    setTimeout(function(){ btn.textContent = '💾 Save Changes'; }, 2000);
+  }
+};
+
+window.filterProducts = function(q) {
+  var filtered = allProducts.filter(function(p){
+    return (p.name+p.brand+p.category).toLowerCase().indexOf(q.toLowerCase()) !== -1;
+  });
+  renderProductsAdmin(filtered);
+};
+
+window.filterProductsByCategory = function(cat) {
+  if (cat === 'all') { renderProductsAdmin(allProducts); return; }
+  renderProductsAdmin(allProducts.filter(function(p){ return p.category === cat; }));
+};
+
+// ============================================================
+// STOCK
+// ============================================================
+function renderStockTable(prods) {
+  if (!prods.length) { document.getElementById('stockTableBody').innerHTML = '<div class="loading-spinner">No products.</div>'; return; }
+  document.getElementById('stockTableBody').innerHTML = prods.map(function(p) {
+    var stock = p.stock !== undefined ? p.stock : 10;
+    var badgeCls = stock > 5 ? 'stock-in' : stock > 0 ? 'stock-low' : 'stock-out';
+    var badgeText = stock > 5 ? 'In Stock' : stock > 0 ? 'Low Stock' : 'Out of Stock';
+    return '<div class="order-row" style="grid-template-columns:60px 1fr 120px 120px 100px">'
+      +'<div class="order-cell" style="font-weight:800;color:#cc0000">'+p.id+'</div>'
+      +'<div class="order-cell"><div style="font-weight:800;font-size:.8rem">'+p.name+'</div><div style="font-size:.7rem;color:#888">'+p.brand+'</div></div>'
+      +'<div class="order-cell">'+p.category+'</div>'
+      +'<div class="order-cell"><span class="stock-badge '+badgeCls+'">'+badgeText+'</span></div>'
+      +'<div class="order-cell"><input type="number" value="'+stock+'" min="0" id="stock_'+p.id+'" style="width:60px;border:1.5px solid #e8d8d8;border-radius:5px;padding:4px 8px;font-family:Nunito;font-size:.8rem;font-weight:700"> <button onclick="saveStock('+p.id+')" style="background:#cc0000;color:white;border:none;border-radius:5px;padding:5px 10px;font-family:Nunito;font-size:.7rem;font-weight:700;cursor:pointer;margin-left:4px">Save</button></div>'
+      +'</div>';
+  }).join('');
+}
+
+window.saveStock = async function(id) {
+  var stock = parseInt(document.getElementById('stock_'+id).value) || 0;
+  try {
+    await setDoc(doc(db, 'stock', String(id)), {productId: id, stock: stock, updatedAt: new Date().toISOString()});
+    var p = allProducts.find(function(x){ return x.id === id; });
+    if (p) p.stock = stock;
+    renderStockTable(allProducts);
+  } catch(e) { alert('Error saving stock'); }
+};
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+window.showSection = function(name) {
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.sidebar-item').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('sec-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+};
+
+</script>
+<!-- Load products data -->
+<script src="products-data.js"></script>
+</body>
+</html>
