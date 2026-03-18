@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Delight Domestics — Pakistan's Trusted Appliance Store</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="product-data.js"></script>
 <style>
   :root {
     --bg: #f4f6fb; --bg-white: #ffffff; --bg-section: #f8f0f0;
@@ -350,7 +351,16 @@
   @media (max-width: 1024px) { .hero-wrap { grid-template-columns: 1fr; } .hero-side { flex-direction: row; } }
   @media (max-width: 768px) {
     .topbar { padding: 6px 16px; font-size: .72rem; } .topbar-right { display: none; }
-    .nav-inner { padding: 0 16px; gap: 10px; } .whatsapp-nav { display: none; }
+    .nav-inner { padding:0 16px; gap:8px; flex-wrap:wrap; height:auto; padding-top:8px; padding-bottom:0; }
+    .whatsapp-nav { display:none; }
+    .nav-logo { flex:1; order:1; }
+    #mobileSearchBtn { display:flex !important; order:2; }
+    .nav-search { order:10; width:100%; display:none; margin-bottom:6px; }
+    .nav-search.mobile-open { display:flex; }
+    #navLoginBtn { order:11; font-size:.72rem; width:auto; padding:0 10px; height:32px; margin-bottom:8px; }
+    #navUserInfo { order:11; font-size:.72rem; margin-bottom:8px; padding:4px 8px; }
+    .nav-actions { order:11; margin-left:auto; display:flex; justify-content:flex-end; padding-bottom:8px; gap:8px; }
+    .nav-icon-btn { width:34px; height:34px; }
     .nav-search input { font-size: .8rem; padding: 8px 10px; }
     .nav-search button { padding: 8px 12px; font-size: .75rem; }
     .nav-icon-btn { width: 36px; height: 36px; }
@@ -378,7 +388,101 @@
     .footer-inner { grid-template-columns: 1fr; padding: 28px 16px; gap: 24px; }
     .hero-side { flex-direction: column; }
   }  
+  /* CART & WISHLIST SIDEBAR */
+  .side-panel-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:800; }
+  .side-panel-overlay.open { display:block; }
+  .side-panel { position:fixed; top:0; right:-420px; width:400px; max-width:100vw; height:100vh; height:100dvh; background:white; z-index:801; box-shadow:-8px 0 40px rgba(0,0,0,.18); transition:right .35s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; overflow:hidden; }.side-panel.open { right:0; }
+  .side-panel-head { display:flex; align-items:center; justify-content:space-between; padding:20px 20px 16px; border-bottom:2px solid var(--border); background:#1a1a1a; }
+  .side-panel-head h3 { font-size:1rem; font-weight:900; color:white; }
+  .side-panel-close { width:32px; height:32px; background:rgba(255,255,255,.15); border:none; border-radius:50%; cursor:pointer; color:white; font-size:1.1rem; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+  .side-panel-close:hover { background:rgba(255,255,255,.3); }
+  .side-panel-body { flex:1; overflow-y:auto; padding:16px; }
+  .side-panel-empty { text-align:center; padding:60px 20px; color:var(--text-muted); font-size:.9rem; font-weight:700; }
+  .side-panel-empty .empty-icon { font-size:3rem; margin-bottom:12px; }
+  .cart-item { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); align-items:center; }
+  .cart-item:last-child { border-bottom:none; }
+  .cart-item-img { width:64px; height:64px; border:1.5px solid var(--border); border-radius:8px; overflow:hidden; flex-shrink:0; background:#f9f9f9; display:flex; align-items:center; justify-content:center; font-size:1.8rem; }
+  .cart-item-img img { width:100%; height:100%; object-fit:contain; padding:4px; }
+  .cart-item-info { flex:1; min-width:0; }
+  .cart-item-brand { font-size:.6rem; font-weight:800; text-transform:uppercase; color:var(--action); letter-spacing:.08em; }
+  .cart-item-name { font-size:.82rem; font-weight:800; color:var(--text-dark); line-height:1.3; margin:2px 0 6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cart-item-price { font-size:.88rem; font-weight:900; color:var(--text-dark); }
+  .cart-item-controls { display:flex; align-items:center; gap:8px; margin-top:8px; }
+  .qty-btn { width:26px; height:26px; border:1.5px solid var(--border); border-radius:5px; background:white; cursor:pointer; font-size:.9rem; font-weight:800; display:flex; align-items:center; justify-content:center; transition:all .2s; color:var(--text-dark); }
+  .qty-btn:hover { border-color:var(--action); color:var(--action); }
+  .qty-num { font-size:.82rem; font-weight:800; min-width:20px; text-align:center; }
+  .cart-item-remove { margin-left:auto; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:.72rem; font-weight:700; transition:color .2s; }
+  .cart-item-remove:hover { color:#e53935; }
+  .side-panel-footer { padding:16px 20px; border-top:2px solid var(--border); background:var(--bg); }
+  .cart-total-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .cart-total-label { font-size:.85rem; font-weight:800; color:var(--text-dark); }
+  .cart-total-amount { font-size:1.2rem; font-weight:900; color:var(--action); }
+  .btn-checkout-wa { width:100%; background:var(--green); color:white; border:none; padding:14px; border-radius:8px; font-family:'Nunito',sans-serif; font-weight:800; font-size:.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background .2s; }
+  .btn-checkout-wa:hover { background:#008a43; }
+  .wish-item { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); align-items:center; }
+  .wish-item:last-child { border-bottom:none; }
+  .wish-item-img { width:64px; height:64px; border:1.5px solid var(--border); border-radius:8px; overflow:hidden; flex-shrink:0; background:#f9f9f9; display:flex; align-items:center; justify-content:center; font-size:1.8rem; }
+  .wish-item-img img { width:100%; height:100%; object-fit:contain; padding:4px; }
+  .wish-item-info { flex:1; min-width:0; }
+  .wish-item-brand { font-size:.6rem; font-weight:800; text-transform:uppercase; color:var(--action); letter-spacing:.08em; }
+  .wish-item-name { font-size:.82rem; font-weight:800; color:var(--text-dark); line-height:1.3; margin:2px 0 4px; }
+  .wish-item-price { font-size:.88rem; font-weight:900; color:var(--text-dark); }
+  .wish-item-remove { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:.72rem; font-weight:700; margin-top:6px; transition:color .2s; display:block; }
+  .wish-item-remove:hover { color:#e53935; }
+  #userDropdown { display:none; }
+  #userDropdown.show { display:block !important; }
 </style>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBwvJO0xnSZsZrgS9HH8WvPRnHGfdxssHY",
+  authDomain: "delight-domestics.firebaseapp.com",
+  projectId: "delight-domestics",
+  storageBucket: "delight-domestics.firebasestorage.app",
+  messagingSenderId: "173273036262",
+  appId: "1:173273036262:web:1483a4a86783cc82279227"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+window.loginWithGoogle = async function() {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch(e) { console.error(e); }
+};
+
+window.logoutUser = async function() {
+  await signOut(auth);
+};
+
+onAuthStateChanged(auth, function(user) {
+  window.currentUser = user;
+  var loginBtn = document.getElementById('navLoginBtn');
+  var userInfo = document.getElementById('navUserInfo');
+  if (user) {
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (userInfo) {
+      userInfo.style.display = 'flex';
+      document.getElementById('navUserName').textContent = user.displayName ? user.displayName.split(' ')[0] : 'User';
+      document.getElementById('navUserAvatar').src = user.photoURL || '';
+      var adminLink = document.getElementById('adminPanelLink');
+      if (adminLink) {
+        adminLink.style.display = user.email === 'fasihtoheed918@gmail.com' ? 'flex' : 'none';
+      }
+    }
+    localStorage.setItem('dd_user', JSON.stringify({name: user.displayName, email: user.email, photo: user.photoURL}));
+  } else {
+    window.currentUser = null;
+    if (loginBtn) loginBtn.style.display = 'flex';
+    if (userInfo) userInfo.style.display = 'none';
+    localStorage.removeItem('dd_user');
+  }
+});
+</script>
 </head>
 <body>
 
@@ -405,16 +509,38 @@
       </div>
       <span class="logo-text"><span class="d1">Delight</span>&nbsp;<span class="d2">Domestics</span></span>
     </a>
+    
+    <div class="nav-icon-btn" id="mobileSearchBtn" onclick="toggleMobileSearch()" title="Search" style="display:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+
     <div class="nav-search">
       <input type="text" id="navSearch" placeholder="Search fans, AC, kitchen appliances..." onkeyup="applyFilters()" />
       <button onclick="applyFilters()">Search</button>
     </div>
     <div class="nav-actions">
-      <div class="nav-icon-btn" title="Wishlist">
+      
+      <!-- Login button (shown when logged out) -->
+      <div class="nav-icon-btn" id="navLoginBtn" onclick="loginWithGoogle()" title="Sign In" style="gap:6px;width:auto;padding:0 12px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span style="font-size:.75rem;font-weight:800;white-space:nowrap;">Sign In</span>
+      </div>
+      <!-- User info (shown when logged in) -->
+      <div id="navUserInfo" style="display:none;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:6px;padding:4px 12px 4px 6px;cursor:pointer;" onclick="document.getElementById('userDropdown').classList.toggle('show')">
+        <img id="navUserAvatar" src="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+        <span id="navUserName" style="font-size:.78rem;font-weight:800;color:var(--text-dark);">User</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        <!-- Dropdown -->
+        <div id="userDropdown" style="display:none;position:absolute;top:60px;right:32px;background:white;border:1.5px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);min-width:180px;z-index:300;overflow:hidden;">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:.78rem;color:var(--text-muted);font-weight:600;" id="dropdownEmail"></div>
+          <div id="adminPanelLink" style="display:none;padding:10px 16px;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background=''" onclick="window.location.href='admin.html'">⚙️ Admin Panel</div>          <div style="padding:10px 16px;font-size:.82rem;font-weight:700;cursor:pointer;color:#e53935;display:flex;align-items:center;gap:8px;border-top:1px solid var(--border);" onmouseover="this.style.background='#fff0f0'" onmouseout="this.style.background=''" onclick="logoutUser()">🚪 Sign Out</div>
+        </div>
+      </div>
+      <div class="nav-icon-btn" onclick="openWishPanel()" title="Wishlist">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         <span class="wishlist-nav-badge" id="wishlistCount">0</span>
       </div>
-      <div class="nav-icon-btn" onclick="openCart()" title="Cart">
+      <div class="nav-icon-btn" onclick="openCartPanel()" title="Cart">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         <span class="badge-count" id="cartCount">0</span>
       </div>
@@ -926,7 +1052,43 @@
     </div>
   </div>
 </footer>
+<!-- SIDE PANEL OVERLAY -->
+<div class="side-panel-overlay" id="sidePanelOverlay" onclick="closeAllPanels()"></div>
 
+<!-- CART SIDEBAR -->
+<div class="side-panel" id="cartPanel">
+  <div class="side-panel-head">
+    <h3>🛒 My Cart (<span id="cartPanelCount">0</span>)</h3>
+    <button class="side-panel-close" onclick="closeAllPanels()">✕</button>
+  </div>
+  <div class="side-panel-body" id="cartPanelBody">
+    <div class="side-panel-empty"><div class="empty-icon">🛒</div>Your cart is empty</div>
+  </div>
+  <div class="side-panel-footer" id="cartPanelFooter" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-amount" id="cartTotalAmount">Rs. 0</span>
+    </div>
+    <button onclick="proceedToCheckout()" style="width:100%;background:#cc0000;color:white;border:none;padding:13px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;margin-bottom:8px;">
+      🛒 Proceed to Checkout
+    </button>
+    <button class="btn-checkout-wa" onclick="window.location.href='checkout.html'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.118.549 4.107 1.51 5.833L0 24l6.336-1.48A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 0 1-5.002-1.367l-.357-.213-3.757.877.924-3.65-.235-.374A9.82 9.82 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12c0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+      Order via WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- WISHLIST SIDEBAR -->
+<div class="side-panel" id="wishPanel">
+  <div class="side-panel-head">
+    <h3>❤️ Wishlist (<span id="wishPanelCount">0</span>)</h3>
+    <button class="side-panel-close" onclick="closeAllPanels()">✕</button>
+  </div>
+  <div class="side-panel-body" id="wishPanelBody">
+    <div class="side-panel-empty"><div class="empty-icon">❤️</div>Your wishlist is empty</div>
+  </div>
+</div>
 <div class="toast" id="toast">
   <div class="toast-icon" id="toastIcon">🛒</div>
   <div>
@@ -943,98 +1105,8 @@
 // ============================================================
 // PRODUCT DATA
 // ============================================================
-var products = [
-  // KITCHEN
-  {id:1,  category:"Kitchen",          brand:"Super Kinza",  name:"Double Burner Gas Cabinet Stove",         desc:"Stainless steel top, auto-ignition, cast iron grates, easy-clean surface.",        price:"Rs. 8,500",   oldPrice:"Rs. 11,000",  discount:"23% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.8, emoji:"🍳"},
-  {id:2,  category:"Kitchen",          brand:"Dawlance",     name:"Microwave Oven (DW-MD-4-N) 20L(700W)",    desc:"solo modes,Mechanical rotary controls, child lock.", price:"Rs. 24,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.5, emoji:"📦"},
-  {id:3,  category:"Kitchen",          brand:"Kenwood",       name:"Blender 2in1(blender+juicer,grinder) 350W Blender ",         desc:"Stainless steel blades, 2-speed settings,bleder+juicer/grinder, 1.7L jar.",   price:"Rs. 12,900",  oldPrice:"Rs. 16,000",  discount:"19% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🥤"},
-  {id:4,  category:"Kitchen",          brand:"Dawlence",  name:"Dry Iron(1000W)",               desc:"6Heat setting,Auto-trip,Thermostatic Pilot Lamp,Copper wire,Non-Stick Coated Sole Plate",                     price:"Rs. 5,200",   oldPrice:"Rs. 6,500",   discount:"20% OFF", badge:"Sale", warranty:"6 Month", cod:true,  rating:4.4, emoji:"🥘"},
-  {id:5,  category:"Kitchen",          brand:"Philips",      name:"Hand Blender+Egg beater 600W",                  desc:"2-speed settings,Whipper/egg beater, eject button, ergonomic grip.",                  price:"Rs. 6,800",   oldPrice:"",            discount:"",        badge:"New",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🍰"},
-  {id:6,  category:"Kitchen",          brand:"Philips",        name:"Electric Kettle",     desc:"1.5L,Quick boil(60sec),2000W",          price:"Rs. 78,000",  oldPrice:"Rs. 92,000",  discount:"15% OFF", badge:"Hot",  warranty:"5 Year",  cod:false, rating:4.9, emoji:"❄️"},
-  {id:7,  category:"Kitchen",          brand:"Anex",     name:"Electric Kettle",              desc:"2.0L,Quick boil(60sec),2000W,(1Year Warranty)",              price:"Rs. 45,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:false, rating:4.6, emoji:"🧊"},
-  {id:8,  category:"Kitchen",          brand:"Silver Crest",     name:"2 Slice Bread Toaster",    desc:"Multifunctional 2 Slice Bread Toaster with Warming Rack 850 Watt",             price:"Rs. 38,500",  oldPrice:"Rs. 46,000",  discount:"16% OFF", badge:"Sale", warranty:"1 Year",  cod:false, rating:4.8, emoji:"🔥"},
-  {id:9,  category:"Kitchen",          brand:"Kenwood",      name:"Meat and Vegetable Chopper",           desc:"4 Stainless steel blades,Copper Motor,3Litre,700W",                 price:"Rs. 22,000",  oldPrice:"Rs. 27,000",  discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.8, emoji:"🍟"},
-  {id:10, category:"Kitchen",          brand:"RAF", name:"Coffe Machine",             desc:"Multifunctional coffe grinder,300W,Energy efficent,Washable,Stainless steel baldes",          price:"Rs. 4,500",   oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.5, emoji:"☕"},
-  {id:81,  category:"Kitchen",          brand:"Dawlance",     name:"Microwave Oven (DW-MD-15) 20L(700W)",    desc:"solo modes,Mechanical rotary controls, child lock.", price:"Rs. 24,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.5, emoji:"📦"},
-  
-  // SUMMER MIX
-  {id:11, category:"Summer Mix",       brand:"GFC",          name:"Pedestal Fan 18 inch Power Cool",  desc:"High-speed motor, 3-speed control, adjustable height, oscillation.",               price:"Rs. 7,200",   oldPrice:"Rs. 9,000",   discount:"20% OFF", badge:"Hot",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🌀"},
-  {id:12, category:"Summer Mix",       brand:"PEL",          name:"Inverter Split AC 1.5 Ton",        desc:"5-star energy rating, auto-clean, turbo cool, UV sterilization.",                  price:"Rs. 89,000",  oldPrice:"Rs. 110,000", discount:"19% OFF", badge:"Hot",  warranty:"5 Year",  cod:true,  rating:4.9, emoji:"❄️"},
-  {id:13, category:"Summer Mix",       brand:"Super Asia",   name:"Room Air Cooler 40L",              desc:"Honeycomb cooling pads, dual fan speed, large water tank, ice compartment.",       price:"Rs. 16,500",  oldPrice:"Rs. 20,000",  discount:"18% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.5, emoji:"💨"},
-  {id:14, category:"Summer Mix",       brand:"Dawlance",     name:"Chest Freezer 10 CFT",             desc:"Fast freeze, recessed handle, interior light, foam insulated lid.",                price:"Rs. 38,000",  oldPrice:"Rs. 45,000",  discount:"16% OFF", badge:"Sale", warranty:"2 Year",  cod:false, rating:4.6, emoji:"🧊"},
-  {id:15, category:"Summer Mix",       brand:"Orient",       name:"DC Inverter Ceiling Fan 56 inch",  desc:"Brushless DC motor, 70% energy saving, remote control, 5 speeds.",                price:"Rs. 18,500",  oldPrice:"Rs. 22,000",  discount:"16% OFF", badge:"New",  warranty:"3 Year",  cod:true,  rating:4.8, emoji:"🌬️"},
-  {id:16, category:"Summer Mix",       brand:"GFC",          name:"Table Fan 12 inch Breeze",         desc:"Copper wound motor, 3-speed settings, tilt adjustment, stable base.",              price:"Rs. 3,200",   oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:true,  rating:4.5, emoji:"🌀"},
-  {id:17, category:"Summer Mix",       brand:"PEL",          name:"Window AC 1 Ton",                  desc:"Auto restart, sleep mode, dehumidify, fresh air intake, dust filter.",             price:"Rs. 58,000",  oldPrice:"Rs. 68,000",  discount:"15% OFF", badge:"Sale", warranty:"3 Year",  cod:false, rating:4.6, emoji:"❄️"},
-  {id:18, category:"Summer Mix",       brand:"Pak Fans",     name:"Exhaust Fan 12 inch Kitchen",      desc:"Rust-proof body, copper motor, auto shutter, high-speed airflow.",                 price:"Rs. 2,800",   oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:true,  rating:4.4, emoji:"💨"},
-  {id:19, category:"Summer Mix",       brand:"Orient",       name:"Tower Fan 42 inch Slim",           desc:"60 degree oscillation, 12-speed settings, remote control, 8hr timer.",             price:"Rs. 12,500",  oldPrice:"Rs. 15,000",  discount:"17% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🌬️"},
-  {id:20, category:"Summer Mix",       brand:"Super Asia",   name:"Portable Air Cooler 20L",          desc:"Compact design, honeycomb pad, USB charging port, 3-speed.",                      price:"Rs. 9,800",   oldPrice:"Rs. 12,000",  discount:"18% OFF", badge:"Hot",  warranty:"1 Year",  cod:true,  rating:4.4, emoji:"💨"},
-  // WASHING
-  {id:21, category:"Washing",          brand:"Haier",        name:"Front Load Washer 8KG",            desc:"1400 RPM, 15 wash programs, steam care, auto-dosing detergent.",                  price:"Rs. 72,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:false, rating:4.7, emoji:"🫧"},
-  {id:22, category:"Washing",          brand:"PEL",          name:"Top Load Washer 10KG Semi-Auto",   desc:"Stainless steel drum, twin-tub, lint filter, spin dry, soaking function.",        price:"Rs. 28,000",  oldPrice:"Rs. 34,000",  discount:"18% OFF", badge:"Sale", warranty:"2 Year",  cod:true,  rating:4.5, emoji:"🫧"},
-  {id:23, category:"Washing",          brand:"Samsung",      name:"Fully Auto Top Load 8KG",          desc:"Diamond drum, wobble technology, eco tub clean, child lock.",                     price:"Rs. 58,000",  oldPrice:"Rs. 68,000",  discount:"15% OFF", badge:"New",  warranty:"3 Year",  cod:false, rating:4.8, emoji:"🫧"},
-  {id:24, category:"Washing",          brand:"Dawlance",     name:"Washing Machine 6KG Twin Tub",     desc:"Spin and wash tub, powerful motor, gentle wash cycle, timer control.",            price:"Rs. 22,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.4, emoji:"🫧"},
-  {id:25, category:"Washing",          brand:"Haier",        name:"Front Load Washer 6KG Slim",       desc:"Slim 45cm depth, 1000 RPM, quick wash 15 mins, anti-crease.",                    price:"Rs. 55,000",  oldPrice:"Rs. 65,000",  discount:"15% OFF", badge:"Hot",  warranty:"2 Year",  cod:false, rating:4.6, emoji:"🫧"},
-  {id:27, category:"Washing",          brand:"Super Asia",   name:"Dryer Machine 7KG Spin",           desc:"High-speed spin, stainless steel drum, overflow safety, delay timer.",            price:"Rs. 18,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.3, emoji:"💨"},
-  {id:28, category:"Washing",          brand:"Orient",       name:"Fully Auto Front Load 7KG",        desc:"Inverter motor, 16 programs, anti-vibration, child lock, LED display.",           price:"Rs. 64,000",  oldPrice:"Rs. 76,000",  discount:"16% OFF", badge:"Sale", warranty:"3 Year",  cod:false, rating:4.7, emoji:"🫧"},
-  {id:29, category:"Washing",          brand:"Dawlance",     name:"Washing Machine 12KG Top Load",    desc:"Large family load, fuzzy logic control, auto restart, self-clean drum.",          price:"Rs. 42,000",  oldPrice:"Rs. 50,000",  discount:"16% OFF", badge:"Sale", warranty:"2 Year",  cod:true,  rating:4.5, emoji:"🫧"},
-  {id:30, category:"Washing",          brand:"Kenwood",      name:"Portable Washing Machine 3KG",     desc:"Mini washer for small loads, 2 wash modes, drain hose included.",                 price:"Rs. 9,800",   oldPrice:"",            discount:"",        badge:"New",  warranty:"1 Year",  cod:true,  rating:4.2, emoji:"🫧"},
-  // AUDIO & TV
-  {id:31, category:"Audio",            brand:"Samsung",      name:"Crystal 4K UHD Smart TV 55 inch",  desc:"PurColor display, Crystal Processor 4K, built-in Alexa, SmartThings hub, HDR.",  price:"Rs. 145,000", oldPrice:"Rs. 175,000", discount:"17% OFF", badge:"New",  warranty:"1 Year",  cod:false, rating:4.8, emoji:"📺"},
-  {id:32, category:"Audio",            brand:"TCL",          name:"QLED 4K Smart TV 50 inch",         desc:"Quantum dot display, Dolby Vision, Google TV, 60Hz refresh rate.",               price:"Rs. 98,000",  oldPrice:"Rs. 118,000", discount:"17% OFF", badge:"Hot",  warranty:"1 Year",  cod:false, rating:4.7, emoji:"📺"},
-  {id:33, category:"Audio",            brand:"Royal Fans",         name:"Bravia 43 inch Full HD Smart TV",  desc:"X-Reality PRO, Android TV, built-in Chromecast, X-Protection PRO.",             price:"Rs. 82,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:false, rating:4.8, emoji:"📺"},
-  {id:34, category:"Audio",            brand:"JBL",          name:"Soundbar 2.1 with Subwoofer",      desc:"300W power, Dolby Atmos, HDMI ARC, Bluetooth 5.0, wall-mountable.",             price:"Rs. 38,000",  oldPrice:"Rs. 46,000",  discount:"17% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.9, emoji:"🔊"},
-  {id:35, category:"Audio",            brand:"Royal Fans",         name:"Home Theatre System 5.1 1000W",    desc:"1000W output, HDMI, Bluetooth, USB, FM radio, karaoke, Dolby Digital.",         price:"Rs. 52,000",  oldPrice:"Rs. 62,000",  discount:"16% OFF", badge:"Sale", warranty:"1 Year",  cod:false, rating:4.7, emoji:"🔊"},
-  {id:36, category:"Audio",            brand:"Anker",        name:"Portable Bluetooth Speaker",       desc:"360 degree sound, IPX7 waterproof, 24hr battery, BassUp technology.",           price:"Rs. 12,500",  oldPrice:"",            discount:"",        badge:"New",  warranty:"1 Year",  cod:true,  rating:4.8, emoji:"🎵"},
-  {id:37, category:"Audio",            brand:"Samsung",      name:"QLED 8K 65 inch Smart TV",         desc:"8K AI upscaling, Quantum HDR 32X, Neural Quantum Processor 8K.",                price:"Rs. 380,000", oldPrice:"Rs. 430,000", discount:"12% OFF", badge:"Hot",  warranty:"1 Year",  cod:false, rating:4.9, emoji:"📺"},
-  {id:39, category:"Audio",            brand:"Haier",        name:"LED TV 32 inch HD Smart Android",  desc:"Android 9 OS, Google Assistant, HDMI x2, built-in WiFi, voice control.",        price:"Rs. 38,000",  oldPrice:"Rs. 45,000",  discount:"16% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.5, emoji:"📺"},
-  {id:40, category:"Audio",            brand:"Bose",         name:"Wireless Headphones Noise Cancel", desc:"QuietComfort technology, 24hr battery, Aware mode, foldable, Bluetooth 5.1.",   price:"Rs. 45,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.9, emoji:"🎧"},
-  // WINTER MIX
-  {id:41, category:"Winter Mix",       brand:"Cannon",       name:"Electric Water Heater 30L",        desc:"Fast heating, anti-rust tank, safety valve, energy saving thermostat.",          price:"Rs. 14,500",  oldPrice:"Rs. 18,000",  discount:"19% OFF", badge:"Hot",  warranty:"2 Year",  cod:true,  rating:4.7, emoji:"🚿"},
-  {id:42, category:"Winter Mix",       brand:"Nasgas",       name:"Instant Gas Geyser 12L",           desc:"Electronic ignition, overheating protection, copper heat exchanger.",            price:"Rs. 9,800",   oldPrice:"Rs. 12,000",  discount:"18% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.5, emoji:"🔥"},
-  {id:43, category:"Winter Mix",       brand:"Philips",      name:"Oil Filled Radiator 2000W",        desc:"9 fins, 3 heat settings, thermostat, overheat protection, timer.",              price:"Rs. 18,500",  oldPrice:"Rs. 22,000",  discount:"16% OFF", badge:"New",  warranty:"2 Year",  cod:true,  rating:4.6, emoji:"♨️"},
-  {id:44, category:"Winter Mix",       brand:"Osaka",        name:"Quartz Heater 2000W",              desc:"Instant heat, 2 heat settings, safety tip-over switch, cool-touch cabinet.",    price:"Rs. 4,800",   oldPrice:"Rs. 6,000",   discount:"20% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.3, emoji:"🔆"},
-  {id:45, category:"Winter Mix",       brand:"Dawlance",     name:"Chest Freezer 15 CFT Deep Freeze", desc:"R600a eco refrigerant, fast freeze, secure lock, foam insulated lid.",          price:"Rs. 52,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:false, rating:4.6, emoji:"🧊"},
-  {id:46, category:"Winter Mix",       brand:"Panasonic",    name:"Fan Heater 2000W Ceramic",         desc:"PTC ceramic element, 2 heat settings, cool air mode, tip-over protection.",     price:"Rs. 7,500",   oldPrice:"Rs. 9,500",   discount:"21% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.5, emoji:"♨️"},
-  {id:47, category:"Winter Mix",       brand:"Cannon",       name:"Electric Geyser 50L Storage",      desc:"Magnesium anode, pressure relief valve, digital temp display.",                 price:"Rs. 24,000",  oldPrice:"Rs. 29,000",  discount:"17% OFF", badge:"Hot",  warranty:"3 Year",  cod:false, rating:4.8, emoji:"🚿"},
-  {id:48, category:"Winter Mix",       brand:"Nasgas",       name:"Gas Heater Room Double Burner",    desc:"Cast iron burners, oxygen depletion sensor, piezo ignition, wheels.",           price:"Rs. 12,500",  oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.4, emoji:"🔥"},
-  {id:49, category:"Winter Mix",       brand:"Philips",      name:"Electric Blanket Double Bed",      desc:"10 heat settings, machine washable, auto shut-off, dual zone control.",         price:"Rs. 8,900",   oldPrice:"Rs. 11,000",  discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🛏️"},
-  {id:50, category:"Winter Mix",       brand:"Orient",       name:"Halogen Heater 1200W Freestand",   desc:"3 halogen tubes, 3 heat levels, tip-over safety, carry handle.",               price:"Rs. 5,200",   oldPrice:"Rs. 6,500",   discount:"20% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.2, emoji:"💡"},
-  // FANS
-  {id:51, category:"Fans",             brand:"GFC",          name:"Ceiling Fan 56 inch Premium",      desc:"Copper wound motor, 3-speed, high air delivery, anti-rust coating.",            price:"Rs. 6,800",   oldPrice:"Rs. 8,500",   discount:"20% OFF", badge:"Hot",  warranty:"2 Year",  cod:true,  rating:4.8, emoji:"🌀"},
-  {id:52, category:"Fans",             brand:"Pak Fans",     name:"Pedestal Fan 18 inch Super Breeze",desc:"Powerful motor, adjustable height and tilt, 3-speed, oscillation.",            price:"Rs. 7,500",   oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:true,  rating:4.6, emoji:"🌀"},
-  {id:53, category:"Fans",             brand:"Orient",       name:"DC Inverter Ceiling Fan 56 inch",  desc:"70% energy saving, BLDC motor, remote, 5-speed, silent operation.",            price:"Rs. 18,500",  oldPrice:"Rs. 22,000",  discount:"16% OFF", badge:"New",  warranty:"3 Year",  cod:true,  rating:4.9, emoji:"🌬️"},
-  {id:54, category:"Fans",             brand:"GFC",          name:"Bracket Fan 14 inch Wall Mount",   desc:"Space-saving wall mount, 3-speed, oscillating, copper motor.",                  price:"Rs. 4,200",   oldPrice:"Rs. 5,500",   discount:"24% OFF", badge:"Sale", warranty:"2 Year",  cod:true,  rating:4.5, emoji:"🌀"},
-  {id:55, category:"Fans",             brand:"Sunbeam",      name:"Table Fan 12 inch Desk",           desc:"360 degree rotation, quiet operation, 3-speed, compact for desk or bedside.",   price:"Rs. 3,800",   oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.4, emoji:"🌀"},
-  {id:56, category:"Fans",             brand:"Pak Fans",     name:"Exhaust Fan 12 inch Ventilation",  desc:"Rust-proof ABS blades, auto shutter, copper motor, 1450 RPM.",                 price:"Rs. 2,600",   oldPrice:"",            discount:"",        badge:"",     warranty:"2 Year",  cod:true,  rating:4.3, emoji:"💨"},
-  {id:57, category:"Fans",             brand:"GFC",          name:"Ceiling Fan 48 inch Economy",      desc:"Energy-saving design, robust copper motor, 3-speed, rust-free finish.",         price:"Rs. 4,900",   oldPrice:"Rs. 6,200",   discount:"21% OFF", badge:"Sale", warranty:"2 Year",  cod:true,  rating:4.6, emoji:"🌀"},
-  {id:58, category:"Fans",             brand:"Orient",       name:"Tower Fan 44 inch Digital",        desc:"12-speed, sleep mode, 8hr timer, 75 degree oscillation, remote, LED display.",  price:"Rs. 14,500",  oldPrice:"Rs. 17,000",  discount:"15% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🌬️"},
-  {id:59, category:"Fans",             brand:"Crescent",     name:"Decorative Ceiling Fan 56 inch",   desc:"Designer blades, remote control, 3-speed, LED light kit included.",             price:"Rs. 9,800",   oldPrice:"Rs. 12,000",  discount:"18% OFF", badge:"Hot",  warranty:"2 Year",  cod:true,  rating:4.7, emoji:"🌀"},
-  {id:60, category:"Fans",             brand:"Pak Fans",     name:"Exhaust Fan 9 inch Slim",          desc:"Ultra-slim profile, silent motor, auto shutter, ABS blade.",                   price:"Rs. 1,900",   oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.2, emoji:"💨"},
-  // FURNITURE
-  {id:61, category:"Furniture",        brand:"Interwood",    name:"Sofa Set 5-Seater L-Shape",        desc:"Premium fabric upholstery, solid wood frame, high-density foam, removable covers.",price:"Rs. 85,000",  oldPrice:"Rs. 105,000", discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:false, rating:4.8, emoji:"🛋️"},
-  {id:62, category:"Furniture",        brand:"Master",       name:"King Size Bed with Headboard",     desc:"Solid sheesham wood, lacquer finish, slat support, elegant design.",             price:"Rs. 48,000",  oldPrice:"Rs. 60,000",  discount:"20% OFF", badge:"Sale", warranty:"1 Year",  cod:false, rating:4.7, emoji:"🛏️"},
-  {id:63, category:"Furniture",        brand:"Workspace",    name:"Ergonomic Office Chair Mesh",      desc:"Lumbar support, adjustable height and armrests, breathable mesh, 360 swivel.",  price:"Rs. 18,500",  oldPrice:"Rs. 24,000",  discount:"23% OFF", badge:"Hot",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🪑"},
-  {id:64, category:"Furniture",        brand:"Interwood",    name:"Dining Table 6-Seater",            desc:"Solid wood top, metal legs, scratch-resistant finish, easy clean.",             price:"Rs. 35,000",  oldPrice:"Rs. 42,000",  discount:"17% OFF", badge:"New",  warranty:"1 Year",  cod:false, rating:4.7, emoji:"🍽️"},
-  {id:65, category:"Furniture",        brand:"Master",       name:"Wardrobe 3-Door Sliding Mirror",   desc:"Mirrored sliding doors, 3 compartments, hanging rail, shelves.",               price:"Rs. 42,000",  oldPrice:"Rs. 52,000",  discount:"19% OFF", badge:"Sale", warranty:"1 Year",  cod:false, rating:4.5, emoji:"🚪"},
-  {id:66, category:"Furniture",        brand:"Workspace",    name:"Study Desk with Bookshelf",        desc:"L-shaped design, built-in shelving, cable management, sturdy metal frame.",     price:"Rs. 14,500",  oldPrice:"Rs. 18,000",  discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"📚"},
-  {id:67, category:"Furniture",        brand:"Interwood",    name:"Center Table Glass Top",           desc:"Tempered glass top, chrome-finish steel frame, lower shelf.",                  price:"Rs. 12,000",  oldPrice:"",            discount:"",        badge:"",     warranty:"6 Month", cod:true,  rating:4.4, emoji:"🔲"},
-  {id:68, category:"Furniture",        brand:"Master",       name:"Kids Bunk Bed with Ladder",        desc:"Solid wood, safety rails, space-saving, fits standard mattress.",              price:"Rs. 28,000",  oldPrice:"Rs. 35,000",  discount:"20% OFF", badge:"Hot",  warranty:"1 Year",  cod:false, rating:4.8, emoji:"🛏️"},
-  {id:69, category:"Furniture",        brand:"Workspace",    name:"Bookshelf 5-Tier Display Unit",    desc:"Open display design, MDF shelves, metal frame, holds 50kg per shelf.",         price:"Rs. 9,500",   oldPrice:"Rs. 12,000",  discount:"21% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.5, emoji:"📚"},
-  {id:70, category:"Furniture",        brand:"Interwood",    name:"TV Console Cabinet 60 inch",       desc:"Cable management holes, 2 drawers, open shelves, fits TVs up to 65 inch.",     price:"Rs. 22,000",  oldPrice:"Rs. 27,000",  discount:"19% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.6, emoji:"📺"},
-  // HOUSE ESSENTIALS
-  {id:71, category:"House Essentials", brand:"Philips",      name:"LED Bulb Pack of 6 9W",            desc:"Energy-saving LED, 800 lumen, warm white 3000K, 15000hr lifespan, E27 base.",   price:"Rs. 1,200",   oldPrice:"Rs. 1,800",   discount:"33% OFF", badge:"Hot",  warranty:"1 Year",  cod:true,  rating:4.9, emoji:"💡"},
-  {id:72, category:"House Essentials", brand:"3M",           name:"Multipurpose Hooks Damage-Free",   desc:"Holds up to 3kg, no drilling, removes cleanly, waterproof, pack of 10.",        price:"Rs. 950",     oldPrice:"",            discount:"",        badge:"New",  warranty:"",        cod:true,  rating:4.7, emoji:"🪝"},
-  {id:73, category:"House Essentials", brand:"Kenwood",      name:"Vacuum Cleaner 2000W Bagless",     desc:"HEPA filter, 2L dust cup, telescopic handle, 4 attachments, 5m cord.",         price:"Rs. 16,500",  oldPrice:"Rs. 21,000",  discount:"21% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.6, emoji:"🧹"},
-  {id:74, category:"House Essentials", brand:"Milton",       name:"Water Dispenser Hot and Cold",     desc:"Dual tap hot/cold, stainless steel tank, safety valve, child lock hot tap.",    price:"Rs. 14,000",  oldPrice:"Rs. 17,500",  discount:"20% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.5, emoji:"🚰"},
-  {id:75, category:"House Essentials", brand:"Anex",         name:"Steam Iron 2400W Ceramic",         desc:"Ceramic soleplate, variable steam, self-cleaning, anti-drip, 300ml tank.",     price:"Rs. 3,800",   oldPrice:"Rs. 5,000",   discount:"24% OFF", badge:"Sale", warranty:"1 Year",  cod:true,  rating:4.7, emoji:"👔"},
-  {id:76, category:"House Essentials", brand:"Philips",      name:"Air Purifier HEPA 3-Stage",        desc:"True HEPA + carbon + pre-filter, covers 300 sq ft, AQI display, sleep mode.",  price:"Rs. 28,000",  oldPrice:"Rs. 35,000",  discount:"20% OFF", badge:"New",  warranty:"1 Year",  cod:false, rating:4.8, emoji:"🌿"},
-  {id:77, category:"House Essentials", brand:"Anex",         name:"Food Steamer 3-Tier 9L",           desc:"9L capacity, 3 stackable baskets, 60min timer, boil-dry protection, 800W.",    price:"Rs. 5,500",   oldPrice:"",            discount:"",        badge:"",     warranty:"1 Year",  cod:true,  rating:4.5, emoji:"🥦"},
-  {id:78, category:"House Essentials", brand:"Milton",       name:"Stainless Steel Flask 1L",         desc:"Double-wall insulation, hot 24hr/cold 48hr, leak-proof lid, BPA-free.",        price:"Rs. 2,200",   oldPrice:"Rs. 3,000",   discount:"27% OFF", badge:"Hot",  warranty:"6 Month", cod:true,  rating:4.8, emoji:"🫙"},
-  {id:79, category:"House Essentials", brand:"Kenwood",      name:"Spin Mop and Bucket Set 360",      desc:"360 spinning mop, easy-wring pedal bucket, microfibre mop head, 10L bucket.", price:"Rs. 4,200",   oldPrice:"Rs. 5,500",   discount:"24% OFF", badge:"Sale", warranty:"",        cod:true,  rating:4.6, emoji:"🧺"},
-  {id:80, category:"House Essentials", brand:"Philips",      name:"Mosquito Killer Lamp UV",          desc:"UV LED attraction, no chemicals, silent operation, 20sqm coverage.",           price:"Rs. 3,500",   oldPrice:"Rs. 4,500",   discount:"22% OFF", badge:"New",  warranty:"1 Year",  cod:true,  rating:4.7, emoji:"🔆"}
-];
 
-var FEATURED_IDS = [2, 12, 21, 31, 46, 51, 62, 74];
+
 var cartTotal = 0, wishTotal = 0, selDay = null, selTime = null;
 
 function pNum(str) {
@@ -1195,7 +1267,7 @@ function renderCard(p, i) {
     +(p.warranty?'<span class="badge badge-warranty">'+p.warranty+'</span>':'')
     +(p.cod?'<span class="badge badge-cod">COD</span>':'')
     +'</div>'
-    +'<button class="wishlist-card" onclick="toggleWish(this)">'
+    +'<button class="wishlist-card" data-id="'+p.id+'" onclick="event.stopPropagation();toggleWish(this,'+p.id+')">'
     +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e53935" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>'
     +'</button>'
     +'<div class="card-img-wrap"><img src="images/products/'+p.id+'/'+p.id+' (1).jpg" alt="'+p.name+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'" style="width:100%;height:100%;object-fit:contain;padding:8px;"><div class="card-no-img" style="display:none">'+p.emoji+'</div></div>'
@@ -1214,10 +1286,10 @@ function renderCard(p, i) {
     +(p.cod?'<span class="micro-badge cod">Cash on Delivery</span>':'')
     +'</div>'
     +'<div class="card-cta">'
-    +'<button class="btn-add-cart" onclick="addToCart(\''+p.name.replace(/'/g,"\\'")+'\')">'
+    +'<button class="btn-add-cart" onclick="event.stopPropagation();addToCart(\''+p.name.replace(/'/g,"\\'")+'\','+p.id+')">'
     +'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="margin-right:4px"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>'
     +'Add to Cart</button>'
-    +'<button class="btn-whatsapp" onclick="window.open(\'https://wa.me/923008076625?text=Hi! I want to order: '+wa+'\',\'_blank\')">'
+    +'<button class="btn-whatsapp" onclick="event.stopPropagation();window.open(\'https://wa.me/923008076625?text=Hi! I want to order: '+wa+'\',\'_blank\')">'
     +'<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.118.549 4.107 1.51 5.833L0 24l6.336-1.48A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 01-5.002-1.367l-.357-.213-3.757.877.924-3.65-.235-.374A9.82 9.82 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12c0 5.43-4.388 9.818-9.818 9.818z"/></svg>'
     +'</button></div></div></div>';
 }
@@ -1249,26 +1321,159 @@ function filterCat(btn, cat) { goCategory(btn, cat); }
 // ============================================================
 // CART & WISHLIST
 // ============================================================
-function addToCart(name) {
-  cartTotal++;
+var cartItems = []; // {id, name, brand, price, priceNum, emoji, qty}
+var wishItems = []; // {id, name, brand, price, emoji}
+
+function addToCart(name, id) {
+  var p = products.find(function(x){ return x.id === parseInt(id); });
+  if (!p) return;
+  var existing = cartItems.find(function(x){ return x.id === p.id; });
+  if (existing) {
+    existing.qty++;
+  } else {
+    cartItems.push({id:p.id, name:p.name, brand:p.brand, price:p.price, priceNum:pNum(p.price), emoji:p.emoji, qty:1});
+  }
+  cartTotal = cartItems.reduce(function(s,x){ return s+x.qty; }, 0);
   var el = document.getElementById('cartCount');
   el.textContent = cartTotal;
   el.classList.add('show');
-  showToast('🛒', name + ' added!', 'View cart to checkout.');
+  showToast('🛒', p.name + ' added!', 'View cart to checkout.');
   updateDeliveryLock();
+  renderCartPanel();
 }
-function openCart() { addToCart('Cart'); }
 
-function toggleWish(btn) {
+function openCartPanel() {
+  renderCartPanel();
+  document.getElementById('cartPanel').classList.add('open');
+  document.getElementById('sidePanelOverlay').classList.add('open');
+}
+
+function openWishPanel() {
+  renderWishPanel();
+  document.getElementById('wishPanel').classList.add('open');
+  document.getElementById('sidePanelOverlay').classList.add('open');
+}
+
+function closeAllPanels() {
+  document.getElementById('cartPanel').classList.remove('open');
+  document.getElementById('wishPanel').classList.remove('open');
+  document.getElementById('sidePanelOverlay').classList.remove('open');
+}
+
+function renderCartPanel() {
+  localStorage.setItem('dd_cart', JSON.stringify(cartItems));
+  var body = document.getElementById('cartPanelBody');
+  var footer = document.getElementById('cartPanelFooter');
+  document.getElementById('cartPanelCount').textContent = cartTotal;
+  if (!cartItems.length) {
+    body.innerHTML = '<div class="side-panel-empty"><div class="empty-icon">🛒</div>Your cart is empty</div>';
+    footer.style.display = 'none';
+    return;
+  }
+  footer.style.display = '';
+  var total = cartItems.reduce(function(s,x){ return s + x.priceNum * x.qty; }, 0);
+  document.getElementById('cartTotalAmount').textContent = 'Rs. ' + total.toLocaleString();
+  body.innerHTML = cartItems.map(function(item, i) {
+    var imgPath = 'images/products/' + item.id + '/' + item.id + ' (1).jpg';
+    return '<div class="cart-item" onclick="window.location.href=\'product.html?id='+item.id+'\'" style="cursor:pointer">'
+      +'<div class="cart-item-img"><img src="'+imgPath+'" alt="'+item.name+'" onerror="this.parentNode.innerHTML=\''+item.emoji+'\'">'
+      +'</div>'
+      +'<div class="cart-item-info">'
+      +'<div class="cart-item-brand">'+item.brand+'</div>'
+      +'<div class="cart-item-name">'+item.name+'</div>'
+      +'<div class="cart-item-price">'+item.price+'</div>'
+      +'<div class="cart-item-controls">'
+      +'<button class="qty-btn" onclick="changeQty('+i+',-1)">−</button>'
+      +'<span class="qty-num">'+item.qty+'</span>'
+      +'<button class="qty-btn" onclick="changeQty('+i+',1)">+</button>'
+      +'<button class="cart-item-remove" onclick="removeCartItem('+i+')">✕ Remove</button>'
+      +'</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function changeQty(i, delta) {
+  cartItems[i].qty += delta;
+  if (cartItems[i].qty <= 0) cartItems.splice(i, 1);
+  cartTotal = cartItems.reduce(function(s,x){ return s+x.qty; }, 0);
+  var el = document.getElementById('cartCount');
+  el.textContent = cartTotal;
+  cartTotal > 0 ? el.classList.add('show') : el.classList.remove('show');
+  updateDeliveryLock();
+  renderCartPanel();
+}
+
+function removeCartItem(i) {
+  cartItems.splice(i, 1);
+  cartTotal = cartItems.reduce(function(s,x){ return s+x.qty; }, 0);
+  var el = document.getElementById('cartCount');
+  el.textContent = cartTotal;
+  cartTotal > 0 ? el.classList.add('show') : el.classList.remove('show');
+  updateDeliveryLock();
+  renderCartPanel();
+}
+
+function checkoutWhatsApp() {
+  var msg = 'Hi! I want to order:\n' + cartItems.map(function(x){ return '• '+x.name+' x'+x.qty+' ('+x.price+')'; }).join('\n');
+  window.open('https://wa.me/923008076625?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function toggleWish(btn, id) {
+  var p = products.find(function(x){ return x.id === parseInt(id); });
+  if (!p) return;
   var wasLiked = btn.classList.contains('liked');
   btn.classList.toggle('liked');
-  if (!wasLiked) { wishTotal++; showToast('❤️','Added to Wishlist!', wishTotal+' item(s) saved.'); }
-  else { wishTotal = Math.max(0, wishTotal - 1); }
+  if (!wasLiked) {
+    if (!wishItems.find(function(x){ return x.id === p.id; })) {
+      wishItems.push({id:p.id, name:p.name, brand:p.brand, price:p.price, emoji:p.emoji});
+    }
+    wishTotal++;
+    showToast('❤️','Added to Wishlist!', wishTotal+' item(s) saved.');
+  } else {
+    wishItems = wishItems.filter(function(x){ return x.id !== p.id; });
+    wishTotal = Math.max(0, wishTotal - 1);
+  }
   var wc = document.getElementById('wishlistCount');
   wc.textContent = wishTotal;
   wishTotal > 0 ? wc.classList.add('show') : wc.classList.remove('show');
 }
 
+function renderWishPanel() {
+  localStorage.setItem('dd_wish', JSON.stringify(wishItems));
+  var body = document.getElementById('wishPanelBody');
+  document.getElementById('wishPanelCount').textContent = wishTotal;
+  if (!wishItems.length) {
+    body.innerHTML = '<div class="side-panel-empty"><div class="empty-icon">❤️</div>Your wishlist is empty</div>';
+    return;
+  }
+  body.innerHTML = wishItems.map(function(item, i) {
+    var imgPath = 'images/products/' + item.id + '/' + item.id + ' (1).jpg';
+    return '<div class="wish-item" onclick="window.location.href=\'product.html?id='+item.id+'\'" style="cursor:pointer">'
+      +'<div class="wish-item-img"><img src="'+imgPath+'" alt="'+item.name+'" onerror="this.parentNode.innerHTML=\''+item.emoji+'\'">'
+      +'</div>'
+      +'<div class="wish-item-info">'
+      +'<div class="wish-item-brand">'+item.brand+'</div>'
+      +'<div class="wish-item-name">'+item.name+'</div>'
+      +'<div class="wish-item-price">'+item.price+'</div>'
+      +'<button class="wish-item-remove" onclick="removeWishItem('+i+')">✕ Remove</button>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function removeWishItem(i) {
+  var removed = wishItems.splice(i, 1)[0];
+  wishTotal = Math.max(0, wishTotal - 1);
+  var wc = document.getElementById('wishlistCount');
+  wc.textContent = wishTotal;
+  wishTotal > 0 ? wc.classList.add('show') : wc.classList.remove('show');
+  // Also un-like the card if visible
+  document.querySelectorAll('.wishlist-card').forEach(function(btn){
+    if (btn.getAttribute('data-id') == removed.id) btn.classList.remove('liked');
+  });
+  renderWishPanel();
+}
 function showToast(icon, title, sub) {
   document.getElementById('toastIcon').textContent = icon;
   document.getElementById('toastName').textContent = title;
@@ -1381,11 +1586,43 @@ window.addEventListener('scroll', function(){
     imgs[cur].classList.add('active');
   }, 4000);
 })();
+function proceedToCheckout() {
+  if (!window.currentUser) {
+    showToast('👤', 'Please sign in first!', 'Sign in with Google to checkout.');
+    closeAllPanels();
+    setTimeout(function(){ loginWithGoogle(); }, 800);
+    return;
+  }
+  window.location.href = 'checkout.html';
+}
+function toggleMobileSearch() {
+  var search = document.querySelector('.nav-search');
+  search.classList.toggle('mobile-open');
+  if (search.classList.contains('mobile-open')) {
+    document.getElementById('navSearch').focus();
+  }
+}
 // ============================================================
 // INIT — runs immediately, no DOMContentLoaded needed
 // (script is at end of body so DOM is already available)
 // ============================================================
 (function init() {
+  var savedCart = localStorage.getItem('dd_cart');
+  if (savedCart) {
+    cartItems = JSON.parse(savedCart);
+    cartTotal = cartItems.reduce(function(s,x){ return s+x.qty; }, 0);
+    var el = document.getElementById('cartCount');
+    el.textContent = cartTotal;
+    if (cartTotal > 0) el.classList.add('show');
+  }
+  var savedWish = localStorage.getItem('dd_wish');
+  if (savedWish) {
+    wishItems = JSON.parse(savedWish);
+    wishTotal = wishItems.length;
+    var wc = document.getElementById('wishlistCount');
+    wc.textContent = wishTotal;
+    if (wishTotal > 0) wc.classList.add('show');
+  }
   var allCb = document.querySelector('input[name="category"][value="all"]');
   if (allCb) allCb.checked = true;
   updateBrandFilter('all');
