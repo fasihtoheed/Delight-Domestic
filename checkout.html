@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Delight Domestics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="products-data.js"></script>
+<style>
+  :root {
+    --bg:#f4f6fb; --bg-white:#ffffff; --action:#cc0000; --action-hover:#aa0000;
+    --text-dark:#1a1a1a; --text-body:#444; --text-muted:#888;
+    --border:#e8d8d8; --green:#00a651;
+    --shadow-sm:0 2px 12px rgba(0,0,0,.08);
+    --shadow-md:0 8px 32px rgba(0,0,0,.12);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text-dark);font-family:'Nunito',sans-serif;overflow-x:hidden;}
+
+  /* TOPBAR */
+  .topbar{background:#1a1a1a;color:white;padding:8px 40px;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:600;}
+  .topbar-highlight{background:var(--action);padding:3px 10px;border-radius:2px;font-weight:700;}
+
+  /* NAV */
+  nav{background:white;border-bottom:3px solid var(--action);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-sm);}
+  .nav-inner{max-width:1300px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;gap:24px;}
+  .nav-logo{text-decoration:none;display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;}
+  .logo-parallelogram{position:absolute;left:-8px;top:50%;transform:translateY(-50%) skewX(-12deg);width:calc(100% + 16px);height:38px;background:linear-gradient(135deg,#1a1a1a 0%,#cc0000 100%);border-radius:3px;z-index:0;}
+  .logo-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;flex-shrink:0;}
+  .logo-text{font-size:1.15rem;font-weight:900;position:relative;z-index:1;white-space:nowrap;}
+  .logo-text .d1{color:#fff;} .logo-text .d2{color:#ffcccc;}
+  .nav-back{display:flex;align-items:center;gap:8px;color:var(--text-body);font-size:.85rem;font-weight:700;text-decoration:none;background:var(--bg);border:1.5px solid var(--border);padding:8px 16px;border-radius:6px;transition:all .2s;margin-left:auto;}
+  .nav-back:hover{border-color:var(--action);color:var(--action);}
+
+  /* STEPS */
+  .steps-bar{background:white;border-bottom:1px solid var(--border);padding:16px 0;}
+  .steps-inner{max-width:1300px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:0;}
+  .step{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;color:var(--text-muted);}
+  .step.active{color:var(--action);}
+  .step.done{color:var(--green);}
+  .step-num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:900;flex-shrink:0;}
+  .step.active .step-num{border-color:var(--action);background:var(--action);color:white;}
+  .step.done .step-num{border-color:var(--green);background:var(--green);color:white;}
+  .step-line{flex:1;height:2px;background:var(--border);margin:0 12px;}
+  .step-line.done{background:var(--green);}
+
+  /* MAIN LAYOUT */
+  .checkout-wrap{max-width:1300px;margin:28px auto 60px;padding:0 32px;display:grid;grid-template-columns:1fr 400px;gap:28px;align-items:start;}
+
+  /* FORM SECTIONS */
+  .form-section{background:white;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+  .form-section-head{padding:16px 22px;background:#1a1a1a;display:flex;align-items:center;gap:12px;}
+  .form-section-head h3{font-size:.92rem;font-weight:900;color:white;}
+  .form-section-head .step-badge{width:24px;height:24px;border-radius:50%;background:var(--action);color:white;font-size:.7rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .form-body{padding:22px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+  .form-row.full{grid-template-columns:1fr;}
+  .form-group{display:flex;flex-direction:column;gap:6px;}
+  .form-label{font-size:.75rem;font-weight:800;color:var(--text-dark);text-transform:uppercase;letter-spacing:.06em;}
+  .form-input{border:1.5px solid var(--border);border-radius:7px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:.88rem;color:var(--text-dark);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .form-input:focus{border-color:var(--action);box-shadow:0 0 0 3px rgba(204,0,0,.08);}
+  .form-input.error{border-color:#e53935;}
+  .form-error{font-size:.7rem;color:#e53935;font-weight:700;display:none;}
+  .form-error.show{display:block;}
+
+  /* PAYMENT METHODS */
+  .payment-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:0;}
+  .pay-option{border:2px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);}
+  .pay-option:hover{border-color:var(--action);background:#fff0f0;}
+  .pay-option.selected{border-color:var(--action);background:#fff0f0;box-shadow:0 0 0 2px rgba(204,0,0,.15);}
+  .pay-option img{width:60px;height:36px;object-fit:contain;margin-bottom:8px;display:block;margin-left:auto;margin-right:auto;}
+  .pay-option-name{font-size:.75rem;font-weight:800;color:var(--text-dark);}
+  .pay-detail-box{margin-top:14px;background:#f8f8f8;border:1.5px solid var(--border);border-radius:8px;padding:14px 16px;display:none;}
+  .pay-detail-box.show{display:block;}
+  .pay-detail-title{font-size:.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+  .pay-detail-number{font-size:1.1rem;font-weight:900;color:var(--text-dark);letter-spacing:.05em;}
+  .pay-detail-name{font-size:.78rem;color:var(--text-muted);margin-top:4px;}
+
+  /* ORDER SUMMARY */
+  .summary-card{background:white;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;position:sticky;top:90px;}
+  .summary-head{padding:16px 20px;background:#1a1a1a;}
+  .summary-head h3{font-size:.92rem;font-weight:900;color:white;}
+  .summary-items{padding:16px;max-height:380px;overflow-y:auto;}
+  .summary-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center;}
+  .summary-item:last-child{border-bottom:none;}
+  .summary-item-img{width:56px;height:56px;border:1.5px solid var(--border);border-radius:8px;background:#f9f9f9;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;overflow:hidden;cursor:pointer;}
+  .summary-item-img img{width:100%;height:100%;object-fit:contain;padding:4px;}
+  .summary-item-info{flex:1;min-width:0;}
+  .summary-item-name{font-size:.78rem;font-weight:800;color:var(--text-dark);line-height:1.3;margin-bottom:4px;cursor:pointer;}
+  .summary-item-name:hover{color:var(--action);}
+  .summary-item-price{font-size:.82rem;font-weight:900;color:var(--text-dark);}
+  .summary-item-controls{display:flex;align-items:center;gap:6px;margin-top:6px;}
+  .sqty-btn{width:22px;height:22px;border:1.5px solid var(--border);border-radius:4px;background:white;cursor:pointer;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--text-dark);}
+  .sqty-btn:hover{border-color:var(--action);color:var(--action);}
+  .sqty-num{font-size:.78rem;font-weight:800;min-width:18px;text-align:center;}
+  .sremove-btn{margin-left:auto;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:.68rem;font-weight:700;transition:color .2s;}
+  .sremove-btn:hover{color:#e53935;}
+  .summary-footer{padding:16px 20px;border-top:2px solid var(--border);background:#fafafa;}
+  .summary-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.82rem;color:var(--text-body);font-weight:600;}
+  .summary-row.total{font-size:1rem;font-weight:900;color:var(--text-dark);margin-bottom:0;padding-top:10px;border-top:1px solid var(--border);}
+  .summary-note{font-size:.68rem;color:var(--text-muted);text-align:center;margin-bottom:14px;font-weight:600;}
+
+  /* TERMS */
+  .terms-box{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;background:#fff8f8;border:1.5px solid #ffcccc;border-radius:8px;margin-bottom:16px;}
+  .terms-box input[type=checkbox]{width:16px;height:16px;accent-color:var(--action);cursor:pointer;flex-shrink:0;margin-top:2px;}
+  .terms-label{font-size:.78rem;color:var(--text-body);font-weight:600;line-height:1.5;}
+  .terms-label a{color:var(--action);font-weight:700;}
+
+  /* PLACE ORDER BTN */
+  .btn-place-order{width:100%;background:var(--action);color:white;border:none;padding:16px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .btn-place-order:hover:not(:disabled){background:var(--action-hover);transform:translateY(-2px);box-shadow:0 8px 24px rgba(204,0,0,.35);}
+  .btn-place-order:disabled{background:#ccc;cursor:not-allowed;transform:none;box-shadow:none;}
+  .btn-wa-order{width:100%;background:var(--green);color:white;border:none;padding:14px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;}
+  .btn-wa-order:hover:not(:disabled){background:#008a43;transform:translateY(-1px);}
+  .btn-wa-order:disabled{background:#ccc;cursor:not-allowed;transform:none;}
+
+  /* SUCCESS PAGE */
+  .success-wrap{max-width:600px;margin:60px auto;padding:0 32px;text-align:center;display:none;}
+  .success-icon{width:80px;height:80px;background:#e8f5e9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 20px;}
+  .success-title{font-size:1.8rem;font-weight:900;color:var(--text-dark);margin-bottom:8px;}
+  .success-sub{font-size:.95rem;color:var(--text-muted);margin-bottom:24px;}
+  .order-number-box{background:white;border:2px solid var(--action);border-radius:10px;padding:20px;margin-bottom:28px;}
+  .order-num-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:6px;}
+  .order-num-value{font-size:1.6rem;font-weight:900;color:var(--action);letter-spacing:.05em;}
+  .success-details{background:white;border:1.5px solid var(--border);border-radius:10px;padding:20px;text-align:left;margin-bottom:24px;}
+  .success-detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem;}
+  .success-detail-row:last-child{border-bottom:none;}
+  .success-detail-label{color:var(--text-muted);font-weight:600;}
+  .success-detail-value{font-weight:800;color:var(--text-dark);}
+  .btn-back-home{background:var(--action);color:white;border:none;padding:14px 32px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block;}
+  .btn-back-home:hover{background:var(--action-hover);}
+  .btn-wa-confirm{background:var(--green);color:white;border:none;padding:14px 32px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:8px;margin-left:10px;}
+  .btn-wa-confirm:hover{background:#008a43;}
+
+  /* EMPTY CART */
+  .empty-cart-wrap{max-width:500px;margin:80px auto;text-align:center;padding:0 32px;}
+  .empty-cart-icon{font-size:4rem;margin-bottom:16px;}
+  .empty-cart-title{font-size:1.3rem;font-weight:900;color:var(--text-dark);margin-bottom:8px;}
+  .empty-cart-sub{font-size:.88rem;color:var(--text-muted);margin-bottom:24px;}
+
+  @media(max-width:768px){
+    .topbar{padding:6px 16px;font-size:.72rem;}
+    .nav-inner{padding:0 16px;gap:10px;}
+    .steps-inner{padding:0 16px;}
+    .step span{display:none;}
+    .checkout-wrap{grid-template-columns:1fr;padding:0 16px;}
+    .summary-card{position:static;}
+    .form-row{grid-template-columns:1fr;}
+    .payment-options{grid-template-columns:repeat(3,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>📞 WhatsApp: 03008076625</div>
+  <div class="topbar-highlight">🔒 Secure Checkout</div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-parallelogram"></div>
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <span class="logo-text"><span class="d1">Delight</span>&nbsp;<span class="d2">Domestics</span></span>
+    </a>
+    <a href="index.html" class="nav-back">← Back to Store</a>
+  </div>
+</nav>
+
+<!-- STEPS BAR -->
+<div class="steps-bar" id="stepsBar">
+  <div class="steps-inner">
+    <div class="step active" id="step1">
+      <div class="step-num">1</div>
+      <span>Your Details</span>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="step2">
+      <div class="step-num">2</div>
+      <span>Payment</span>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="step3">
+      <div class="step-num">3</div>
+      <span>Confirm</span>
+    </div>
+  </div>
+</div>
+
+<!-- EMPTY CART STATE -->
+<div class="empty-cart-wrap" id="emptyCartWrap" style="display:none">
+  <div class="empty-cart-icon">🛒</div>
+  <div class="empty-cart-title">Your cart is empty</div>
+  <div class="empty-cart-sub">Add some products before checking out.</div>
+  <a href="index.html" class="btn-back-home">Go Shopping</a>
+</div>
+
+<!-- CHECKOUT FORM -->
+<div class="checkout-wrap" id="checkoutWrap">
+
+  <!-- LEFT: FORM -->
+  <div id="formCol">
+
+    <!-- CONTACT INFO -->
+    <div class="form-section">
+      <div class="form-section-head">
+        <div class="step-badge">1</div>
+        <h3>Contact & Delivery Information</h3>
+      </div>
+      <div class="form-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input class="form-input" type="text" id="fname" placeholder="e.g. Ahmed Khan">
+            <span class="form-error" id="fnameErr">Please enter your name</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input class="form-input" type="tel" id="phone" placeholder="e.g. 03001234567">
+            <span class="form-error" id="phoneErr">Please enter a valid phone number</span>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-group">
+            <label class="form-label">Gmail / Email *</label>
+            <input class="form-input" type="email" id="email" placeholder="e.g. yourname@gmail.com">
+            <span class="form-error" id="emailErr">Please enter a valid email</span>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-group">
+            <label class="form-label">Complete Address *</label>
+            <input class="form-input" type="text" id="address" placeholder="House No., Street, Area">
+            <span class="form-error" id="addressErr">Please enter your complete address</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input class="form-input" type="text" id="city" value="Lahore" readonly style="background:#f4f6fb;color:#888;cursor:not-allowed;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Postal Code</label>
+            <input class="form-input" type="text" id="postal" placeholder="e.g. 54000">
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-group">
+            <label class="form-label">Order Notes (Optional)</label>
+            <input class="form-input" type="text" id="notes" placeholder="Any special instructions...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="form-section">
+      <div class="form-section-head">
+        <div class="step-badge">2</div>
+        <h3>Select Payment Method</h3>
+      </div>
+      <div class="form-body">
+        <div class="payment-options">
+          <div class="pay-option" id="payCOD" onclick="selectPayment('cod')">
+            <img src="images/logos/cod.jpg" alt="COD">
+            <div class="pay-option-name">Cash on Delivery</div>
+          </div>
+          <div class="pay-option" id="payJazz" onclick="selectPayment('jazz')">
+            <img src="images/logos/jazz.png" alt="JazzCash">
+            <div class="pay-option-name">JazzCash</div>
+          </div>
+          <div class="pay-option" id="payMCB" onclick="selectPayment('mcb')">
+            <img src="images/logos/Mcb.png" alt="MCB">
+            <div class="pay-option-name">MCB Bank</div>
+          </div>
+        </div>
+        <div class="pay-detail-box" id="jazzDetail">
+          <div class="pay-detail-title">Send Payment To</div>
+          <div class="pay-detail-number">0300-8076625</div>
+          <div class="pay-detail-name">Toheed Ahmed — JazzCash</div>
+        </div>
+        <div class="pay-detail-box" id="mcbDetail">
+          <div class="pay-detail-title">Transfer To Account</div>
+          <div class="pay-detail-number">1234-5678-9012-3456</div>
+          <div class="pay-detail-name">Toheed Ahmed — MCB Bank</div>
+        </div>
+        <span class="form-error" id="payErr" style="display:none;margin-top:10px;">Please select a payment method</span>
+      </div>
+    </div>
+
+    <!-- TERMS -->
+    <div class="form-section">
+      <div class="form-section-head">
+        <div class="step-badge">3</div>
+        <h3>Review & Place Order</h3>
+      </div>
+      <div class="form-body">
+        <div class="terms-box">
+          <input type="checkbox" id="termsCheck" onchange="updateOrderBtn()">
+          <label class="terms-label" for="termsCheck">
+            I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a> of Delight Domestics. I confirm that the information provided is accurate and I agree to the return policy (within 2 days of delivery).
+          </label>
+        </div>
+        <button class="btn-place-order" id="btnPlaceOrder" onclick="placeOrder()" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Place Order
+        </button>
+        <button class="btn-wa-order" id="btnWaOrder" onclick="placeOrderWhatsApp()" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.118.549 4.107 1.51 5.833L0 24l6.336-1.48A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 0 1-5.002-1.367l-.357-.213-3.757.877.924-3.65-.235-.374A9.82 9.82 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12c0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+          Order via WhatsApp
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: ORDER SUMMARY -->
+  <div>
+    <div class="summary-card">
+      <div class="summary-head">
+        <h3>🛒 Order Summary</h3>
+      </div>
+      <div class="summary-items" id="summaryItems"></div>
+      <div class="summary-footer">
+        <div class="summary-note">* Taxes and shipping calculated at checkout</div>
+        <div class="summary-row"><span>Subtotal</span><span id="summarySubtotal">Rs. 0</span></div>
+        <div class="summary-row"><span>Shipping</span><span>Calculated at checkout</span></div>
+        <div class="summary-row total"><span>Total</span><span id="summaryTotal">Rs. 0</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SUCCESS PAGE -->
+<div class="success-wrap" id="successWrap">
+  <div class="success-icon">✅</div>
+  <div class="success-title">Order Placed Successfully!</div>
+  <div class="success-sub">Thank you for your order. We will contact you shortly to confirm delivery.</div>
+  <div class="order-number-box">
+    <div class="order-num-label">Your Order Number</div>
+    <div class="order-num-value" id="orderNumDisplay">1ABC</div>
+    <div style="font-size:.82rem;color:#cc0000;margin-top:8px;font-weight:900;">📌 Please save this order number for tracking your order.</div> </div>
+  <div class="success-details" id="successDetails"></div>
+  <div style="margin-top:8px">
+    <a href="index.html" class="btn-back-home">← Continue Shopping</a>
+    <button class="btn-wa-confirm" id="btnWaConfirm" onclick="confirmOnWhatsApp()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.118.549 4.107 1.51 5.833L0 24l6.336-1.48A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 0 1-5.002-1.367l-.357-.213-3.757.877.924-3.65-.235-.374A9.82 9.82 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12c0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+      Confirm on WhatsApp
+    </button>
+  </div>
+</div>
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBwvJO0xnSZsZrgS9HH8WvPRnHGfdxssHY",
+  authDomain: "delight-domestics.firebaseapp.com",
+  projectId: "delight-domestics",
+  storageBucket: "delight-domestics.firebasestorage.app",
+  messagingSenderId: "173273036262",
+  appId: "1:173273036262:web:1483a4a86783cc82279227"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window._db = db;
+window._collection = collection;
+window._addDoc = addDoc;
+window._serverTimestamp = serverTimestamp;
+var cartItems = [];
+var selectedPayment = '';
+var orderData = null;
+
+function pNum(str){ return parseInt((str||'').replace(/[^0-9]/g,''))||0; }
+
+// Load cart from localStorage
+window.loadCart = function() {
+  var saved = localStorage.getItem('dd_cart');
+  if (saved) cartItems = JSON.parse(saved);
+}
+
+window.saveCart = function(){
+  localStorage.setItem('dd_cart', JSON.stringify(cartItems));
+  // Update cart count for when user goes back
+  var total = cartItems.reduce(function(s,x){ return s+x.qty; }, 0);
+  localStorage.setItem('dd_cart_count', total);
+}
+
+// Generate order number
+window.getNextOrderNumber = function(){
+  var lastNum = parseInt(localStorage.getItem('dd_order_counter') || '0');
+  lastNum++;
+  localStorage.setItem('dd_order_counter', lastNum);
+  var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var code = lastNum + letters[Math.floor(Math.random()*26)] + letters[Math.floor(Math.random()*26)] + letters[Math.floor(Math.random()*26)];
+  return code;
+}
+
+window.init = function() {
+  loadCart();
+  if (!cartItems.length) {
+    document.getElementById('emptyCartWrap').style.display = 'block';
+    document.getElementById('checkoutWrap').style.display = 'none';
+    document.getElementById('stepsBar').style.display = 'none';
+    return;
+  }
+  renderSummary();
+}
+
+window.renderSummary = function() {
+  var container = document.getElementById('summaryItems');
+  var subtotal = cartItems.reduce(function(s,x){ return s + pNum(x.price)*x.qty; }, 0);
+  document.getElementById('summarySubtotal').textContent = 'Rs. ' + subtotal.toLocaleString();
+  document.getElementById('summaryTotal').textContent = 'Rs. ' + subtotal.toLocaleString();
+
+  container.innerHTML = cartItems.map(function(item, i) {
+    var imgPath = 'images/products/' + item.id + '/' + item.id + ' (1).jpg';
+    return '<div class="summary-item">'
+      +'<div class="summary-item-img" onclick="window.location.href=\'product.html?id='+item.id+'\'">'
+      +'<img src="'+imgPath+'" alt="'+item.name+'" onerror="this.parentNode.innerHTML=\''+item.emoji+'\'">'
+      +'</div>'
+      +'<div class="summary-item-info">'
+      +'<div class="summary-item-name" onclick="window.location.href=\'product.html?id='+item.id+'\'">'+item.name+'</div>'
+      +'<div class="summary-item-price">'+item.price+' × '+item.qty+'</div>'
+      +'<div class="summary-item-controls">'
+      +'<button class="sqty-btn" onclick="changeQty('+i+',-1)">−</button>'
+      +'<span class="sqty-num">'+item.qty+'</span>'
+      +'<button class="sqty-btn" onclick="changeQty('+i+',1)">+</button>'
+      +'<button class="sremove-btn" onclick="removeItem('+i+')">✕ Remove</button>'
+      +'</div></div></div>';
+  }).join('');
+}
+
+window.changeQty = function(i, delta) {
+  cartItems[i].qty += delta;
+  if (cartItems[i].qty <= 0) cartItems.splice(i, 1);
+  saveCart();
+  if (!cartItems.length) {
+    document.getElementById('emptyCartWrap').style.display = 'block';
+    document.getElementById('checkoutWrap').style.display = 'none';
+    return;
+  }
+  renderSummary();
+}
+
+window.removeItem = function(i) {
+  cartItems.splice(i, 1);
+  saveCart();
+  if (!cartItems.length) {
+    document.getElementById('emptyCartWrap').style.display = 'block';
+    document.getElementById('checkoutWrap').style.display = 'none';
+    return;
+  }
+  renderSummary();
+}
+
+window.selectPayment = function(method) {
+  selectedPayment = method;
+  document.querySelectorAll('.pay-option').forEach(function(el){ el.classList.remove('selected'); });
+  document.querySelectorAll('.pay-detail-box').forEach(function(el){ el.classList.remove('show'); });
+  if (method === 'cod') document.getElementById('payCOD').classList.add('selected');
+  if (method === 'jazz') { document.getElementById('payJazz').classList.add('selected'); document.getElementById('jazzDetail').classList.add('show'); }
+  if (method === 'mcb') { document.getElementById('payMCB').classList.add('selected'); document.getElementById('mcbDetail').classList.add('show'); }
+  document.getElementById('payErr').style.display = 'none';
+  updateOrderBtn();
+}
+
+window.updateOrderBtn = function() {
+  var agreed = document.getElementById('termsCheck').checked;
+  document.getElementById('btnPlaceOrder').disabled = !agreed;
+  document.getElementById('btnWaOrder').disabled = !agreed;
+}
+
+window.validateForm = function() {
+  var valid = true;
+  var fields = [
+    {id:'fname', errId:'fnameErr', check: function(v){ return v.trim().length >= 2; }},
+    {id:'phone', errId:'phoneErr', check: function(v){ return /^0[0-9]{9,10}$/.test(v.trim()); }},
+    {id:'email', errId:'emailErr', check: function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }},
+    {id:'address', errId:'addressErr', check: function(v){ return v.trim().length >= 5; }},
+    
+  ];
+  fields.forEach(function(f) {
+    var val = document.getElementById(f.id).value;
+    var err = document.getElementById(f.errId);
+    if (!f.check(val)) { document.getElementById(f.id).classList.add('error'); err.classList.add('show'); valid = false; }
+    else { document.getElementById(f.id).classList.remove('error'); err.classList.remove('show'); }
+  });
+  if (!selectedPayment) { document.getElementById('payErr').style.display = 'block'; valid = false; }
+  return valid;
+}
+
+window.placeOrder = async function() {
+  if (!validateForm()) return;
+  var orderNum = getNextOrderNumber();
+  orderData = {
+    orderNum: orderNum,
+    name: document.getElementById('fname').value,
+    phone: document.getElementById('phone').value,
+    email: document.getElementById('email').value,
+    address: document.getElementById('address').value + ', ' + document.getElementById('city').value,
+    payment: selectedPayment === 'cod' ? 'Cash on Delivery' : selectedPayment === 'jazz' ? 'JazzCash' : 'MCB Bank',
+    items: cartItems.slice(),
+    total: cartItems.reduce(function(s,x){ return s + pNum(x.price)*x.qty; }, 0),
+    notes: document.getElementById('notes').value
+  };
+  try {
+    await addDoc(collection(db, 'orders'), {
+      orderNumber: orderData.orderNum,
+      name: orderData.name,
+      phone: orderData.phone,
+      email: orderData.email,
+      address: orderData.address,
+      payment: orderData.payment,
+      items: orderData.items,
+      total: orderData.total,
+      notes: orderData.notes || '',
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+  } catch(e) { console.error('Firebase save error:', e); }
+  showSuccess();
+}
+
+window.placeOrderWhatsApp = function(){
+  if (!validateForm()) return;
+  var orderNum = getNextOrderNumber();
+  var itemsList = cartItems.map(function(x){ return '• '+x.name+' x'+x.qty+' ('+x.price+')'; }).join('\n');
+  var total = cartItems.reduce(function(s,x){ return s + pNum(x.price)*x.qty; }, 0);
+  var payMethod = selectedPayment === 'cod' ? 'Cash on Delivery' : selectedPayment === 'jazz' ? 'JazzCash' : 'MCB Bank';
+  var msg = '🛒 NEW ORDER — Delight Domestics\n\n'
+    + 'Order #: ' + orderNum + '\n'
+    + 'Name: ' + document.getElementById('fname').value + '\n'
+    + 'Phone: ' + document.getElementById('phone').value + '\n'
+    + 'Email: ' + document.getElementById('email').value + '\n'
+    + 'Address: ' + document.getElementById('address').value + ', ' + document.getElementById('city').value + '\n'
+    + 'Payment: ' + payMethod + '\n\n'
+    + 'Items:\n' + itemsList + '\n\n'
+    + 'Total: Rs. ' + total.toLocaleString()
+    + (document.getElementById('notes').value ? '\n\nNotes: ' + document.getElementById('notes').value : '');
+  orderData = {orderNum:orderNum, name:document.getElementById('fname').value, phone:document.getElementById('phone').value, email:document.getElementById('email').value, address:document.getElementById('address').value+', '+document.getElementById('city').value, payment:payMethod, items:cartItems.slice(), total:total};
+  localStorage.removeItem('dd_cart');
+  window.open('https://wa.me/923008076625?text=' + encodeURIComponent(msg), '_blank');
+  showSuccess();
+}
+
+window.showSuccess = function() {
+  localStorage.removeItem('dd_cart');
+  document.getElementById('checkoutWrap').style.display = 'none';
+  document.getElementById('stepsBar').style.display = 'none';
+  document.getElementById('successWrap').style.display = 'block';
+  document.getElementById('orderNumDisplay').textContent = orderData.orderNum;
+  var payLabel = {'cod':'Cash on Delivery','jazz':'JazzCash','mcb':'MCB Bank Transfer'};
+  document.getElementById('successDetails').innerHTML =
+    '<div class="success-detail-row"><span class="success-detail-label">Name</span><span class="success-detail-value">'+orderData.name+'</span></div>'
+    +'<div class="success-detail-row"><span class="success-detail-label">Phone</span><span class="success-detail-value">'+orderData.phone+'</span></div>'
+    +'<div class="success-detail-row"><span class="success-detail-label">Address</span><span class="success-detail-value">'+orderData.address+'</span></div>'
+    +'<div class="success-detail-row"><span class="success-detail-label">Payment</span><span class="success-detail-value">'+orderData.payment+'</span></div>'
+    +'<div class="success-detail-row"><span class="success-detail-label">Items</span><span class="success-detail-value">'+orderData.items.length+' item(s)</span></div>'
+    +'<div class="success-detail-row"><span class="success-detail-label">Total</span><span class="success-detail-value">Rs. '+orderData.total.toLocaleString()+'</span></div>';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+window.confirmOnWhatsApp = function() {
+  if (!orderData) return;
+  var itemsList = orderData.items.map(function(x){ return '• '+x.name+' x'+x.qty+' ('+x.price+')'; }).join('\n');
+  var msg = '✅ Order Confirmation Request\n\nOrder #: '+orderData.orderNum+'\nName: '+orderData.name+'\nPhone: '+orderData.phone+'\nAddress: '+orderData.address+'\nPayment: '+orderData.payment+'\n\nItems:\n'+itemsList+'\n\nTotal: Rs. '+orderData.total.toLocaleString();
+  window.open('https://wa.me/923008076625?text='+encodeURIComponent(msg),'_blank');
+}
+
+window.init();
+</script>
+</body>
+</html>
