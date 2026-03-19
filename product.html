@@ -224,7 +224,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
+import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBwvJO0xnSZsZrgS9HH8WvPRnHGfdxssHY",
   authDomain: "delight-domestics.firebaseapp.com",
@@ -236,6 +236,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 window.loginWithGoogle = async function() {
@@ -561,18 +562,34 @@ function proceedToCheckout() {
   loadStorage();
   var params = new URLSearchParams(window.location.search);
   var id = parseInt(params.get('id'));
-  var p = products.find(function(x){ return x.id === id; });
-  if (!p) { document.getElementById('infoTitle').textContent = 'Product not found'; return; }
-  currentProduct = p;
-  loadProduct(p);
-  loadRelated(p);
-  // Check if already in wishlist
-  if (wishItems.find(function(x){ return x.id === p.id; })) {
-    var wb = document.getElementById('wishBtn');
-    if (wb) { wb.classList.add('liked'); wb.querySelector('svg').setAttribute('fill','#e53935'); }
-  }
-})();
 
+  // Load from Firebase
+  getDoc(doc(db, 'products', String(id))).then(function(snap) {
+    var p;
+    if (snap.exists()) {
+      p = snap.data();
+    } else {
+      // Fallback to local array
+      p = products.find(function(x){ return x.id === id; });
+    }
+    if (!p) {
+      document.getElementById('infoTitle').textContent = 'Product not found';
+      return;
+    }
+    currentProduct = p;
+    loadProduct(p);
+    loadRelated(p);
+    if (wishItems.find(function(x){ return x.id === p.id; })) {
+      var wb = document.getElementById('wishBtn');
+      if (wb) { wb.classList.add('liked'); wb.querySelector('svg').setAttribute('fill','#e53935'); }
+    }
+  }).catch(function(e) {
+    console.error('Firebase load error:', e);
+    // Fallback to local
+    var p = products.find(function(x){ return x.id === id; });
+    if (p) { currentProduct = p; loadProduct(p); loadRelated(p); }
+  });
+})();
 function loadProduct(p) {
   document.title = p.name + ' — Delight Domestics';
   document.getElementById('breadCat').textContent = p.category;
