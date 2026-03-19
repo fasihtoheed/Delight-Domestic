@@ -268,6 +268,40 @@ onAuthStateChanged(auth, function(user) {
     localStorage.removeItem('dd_user');
   }
 });
+// Load product from Firebase
+var params = new URLSearchParams(window.location.search);
+var id = parseInt(params.get('id'));
+
+getDoc(doc(db, 'products', String(id))).then(function(snap) {
+  var p = snap.exists() ? snap.data() : null;
+  if (!p) {
+    // Fallback to local array
+    p = typeof window.products !== 'undefined' ? window.products.find(function(x){ return x.id === id; }) : null;
+  }
+  if (!p) {
+    document.getElementById('infoTitle').textContent = 'Product not found';
+    return;
+  }
+  window.currentProduct = p;
+  // Wait for regular script functions to be ready
+  function runWhenReady() {
+    if (typeof loadProduct === 'function') {
+      if (typeof loadStorage === 'function') loadStorage();
+      loadProduct(p);
+      if (typeof loadRelated === 'function') loadRelated(p);
+      var wishItems = JSON.parse(localStorage.getItem('dd_wish') || '[]');
+      if (wishItems.find(function(x){ return x.id === p.id; })) {
+        var wb = document.getElementById('wishBtn');
+        if (wb) { wb.classList.add('liked'); wb.querySelector('svg').setAttribute('fill','#e53935'); }
+      }
+    } else {
+      setTimeout(runWhenReady, 100);
+    }
+  }
+  runWhenReady();
+}).catch(function(e) {
+  console.error('Firebase error:', e);
+});
 </script>
 </head>
 <body>
@@ -836,18 +870,6 @@ window.addEventListener('scroll', function(){
   window.scrollY > 300 ? btn.classList.add('show') : btn.classList.remove('show');
 });
 
-(function init() {
-  var params = new URLSearchParams(window.location.search);
-  var id = parseInt(params.get('id'));
-  var p = products.find(function(x){ return x.id === id; });
-  if (!p) {
-    document.getElementById('infoTitle').textContent = 'Product not found';
-    return;
-  }
-  currentProduct = p;
-  loadProduct(p);
-  loadRelated(p);
-})();
 
 function loadProduct(p) {
   // Page title
