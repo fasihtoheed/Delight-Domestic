@@ -934,35 +934,17 @@ function loadProduct(p) {
 }
 
 function loadImages(p) {
-  var mainWrap = document.getElementById('mainImgWrap');
-  var thumbsRow = document.getElementById('thumbsRow');
-  var imgPaths = [];
-
-  // Try 3 images: images/products/{id}/{id} (1).jpg etc
-  // We check each one by creating Image objects
-  var attempts = 3;
-  var loaded = [];
-
-  function tryImg(n) {
-    var path = 'images/products/' + p.id + '/' + p.id + ' (' + n + ').jpg';
-    var img = new Image();
-    img.onload = function() {
-      loaded.push({n:n, path:path});
-      if (loaded.length + (attempts - n) === attempts || n === attempts) {
-        loaded.sort(function(a,b){return a.n-b.n;});
-        renderImages(p, loaded.map(function(x){return x.path;}));
-      }
-    };
-    img.onerror = function() {
-      if (n === attempts) {
-        renderImages(p, loaded.map(function(x){return x.path;}));
-      }
-    };
-    img.src = path;
-    if (n < attempts) tryImg(n + 1);
+  if (p.images && p.images.length > 0) {
+    renderImages(p, p.images);
+  } else {
+    // No images — show emoji placeholder
+    var mainWrap = document.getElementById('mainImgWrap');
+    mainWrap.innerHTML = '<div class="img-badge" id="imgBadge"></div><div class="no-img-placeholder">'+p.emoji+'</div>';
+    if (p.badge) {
+      var cls = p.badge==='Sale'?'badge-sale':p.badge==='Hot'?'badge-hot':'badge-new';
+      document.getElementById('imgBadge').innerHTML = '<span class="badge '+cls+'">'+p.badge+'</span>';
+    }
   }
-
-  tryImg(1);
 }
 
 function renderImages(p, paths) {
