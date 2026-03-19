@@ -585,9 +585,6 @@ window.uploadProductImages = async function(id, files) {
       mainImage: allUrls[0] || ''
     }, { merge: true });
     if (p) { p.images = allUrls; p.mainImage = allUrls[0] || ''; }
-    // Update local array
-    var p = allProducts.find(function(x){ return x.id === id; });
-    if (p) { p.images = urls; p.mainImage = urls[0] || ''; }
 
     statusEl.textContent = '✅ ' + urls.length + ' image(s) uploaded!';
     statusEl.style.color = '#00a651';
