@@ -560,7 +560,7 @@ window.uploadProductImages = async function(id, files) {
       var formData = new FormData();
       formData.append('file', fileArr[i]);
       formData.append('upload_preset', 'delight_domestics');
-      formData.append('public_id', 'delight-domestics/products/' + id + '/' + id + '_' + (i+1));
+      formData.append('folder', 'delight-domestics/products/' + id);
       var res = await fetch('https://api.cloudinary.com/v1_1/dw6nkcqn0/image/upload', {
         method: 'POST',
         body: formData
@@ -574,13 +574,17 @@ window.uploadProductImages = async function(id, files) {
     }
   }
 
-  // Save URLs to Firebase
+  // Save URLs to Firebase — merge with existing images
   try {
+    var existingImgs = [];
+    var p = allProducts.find(function(x){ return x.id === id; });
+    if (p && p.images) existingImgs = p.images;
+    var allUrls = existingImgs.concat(urls);
     await setDoc(doc(db, 'products', String(id)), {
-      images: urls,
-      mainImage: urls[0] || ''
+      images: allUrls,
+      mainImage: allUrls[0] || ''
     }, { merge: true });
-
+    if (p) { p.images = allUrls; p.mainImage = allUrls[0] || ''; }
     // Update local array
     var p = allProducts.find(function(x){ return x.id === id; });
     if (p) { p.images = urls; p.mainImage = urls[0] || ''; }
