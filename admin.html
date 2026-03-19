@@ -525,18 +525,76 @@ document.getElementById('orderModal').addEventListener('click', function(e){ if(
 function renderProductsAdmin(prods) {
   if (!prods.length) { document.getElementById('productsAdminGrid').innerHTML = '<div class="loading-spinner">No products found.</div>'; return; }
   document.getElementById('productsAdminGrid').innerHTML = prods.map(function(p, i) {
+    var mainImg = p.mainImage || '';
+    var imgHtml = mainImg
+      ? '<img src="'+mainImg+'" style="width:100%;height:120px;object-fit:contain;border-radius:6px;border:1.5px solid var(--border);margin-bottom:10px;">'
+      : '<div style="width:100%;height:80px;background:#f9f9f9;border-radius:6px;border:1.5px dashed #ccc;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:10px;">'+p.emoji+'</div>';
     return '<div class="product-admin-card">'
       +'<div class="pac-header"><div class="pac-emoji">'+p.emoji+'</div><div><div class="pac-name">'+p.name+'</div><div class="pac-brand">'+p.brand+'</div></div></div>'
+      + imgHtml
+      +'<div class="pac-field"><label>Upload Images</label>'
+      +'<input type="file" multiple accept="image/*" id="imgupload_'+p.id+'" style="display:none" onchange="uploadProductImages('+p.id+', this.files)">'
+      +'<button onclick="document.getElementById(\'imgupload_'+p.id+'\').click()" style="width:100%;background:#1a1a1a;color:white;border:none;padding:8px;border-radius:6px;font-family:Nunito,sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;margin-bottom:8px;">📸 Upload Images</button>'
+      +'<div id="imgstatus_'+p.id+'" style="font-size:.7rem;color:#888;font-weight:600;min-height:16px;"></div>'
+      +'</div>'
       +'<div class="pac-field"><label>Price (Rs.)</label><input class="pac-input" id="price_'+p.id+'" value="'+p.price+'" placeholder="Rs. 0"></div>'
       +'<div class="pac-field"><label>Old Price (Rs.)</label><input class="pac-input" id="oldprice_'+p.id+'" value="'+(p.oldPrice||'')+'" placeholder="Leave empty if no discount"></div>'
       +'<div class="pac-field"><label>Discount Label</label><input class="pac-input" id="discount_'+p.id+'" value="'+(p.discount||'')+'" placeholder="e.g. 20% OFF"></div>'
+      +'<div class="pac-field"><label>Stock Quantity</label><input class="pac-input" type="number" id="stock_'+p.id+'" value="'+(p.stock||0)+'" min="0"></div>'
       +'<div class="pac-field"><label>Badge</label>'
       +'<select class="pac-input" id="badge_'+p.id+'"><option value="">None</option><option value="New"'+(p.badge==='New'?' selected':'')+'>New</option><option value="Sale"'+(p.badge==='Sale'?' selected':'')+'>Sale</option><option value="Hot"'+(p.badge==='Hot'?' selected':'')+'>Hot</option></select></div>'
       +'<button class="btn-save-product" id="savebtn_'+p.id+'" onclick="saveProduct('+p.id+')">💾 Save Changes</button>'
       +'</div>';
   }).join('');
 }
+window.uploadProductImages = async function(id, files) {
+  var statusEl = document.getElementById('imgstatus_' + id);
+  statusEl.textContent = 'Uploading...';
+  statusEl.style.color = '#6699ff';
 
+  var urls = [];
+  var fileArr = Array.from(files);
+
+  for (var i = 0; i < fileArr.length; i++) {
+    try {
+      var formData = new FormData();
+      formData.append('file', fileArr[i]);
+      formData.append('upload_preset', 'delight_domestics');
+      formData.append('public_id', 'delight-domestics/products/' + id + '/' + id + '_' + (i+1));
+      var res = await fetch('https://api.cloudinary.com/v1_1/dw6nkcqn0/image/upload', {
+        method: 'POST',
+        body: formData
+      });
+      var data = await res.json();
+      if (data.secure_url) urls.push(data.secure_url);
+    } catch(e) {
+      statusEl.textContent = '❌ Upload failed: ' + e.message;
+      statusEl.style.color = '#cc0000';
+      return;
+    }
+  }
+
+  // Save URLs to Firebase
+  try {
+    await setDoc(doc(db, 'products', String(id)), {
+      images: urls,
+      mainImage: urls[0] || ''
+    }, { merge: true });
+
+    // Update local array
+    var p = allProducts.find(function(x){ return x.id === id; });
+    if (p) { p.images = urls; p.mainImage = urls[0] || ''; }
+
+    statusEl.textContent = '✅ ' + urls.length + ' image(s) uploaded!';
+    statusEl.style.color = '#00a651';
+
+    // Refresh the product card to show new image
+    renderProductsAdmin(allProducts);
+  } catch(e) {
+    statusEl.textContent = '❌ Firebase error: ' + e.message;
+    statusEl.style.color = '#cc0000';
+  }
+};
 window.saveProduct = async function(id) {
   var p = allProducts.find(function(x){ return x.id === id; });
   if (!p) return;
