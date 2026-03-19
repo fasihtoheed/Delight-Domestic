@@ -609,20 +609,10 @@ function loadProduct(p) {
 }
 
 function loadImages(p) {
-  var attempts = 3;
-  var loaded = [];
-  function tryImg(n) {
-    var path = 'images/products/' + p.id + '/' + p.id + ' (' + n + ').jpg';
-    var img = new Image();
-    img.onload = function() {
-      loaded.push({n:n, path:path});
-      if (n === attempts) { loaded.sort(function(a,b){return a.n-b.n;}); renderImages(p, loaded.map(function(x){return x.path;})); }
-    };
-    img.onerror = function() { if (n === attempts) { loaded.sort(function(a,b){return a.n-b.n;}); renderImages(p, loaded.map(function(x){return x.path;})); } };
-    img.src = path;
-    if (n < attempts) tryImg(n + 1);
+  if (p.images && p.images.length > 0) {
+    renderImages(p, p.images);
   }
-  tryImg(1);
+  // No fallback — show emoji placeholder if no images
 }
 
 function renderImages(p, paths) {
