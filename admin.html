@@ -532,7 +532,6 @@ function renderProductsAdmin(prods) {
     var imgHtml = imgs.length > 0
       ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">' + imgs.map(function(url, idx){ return '<div style="position:relative;display:inline-block"><img src="'+url+'" style="width:70px;height:70px;object-fit:contain;border-radius:6px;border:1.5px solid var(--border);"><button onclick="deleteProductImage('+p.id+','+idx+')" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:#cc0000;color:white;border:none;border-radius:50%;font-size:.65rem;cursor:pointer;font-weight:900;">×</button></div>'; }).join('') + '</div>'
       : '<div style="width:100%;height:60px;background:#f9f9f9;border-radius:6px;border:1.5px dashed #ccc;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:10px;">'+p.emoji+'</div>';
-   
       return '<div class="product-admin-card">'
       +'<div class="pac-header"><div class="pac-emoji">'+p.emoji+'</div><div><div style="font-size:.6rem;font-weight:800;color:#cc0000;letter-spacing:.08em;margin-bottom:2px;">ID: '+p.id+'</div><div class="pac-name">'+p.name+'</div><div class="pac-brand">'+p.brand+'</div></div></div>'
       + imgHtml
@@ -541,6 +540,8 @@ function renderProductsAdmin(prods) {
       +'<button onclick="document.getElementById(\'imgupload_'+p.id+'\').click()" style="width:100%;background:#1a1a1a;color:white;border:none;padding:8px;border-radius:6px;font-family:Nunito,sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;margin-bottom:8px;">📸 Upload Images</button>'
       +'<div id="imgstatus_'+p.id+'" style="font-size:.7rem;color:#888;font-weight:600;min-height:16px;"></div>'
       +'</div>'
+      +'<div class="pac-field"><label>Product Name</label><input class="pac-input" id="pname_'+p.id+'" value="'+p.name+'" placeholder="Product name"></div>'
+      +'<div class="pac-field"><label>Description</label><textarea class="pac-input" id="pdesc_'+p.id+'" rows="3" style="resize:vertical;">'+p.desc+'</textarea></div>'
       +'<div class="pac-field"><label>Price (Rs.)</label><input class="pac-input" id="price_'+p.id+'" value="'+p.price+'" placeholder="Rs. 0"></div>'
       +'<div class="pac-field"><label>Old Price (Rs.)</label><input class="pac-input" id="oldprice_'+p.id+'" value="'+(p.oldPrice||'')+'" placeholder="Leave empty if no discount"></div>'
       +'<div class="pac-field"><label>Discount Label</label><input class="pac-input" id="discount_'+p.id+'" value="'+(p.discount||'')+'" placeholder="e.g. 20% OFF"></div>'
@@ -626,10 +627,12 @@ window.saveProduct = async function(id) {
   var btn = document.getElementById('savebtn_'+id);
   btn.textContent = 'Saving...';
   try {
+    var newName = document.getElementById('pname_'+id).value;
+    var newDesc = document.getElementById('pdesc_'+id).value;
     await setDoc(doc(db, 'products', String(id)), {
-      ...p, price: newPrice, oldPrice: newOldPrice, discount: newDiscount, badge: newBadge, updatedAt: new Date().toISOString()
+      ...p, name: newName, desc: newDesc, price: newPrice, oldPrice: newOldPrice, discount: newDiscount, badge: newBadge, updatedAt: new Date().toISOString()
     });
-    p.price = newPrice; p.oldPrice = newOldPrice; p.discount = newDiscount; p.badge = newBadge;
+    p.name = newName; p.desc = newDesc; p.price = newPrice; p.oldPrice = newOldPrice; p.discount = newDiscount; p.badge = newBadge;
     btn.textContent = '✓ Saved!'; btn.classList.add('saved');
     setTimeout(function(){ btn.textContent = '💾 Save Changes'; btn.classList.remove('saved'); }, 2000);
   } catch(e) {
