@@ -356,6 +356,17 @@
           </div>
           <div class="pac-field"><label style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);display:block;margin-bottom:4px;">Emoji</label><input class="pac-input" id="new_emoji" placeholder="e.g. 🔌"></div>
         </div>
+        <div style="margin-top:16px;">
+          <label style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="document.getElementById('new_specs_body').style.display=document.getElementById('new_specs_body').style.display==='none'?'block':'none'">Product Specifications <span>▼</span></label>
+          <div id="new_specs_body" style="display:none;margin-top:8px;">
+            <div id="new_specs_list"></div>
+            <div style="display:flex;gap:6px;margin-bottom:6px;">
+              <input class="pac-input" style="flex:1" id="new_spec_key" placeholder="Spec name e.g. Power">
+              <input class="pac-input" style="flex:1" id="new_spec_val" placeholder="Value e.g. 2000W">
+            </div>
+            <button onclick="addNewProductSpec()" style="width:100%;background:#1a1a1a;color:white;border:none;padding:8px;border-radius:6px;font-family:Nunito,sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;">+ Add Spec</button>
+          </div>
+        </div>
         <div style="margin-top:20px;padding:16px;background:var(--bg);border-radius:8px;font-size:.78rem;color:var(--text-muted);font-weight:600;">
           💡 After saving you can upload images from the <strong>Products & Prices</strong> section.
         </div>
@@ -384,7 +395,24 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+window.addSpec = function(id) {
+  var keyEl = document.getElementById('newspeckey_'+id);
+  var valEl = document.getElementById('newspecval_'+id);
+  if (!keyEl.value.trim()) return;
+  var p = allProducts.find(function(x){ return x.id===id; });
+  if (!p) return;
+  if (!p.specs) p.specs = {};
+  p.specs[keyEl.value.trim()] = valEl.value.trim();
+  keyEl.value = ''; valEl.value = '';
+  renderProductsAdmin(allProducts);
+};
 
+window.removeSpec = function(id, key) {
+  var p = allProducts.find(function(x){ return x.id===id; });
+  if (!p || !p.specs) return;
+  delete p.specs[key];
+  renderProductsAdmin(allProducts);
+};
 const firebaseConfig = {
   apiKey: "AIzaSyBwvJO0xnSZsZrgS9HH8WvPRnHGfdxssHY",
   authDomain: "delight-domestics.firebaseapp.com",
@@ -606,6 +634,12 @@ function renderProductsAdmin(prods) {
       +'<div class="pac-field"><label>Stock Quantity</label><input class="pac-input" type="number" id="stock_'+p.id+'" value="'+(p.stock||0)+'" min="0"></div>'
       +'<div class="pac-field"><label>Badge</label>'
       +'<select class="pac-input" id="badge_'+p.id+'"><option value="">None</option><option value="New"'+(p.badge==='New'?' selected':'')+'>New</option><option value="Sale"'+(p.badge==='Sale'?' selected':'')+'>Sale</option><option value="Hot"'+(p.badge==='Hot'?' selected':'')+'>Hot</option></select></div>'
+      +'<div class="pac-field"><label style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="this.nextSibling.style.display=this.nextSibling.style.display===\'none\'?\'block\':\'none\'">Product Specifications <span>▼</span></label>'
+      +'<div style="display:none;margin-top:8px;" id="specs_wrap_'+p.id+'">'
+      + Object.keys(p.specs||{}).map(function(key){ return '<div style="display:flex;gap:6px;margin-bottom:6px;"><input class="pac-input" style="flex:1" value="'+key+'" id="speckey_'+p.id+'_'+key.replace(/\s/g,\'_\')+'" placeholder="Spec name"><input class="pac-input" style="flex:1" value="'+(p.specs[key]||'')+'" id="specval_'+p.id+'_'+key.replace(/\s/g,\'_\')+'" placeholder="Value"><button onclick="removeSpec('+p.id+',\''+key+'\')" style="background:#cc0000;color:white;border:none;border-radius:5px;padding:4px 8px;cursor:pointer;font-weight:800;">×</button></div>'; }).join('')
+      +'<div id="newspec_'+p.id+'"><div style="display:flex;gap:6px;margin-bottom:6px;"><input class="pac-input" style="flex:1" id="newspeckey_'+p.id+'" placeholder="New spec name"><input class="pac-input" style="flex:1" id="newspecval_'+p.id+'" placeholder="Value"></div>'
+      +'<button onclick="addSpec('+p.id+')" style="width:100%;background:#1a1a1a;color:white;border:none;padding:6px;border-radius:5px;font-family:Nunito,sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;">+ Add Spec</button></div>'
+      +'</div></div>'
       +'<button class="btn-save-product" id="savebtn_'+p.id+'" onclick="saveProduct('+p.id+')">💾 Save Changes</button>'
       +'</div>';
   }).join('');
@@ -687,10 +721,23 @@ window.saveProduct = async function(id) {
   try {
     var newName = document.getElementById('pname_'+id).value;
     var newDesc = document.getElementById('pdesc_'+id).value;
+    // Collect updated specs
+    var newSpecs = {};
+    var specsWrap = document.getElementById('specs_wrap_'+id);
+    if (specsWrap) {
+      Object.keys(p.specs||{}).forEach(function(key) {
+        var safeKey = key.replace(/\s/g,'_');
+        var keyEl = document.getElementById('speckey_'+id+'_'+safeKey);
+        var valEl = document.getElementById('specval_'+id+'_'+safeKey);
+        if (keyEl && valEl && keyEl.value.trim()) {
+          newSpecs[keyEl.value.trim()] = valEl.value.trim();
+        }
+      });
+    }
     await setDoc(doc(db, 'products', String(id)), {
-      ...p, name: newName, desc: newDesc, price: newPrice, oldPrice: newOldPrice, discount: newDiscount, badge: newBadge, updatedAt: new Date().toISOString()
+      ...p, name: newName, desc: newDesc, price: newPrice, oldPrice: newOldPrice, discount: newDiscount, badge: newBadge, specs: newSpecs, updatedAt: new Date().toISOString()
     });
-    p.name = newName; p.desc = newDesc; p.price = newPrice; p.oldPrice = newOldPrice; p.discount = newDiscount; p.badge = newBadge;
+    p.name = newName; p.desc = newDesc; p.price = newPrice; p.oldPrice = newOldPrice; p.discount = newDiscount; p.badge = newBadge; p.specs = newSpecs;
     btn.textContent = '✓ Saved!'; btn.classList.add('saved');
     setTimeout(function(){ btn.textContent = '💾 Save Changes'; btn.classList.remove('saved'); }, 2000);
   } catch(e) {
@@ -841,7 +888,7 @@ window.saveNewProduct = async function() {
     emoji: document.getElementById('new_emoji').value.trim() || '📦',
     images: [],
     mainImage: '',
-    specs: {},
+    specs: newProductSpecs,
     updatedAt: new Date().toISOString()
   };
 
@@ -855,6 +902,8 @@ window.saveNewProduct = async function() {
     status.style.color = '#00a651';
     // Clear form
     ['new_id','new_name','new_brand','new_desc','new_price','new_oldprice','new_discount','new_warranty','new_stock','new_rating','new_emoji'].forEach(function(fid){
+      newProductSpecs = {};
+      document.getElementById('new_specs_list').innerHTML = '';
       document.getElementById(fid).value = '';
     });
     document.getElementById('new_category').value = '';
@@ -865,6 +914,35 @@ window.saveNewProduct = async function() {
     status.style.color = '#cc0000';
   }
 };
+var newProductSpecs = {};
+
+var newProductSpecs = {};
+
+window.addNewProductSpec = function() {
+  var key = document.getElementById('new_spec_key').value.trim();
+  var val = document.getElementById('new_spec_val').value.trim();
+  if (!key) return;
+  newProductSpecs[key] = val;
+  document.getElementById('new_spec_key').value = '';
+  document.getElementById('new_spec_val').value = '';
+  refreshNewSpecsList();
+};
+
+window.removeNewSpec = function(key) {
+  delete newProductSpecs[key];
+  refreshNewSpecsList();
+};
+
+function refreshNewSpecsList() {
+  var list = document.getElementById('new_specs_list');
+  if (!list) return;
+  list.innerHTML = Object.keys(newProductSpecs).map(function(k){
+    return '<div style="display:flex;justify-content:space-between;padding:4px 8px;background:#f9f9f9;border-radius:4px;margin-bottom:4px;font-size:.78rem;">'
+      +'<span><strong>'+k+':</strong> '+newProductSpecs[k]+'</span>'
+      +'<button onclick="removeNewSpec(\''+k+'\')" style="background:none;border:none;color:#cc0000;cursor:pointer;font-weight:900;">×</button>'
+      +'</div>';
+  }).join('');
+}
 </script>
 <!-- Load products data -->
 <script src="products-data.js"></script>
