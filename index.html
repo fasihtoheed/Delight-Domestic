@@ -472,7 +472,7 @@ onAuthStateChanged(auth, function(user) {
       document.getElementById('navUserAvatar').src = user.photoURL || '';
       var adminLink = document.getElementById('adminPanelLink');
       if (adminLink) {
-        adminLink.style.display = user.email === 'fasihtoheed918@gmail.com' ? 'flex' : 'none';
+        adminLink.style.display = user.email === 'delightdomestics786@gmail.com' ? 'flex' : 'none';
       }
     }
     localStorage.setItem('dd_user', JSON.stringify({name: user.displayName, email: user.email, photo: user.photoURL}));
