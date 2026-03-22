@@ -395,24 +395,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-window.addSpec = function(id) {
-  var keyEl = document.getElementById('newspeckey_'+id);
-  var valEl = document.getElementById('newspecval_'+id);
-  if (!keyEl.value.trim()) return;
-  var p = allProducts.find(function(x){ return x.id===id; });
-  if (!p) return;
-  if (!p.specs) p.specs = {};
-  p.specs[keyEl.value.trim()] = valEl.value.trim();
-  keyEl.value = ''; valEl.value = '';
-  renderProductsAdmin(allProducts);
-};
 
-window.removeSpec = function(id, key) {
-  var p = allProducts.find(function(x){ return x.id===id; });
-  if (!p || !p.specs) return;
-  delete p.specs[key];
-  renderProductsAdmin(allProducts);
-};
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyBwvJO0xnSZsZrgS9HH8WvPRnHGfdxssHY",
   authDomain: "delight-domestics.firebaseapp.com",
@@ -429,7 +414,23 @@ const provider = new GoogleAuthProvider();
 
 // ADMIN EMAIL — change this to your Gmail
 const ADMIN_EMAIL = "fasihtoheed918@gmail.com";
-
+window.removeSpec = function(id, key) {
+  var p = allProducts.find(function(x){ return x.id===id; });
+  if (!p || !p.specs) return;
+  delete p.specs[key];
+  renderProductsAdmin(allProducts);
+};
+window.addSpec = function(id) {
+  var keyEl = document.getElementById('newspeckey_'+id);
+  var valEl = document.getElementById('newspecval_'+id);
+  if (!keyEl.value.trim()) return;
+  var p = allProducts.find(function(x){ return x.id===id; });
+  if (!p) return;
+  if (!p.specs) p.specs = {};
+  p.specs[keyEl.value.trim()] = valEl.value.trim();
+  keyEl.value = ''; valEl.value = '';
+  renderProductsAdmin(allProducts);
+};
 var allOrders = [];
 var allProducts = [];
 var currentUser = null;
