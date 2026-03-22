@@ -418,7 +418,9 @@ window.removeSpec = function(id, key) {
   var p = allProducts.find(function(x){ return x.id===id; });
   if (!p || !p.specs) return;
   delete p.specs[key];
-  renderProductsAdmin(allProducts);
+  var activeCat = document.querySelector('.admin-filter-select') ? document.querySelector('.admin-filter-select').value : 'all';
+  var filtered = activeCat === 'all' ? allProducts : allProducts.filter(function(x){ return x.category === activeCat; });
+  renderProductsAdmin(filtered);
 };
 window.addSpec = function(id) {
   var keyEl = document.getElementById('newspeckey_'+id);
@@ -429,7 +431,9 @@ window.addSpec = function(id) {
   if (!p.specs) p.specs = {};
   p.specs[keyEl.value.trim()] = valEl.value.trim();
   keyEl.value = ''; valEl.value = '';
-  renderProductsAdmin(allProducts);
+  var activeCat = document.querySelector('.admin-filter-select') ? document.querySelector('.admin-filter-select').value : 'all';
+  var filtered = activeCat === 'all' ? allProducts : allProducts.filter(function(x){ return x.category === activeCat; });
+  renderProductsAdmin(filtered);
 };
 var allOrders = [];
 var allProducts = [];
@@ -628,6 +632,7 @@ function renderProductsAdmin(prods) {
       +'<div id="imgstatus_'+p.id+'" style="font-size:.7rem;color:#888;font-weight:600;min-height:16px;"></div>'
       +'</div>'
       +'<div class="pac-field"><label>Product Name</label><input class="pac-input" id="pname_'+p.id+'" value="'+p.name+'" placeholder="Product name"></div>'
+      +'<div class="pac-field"><label>Brand</label><input class="pac-input" id="pbrand_'+p.id+'" value="'+p.brand+'" placeholder="Brand name"></div>'
       +'<div class="pac-field"><label>Description</label><textarea class="pac-input" id="pdesc_'+p.id+'" rows="3" style="resize:vertical;">'+p.desc+'</textarea></div>'
       +'<div class="pac-field"><label>Price (Rs.)</label><input class="pac-input" id="price_'+p.id+'" value="'+p.price+'" placeholder="Rs. 0"></div>'
       +'<div class="pac-field"><label>Old Price (Rs.)</label><input class="pac-input" id="oldprice_'+p.id+'" value="'+(p.oldPrice||'')+'" placeholder="Leave empty if no discount"></div>'
@@ -721,6 +726,7 @@ window.saveProduct = async function(id) {
   try {
     var newName = document.getElementById('pname_'+id).value;
     var newDesc = document.getElementById('pdesc_'+id).value;
+    var newBrand = document.getElementById('pbrand_'+id).value;
     // Collect updated specs
     var newSpecs = {};
     var specsWrap = document.getElementById('specs_wrap_'+id);
@@ -735,9 +741,9 @@ window.saveProduct = async function(id) {
       });
     }
     await setDoc(doc(db, 'products', String(id)), {
-      ...p, name: newName, desc: newDesc, price: newPrice, oldPrice: newOldPrice, discount: newDiscount, badge: newBadge, specs: newSpecs, updatedAt: new Date().toISOString()
+      ...p, name: newName, brand: newBrand, desc: newDesc, price: newPrice, oldPrice: newOldPrice, discount: newDiscount, badge: newBadge, specs: newSpecs, updatedAt: new Date().toISOString()
     });
-    p.name = newName; p.desc = newDesc; p.price = newPrice; p.oldPrice = newOldPrice; p.discount = newDiscount; p.badge = newBadge; p.specs = newSpecs;
+    p.name = newName; p.brand = newBrand; p.desc = newDesc; p.price = newPrice; p.oldPrice = newOldPrice; p.discount = newDiscount; p.badge = newBadge; p.specs = newSpecs;
     btn.textContent = '✓ Saved!'; btn.classList.add('saved');
     setTimeout(function(){ btn.textContent = '💾 Save Changes'; btn.classList.remove('saved'); }, 2000);
   } catch(e) {
