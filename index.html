@@ -507,6 +507,7 @@ loadProductsFromFirebase().then(function() {
     if (typeof updateBrandFilter === 'function') updateBrandFilter('all');
     if (typeof updateDeliveryLock === 'function') updateDeliveryLock();
     applyFilters();
+    if (typeof updateCategoryCounts === 'function') updateCategoryCounts();
   }
 });
 </script>
@@ -1156,6 +1157,21 @@ function updateBrandFilter(cat) {
     var val = item.querySelector('input').value;
     item.style.display = allowed.indexOf(val) !== -1 ? '' : 'none';
     if (allowed.indexOf(val) === -1) item.querySelector('input').checked = false;
+  });
+}
+function updateCategoryCounts() {
+  var allCb = document.querySelector('input[name="category"][value="all"]');
+  if (allCb) {
+    var countEl = allCb.parentElement.querySelector('.filter-check-count');
+    if (countEl) countEl.textContent = products.length;
+  }
+  var cats = ['Kitchen','Summer Mix','Washing','Audio','Winter Mix','Fans','Furniture','House Essentials'];
+  cats.forEach(function(cat) {
+    var cb = document.querySelector('input[name="category"][value="'+cat+'"]');
+    if (cb) {
+      var countEl = cb.parentElement.querySelector('.filter-check-count');
+      if (countEl) countEl.textContent = products.filter(function(p){ return p.category === cat; }).length;
+    }
   });
 }
 function syncCategoryFilter() {
