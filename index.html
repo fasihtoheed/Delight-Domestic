@@ -1159,21 +1159,7 @@ function updateBrandFilter(cat) {
     if (allowed.indexOf(val) === -1) item.querySelector('input').checked = false;
   });
 }
-function updateCategoryCounts() {
-  var allCb = document.querySelector('input[name="category"][value="all"]');
-  if (allCb) {
-    var countEl = allCb.parentElement.querySelector('.filter-check-count');
-    if (countEl) countEl.textContent = products.length;
-  }
-  var cats = ['Kitchen','Summer Mix','Washing','Audio','Winter Mix','Fans','Furniture','House Essentials'];
-  cats.forEach(function(cat) {
-    var cb = document.querySelector('input[name="category"][value="'+cat+'"]');
-    if (cb) {
-      var countEl = cb.parentElement.querySelector('.filter-check-count');
-      if (countEl) countEl.textContent = products.filter(function(p){ return p.category === cat; }).length;
-    }
-  });
-}
+
 function syncCategoryFilter() {
   var catChecks = [].slice.call(document.querySelectorAll('input[name="category"]:checked')).map(function(i){ return i.value; });
   var cat = catChecks.length === 0 || catChecks.indexOf('all') !== -1 ? 'all' : catChecks[0];
@@ -1648,6 +1634,21 @@ function toggleMobileSearch() {
   if (search.classList.contains('mobile-open')) {
     document.getElementById('navSearch').focus();
   }
+}
+function updateCategoryCounts() {
+  var allCb = document.querySelector('input[name="category"][value="all"]');
+  if (allCb) {
+    var countEl = allCb.parentElement.querySelector('.filter-check-count');
+    if (countEl) countEl.textContent = products.length;
+  }
+  var cats = ['Kitchen','Summer Mix','Washing','Audio','Winter Mix','Fans','Furniture','House Essentials'];
+  cats.forEach(function(cat) {
+    var cb = document.querySelector('input[name="category"][value="'+cat+'"]');
+    if (cb) {
+      var countEl = cb.parentElement.querySelector('.filter-check-count');
+      if (countEl) countEl.textContent = products.filter(function(p){ return p.category === cat; }).length;
+    }
+  });
 }
 // ============================================================
 // INIT — runs immediately, no DOMContentLoaded needed
