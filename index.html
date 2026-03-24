@@ -1186,9 +1186,9 @@ function applyFilters() {
   var noFilter = allCat && brandChecks.length===0 && !codOnly && !saleOnly && !newOnly && !hotOnly && ratingChecks.length===0 && minP===0 && maxP===9999999 && searchQ==='';
   var list;
   if (noFilter) {
-    list = products.filter(function(p){ return FEATURED_IDS.indexOf(p.id) !== -1; });
-    document.getElementById('sectionTitleText').textContent = 'Featured Products';
-    document.querySelector('.view-all-link').style.display = '';
+      list = products.slice();  // Show ALL products instead of just featured
+      document.getElementById('sectionTitleText').textContent = 'All Products';
+      document.querySelector('.view-all-link').style.display = 'none';
   } else {
     document.querySelector('.view-all-link').style.display = 'none';
     list = products.slice();
