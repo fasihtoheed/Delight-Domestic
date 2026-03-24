@@ -986,11 +986,7 @@ function buildSpecs(p) {
     ['Warranty', p.warranty || 'Not specified'],
     ['Cash on Delivery', p.cod ? 'Available' : 'Not available'],
     ['Rating', p.rating + ' / 5'],
-    ['Availability', 'In Stock'],
-    ['Delivery', 'Lahore'],
-    ['Payment', 'Cash on Delivery, JazzCash, MCB Bank'],
-    ['Returns', 'Within 2 days of delivery'],
-    ['Condition', 'Brand New — Sealed Box']
+    
   ];
   if (p.oldPrice) rows.push(['Original Price', p.oldPrice]);
   if (p.discount) rows.push(['Discount', p.discount]);
