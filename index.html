@@ -1225,6 +1225,7 @@ function applyFilters() {
   document.getElementById('resultCount').textContent = list.length;
   renderGrid(list);
   updateChips(brandChecks, minP, maxP===9999999?0:maxP, codOnly, saleOnly, newOnly, hotOnly);
+  updateCategoryCounts();
 }
 
 function updateChips(brands, minP, maxP, cod, sale, nw, hot) {
@@ -1264,6 +1265,7 @@ function clearAllFilters() {
   document.getElementById('priceMax').value = '';
   document.getElementById('sortSelect').value = 'default';
   applyFilters();
+  updateCategoryCounts();
 }
 function toggleGroup(id) { document.getElementById(id).classList.toggle('open'); }
 function toggleMobileFilter() {
