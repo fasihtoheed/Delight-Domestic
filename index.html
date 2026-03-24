@@ -507,7 +507,7 @@ loadProductsFromFirebase().then(function() {
     if (typeof updateBrandFilter === 'function') updateBrandFilter('all');
     if (typeof updateDeliveryLock === 'function') updateDeliveryLock();
     applyFilters();
-    if (typeof updateCategoryCounts === 'function') updateCategoryCounts();
+    setTimeout(function(){ if (typeof updateCategoryCounts === 'function') updateCategoryCounts(); }, 500);
   }
 });
 </script>
