@@ -692,7 +692,9 @@ window.uploadProductImages = async function(id, files) {
     statusEl.style.color = '#00a651';
 
     // Refresh the product card to show new image
-    renderProductsAdmin(allProducts);
+    var activeCat = document.querySelector('#sec-products .admin-filter-select') ? document.querySelector('#sec-products .admin-filter-select').value : 'all';
+    var filtered = activeCat === 'all' ? allProducts : allProducts.filter(function(x){ return x.category === activeCat; });
+    renderProductsAdmin(filtered);
   } catch(e) {
     statusEl.textContent = '❌ Firebase error: ' + e.message;
     statusEl.style.color = '#cc0000';
