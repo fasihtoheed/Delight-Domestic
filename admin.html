@@ -641,7 +641,7 @@ function renderProductsAdmin(prods) {
       +'<div class="pac-field"><label>Badge</label>'
       +'<select class="pac-input" id="badge_'+p.id+'"><option value="">None</option><option value="New"'+(p.badge==='New'?' selected':'')+'>New</option><option value="Sale"'+(p.badge==='Sale'?' selected':'')+'>Sale</option><option value="Hot"'+(p.badge==='Hot'?' selected':'')+'>Hot</option></select></div>'
       +'<div class="pac-field"><label style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="this.nextSibling.style.display=this.nextSibling.style.display===\'none\'?\'block\':\'none\'">Product Specifications <span>▼</span></label>'
-      +'<div style="display:none;margin-top:8px;max-height:400px;overflow-y:auto;" id="specs_wrap_'+p.id+'">'
+      +'<div style="display:none;margin-top:8px;max-height:70vh;overflow-y:auto;" id="specs_wrap_'+p.id+'">'
       + Object.keys(p.specs||{}).map(function(key, idx){ 
         var safeId = 'spec_' + p.id + '_' + idx;
         var keyEscaped = key.replace(/'/g, "\\'");
