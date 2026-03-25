@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Delight Domestics</title>
+  <link rel="icon" type="image/jpeg" href="images/logos/delight-logo.jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --bg-white: #ffffff;
+      --bg-section: #f8f0f0;
+      --brand: #1a1a1a;
+      --brand-dark: #000000;
+      --brand-light: #f5e8e8;
+      --action: #cc0000;
+      --action-hover: #aa0000;
+      --text-dark: #1a1a1a;
+      --text-body: #444444;
+      --text-muted: #888888;
+      --border: #e8d8d8;
+      --shadow-sm: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-md: 0 8px 32px rgba(0,0,0,0.12);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.16);
+      --green: #00a651;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-dark);
+      font-family: 'Nunito', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* BACKGROUND WITH LOGO */
+    .hero-background {
+      position: relative;
+      height: 60vh;
+      background: linear-gradient(120deg, #1a1a1a 0%, #2d0000 50%, #cc0000 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .logo-background {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    .logo-background img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-content p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* IMAGE CAROUSEL */
+    .carousel-section {
+      background: var(--bg-white);
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .carousel-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .carousel-wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      height: 300px;
+    }
+
+    .carousel-img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .carousel-img.active {
+      opacity: 1;
+    }
+
+    /* CONTENT SECTIONS */
+    .content-wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .info-section {
+      padding: 60px 0;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .info-section:last-child {
+      border-bottom: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .section-header::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 24px;
+      background: var(--action);
+      border-radius: 3px;
+    }
+
+    .section-header h2 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      letter-spacing: -0.01em;
+    }
+
+    .section-body {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .info-card {
+      background: var(--bg-white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--action);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+    }
+
+    .card-content {
+      font-size: 0.95rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    .card-content a {
+      color: var(--action);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+
+    .card-content a:hover {
+      color: var(--action-hover);
+      text-decoration: underline;
+    }
+
+    /* ABOUT US SECTION */
+    #about-us .section-body {
+      grid-template-columns: 1fr;
+    }
+
+    .about-intro {
+      background: linear-gradient(135deg, #fff0f0, #ffd6d6);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .about-intro p {
+      font-size: 1rem;
+      color: var(--text-body);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .branches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .branch-card {
+      background: var(--bg-white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .branch-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--action);
+    }
+
+    .branch-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .branch-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .branch-link {
+      display: inline-block;
+      background: var(--action);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+      margin-top: 12px;
+    }
+
+    .branch-link:hover {
+      background: var(--action-hover);
+    }
+
+    /* POLICY SECTIONS */
+    #return-policy .section-body,
+    #service-centres .section-body,
+    #terms .section-body {
+      grid-template-columns: 1fr;
+    }
+
+    .policy-card {
+      background: var(--bg-white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    .policy-card p {
+      font-size: 0.95rem;
+      color: var(--text-body);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .policy-card ul {
+      margin-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    .policy-card li {
+      font-size: 0.95rem;
+      color: var(--text-body);
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .policy-card strong {
+      color: var(--action);
+      font-weight: 800;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      background: #1a1a1a;
+      color: white;
+      padding: 8px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .topbar a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .topbar a:hover {
+      color: white;
+    }
+
+    .topbar-highlight {
+      background: var(--action);
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    /* NAVBAR */
+    nav {
+      background: var(--bg-white);
+      border-bottom: 3px solid var(--action);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-logo {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .logo-parallelogram {
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      transform: translateY(-50%) skewX(-12deg);
+      width: calc(100% + 16px);
+      height: 38px;
+      background: linear-gradient(135deg, #1a1a1a 0%, #cc0000 100%);
+      border-radius: 3px;
+      z-index: 0;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      position: relative;
+      z-index: 1;
+      white-space: nowrap;
+    }
+
+    .logo-text .d1 {
+      color: #ffffff;
+    }
+
+    .logo-text .d2 {
+      color: #ffcccc;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #1a1a1a;
+      color: white;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 44px 32px 32px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 36px;
+    }
+
+    .footer-logo {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .footer-logo span {
+      color: var(--action);
+    }
+
+    .footer-about {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.84rem;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 8px;
+    }
+
+    .social-btn {
+      width: 34px;
+      height: 34px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 0.82rem;
+    }
+
+    .social-btn:hover {
+      background: var(--action);
+    }
+
+    .footer-col h4 {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 9px;
+    }
+
+    .footer-col a {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.84rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      background: rgba(204, 0, 0, 0.2);
+      overflow: hidden;
+      border-top: 1px solid rgba(204, 0, 0, 0.3);
+    }
+
+    .footer-bottom-marquee {
+      display: flex;
+      animation: marquee 28s linear infinite;
+      width: max-content;
+      padding: 14px 0;
+    }
+
+    .footer-bottom-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 28px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.4);
+      white-space: nowrap;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      transition: color 0.2s;
+    }
+
+    .footer-bottom-item:hover {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .footer-bottom-item .bdot {
+      color: var(--action);
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .info-section {
+      animation: fadeUp 0.6s ease-out forwards;
+    }
+
+    @media (max-width: 768px) {
+      .hero-background {
+        height: 40vh;
+      }
+
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+
+      .hero-content p {
+        font-size: 0.95rem;
+      }
+
+      .carousel-wrapper {
+        height: 200px;
+      }
+
+      .carousel-title {
+        font-size: 1rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.4rem;
+      }
+
+      .content-wrapper {
+        padding: 0 16px;
+      }
+
+      .info-section {
+        padding: 40px 0;
+      }
+
+      .section-body {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        padding: 28px 16px;
+        gap: 24px;
+      }
+
+      .topbar {
+        padding: 6px 16px;
+        font-size: 0.72rem;
+      }
+
+      .topbar-right {
+        display: none;
+      }
+
+      .nav-inner {
+        padding: 0 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span>📞 WhatsApp: 03008076625</span>
+      <span class="topbar-highlight">🔥 Eid Sale: Up to 40% OFF</span>
+    </div>
+    <div class="topbar-right">
+      <a href="index.html">Back to Store</a>
+      <a href="https://wa.me/923008076625" target="_blank">Contact Us</a>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-parallelogram"></div>
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <span class="logo-text"><span class="d1">Delight</span>&nbsp;<span class="d2">Domestics</span></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION WITH LOGO BACKGROUND -->
+  <section class="hero-background">
+    <div class="logo-background">
+      <img src="images/logos/delight-logo.jpeg" alt="Delight Domestics Logo">
+    </div>
+    <div class="hero-content">
+      <h1>Delight Domestics</h1>
+      <p>Pakistan's Premium Trusted Electric Appliances Store</p>
+    </div>
+  </section>
+
+  <!-- CAROUSEL SECTION -->
+  <section class="carousel-section">
+    <div class="content-wrapper">
+      <div class="carousel-title">Our Branches</div>
+      <div class="carousel-wrapper">
+        <img src="images/logos/shop1.jpg" alt="Branch 1" class="carousel-img active">
+        <img src="images/logos/shop2.jpg" alt="Branch 2" class="carousel-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT SECTIONS -->
+  <div class="content-wrapper">
+
+    <!-- ABOUT US SECTION -->
+    <section class="info-section" id="about-us">
+      <div class="section-header">
+        <h2>About Us</h2>
+      </div>
+
+      <div class="about-intro">
+        <p>
+          <strong>Delight Domestics</strong> is Pakistan's trusted destination for premium electric appliances. 
+          We are authorized dealers of leading global brands including PEL, Dawlance, Samsung, Haier, and more. 
+          With a commitment to quality and customer satisfaction, we serve customers nationwide with genuine products, 
+          competitive pricing, and excellent after-sales service.
+        </p>
+        <p>
+          Operating since 1987, we pride ourselves on offering authentic appliances backed by official warranty and 
+          nationwide cash-on-delivery service. Our team is dedicated to helping you find the perfect appliance for your home.
+        </p>
+      </div>
+
+      <div class="section-header" style="margin-top: 32px;">
+        <h2>Our Branches</h2>
+      </div>
+
+      <div class="branches-grid">
+        <div class="branch-card">
+          <div class="branch-icon">🏪</div>
+          <div class="branch-name">Branch 1</div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin: 8px 0;">
+            Location details and contact info
+          </p>
+          <a href="https://wa.me/923008076625?text=Hi! I want to visit Branch 1" target="_blank" class="branch-link">
+            Visit Branch 1
+          </a>
+        </div>
+
+        <div class="branch-card">
+          <div class="branch-icon">🏪</div>
+          <div class="branch-name">Branch 2</div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin: 8px 0;">
+            Location details and contact info
+          </p>
+          <a href="https://wa.me/923008076625?text=Hi! I want to visit Branch 2" target="_blank" class="branch-link">
+            Visit Branch 2
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RETURN POLICY SECTION -->
+    <section class="info-section" id="return-policy">
+      <div class="section-header">
+        <h2>Return Policy</h2>
+      </div>
+
+      <div class="section-body">
+        <div class="policy-card">
+          <strong>Easy Returns & Exchange</strong>
+          <p>
+            We believe in customer satisfaction. If you're not completely happy with your purchase, 
+            we offer hassle-free returns and exchanges.
+          </p>
+
+          <strong>Return Window</strong>
+          <ul>
+            <li>7 days from delivery date for unopened/unused items</li>
+            <li>14 days for items with manufacturing defects</li>
+            <li>30 days extended warranty items</li>
+          </ul>
+
+          <strong>Return Process</strong>
+          <ul>
+            <li>Contact us via WhatsApp or email within the return window</li>
+            <li>Provide proof of purchase and product condition details</li>
+            <li>We'll arrange free pickup from your location</li>
+            <li>Refund processed within 5-7 business days after inspection</li>
+          </ul>
+
+          <strong>Conditions</strong>
+          <ul>
+            <li>Product must be in original condition with all packaging</li>
+            <li>Serial numbers must match purchase receipt</li>
+            <li>No physical damage or signs of misuse</li>
+            <li>All accessories and manuals must be included</li>
+          </ul>
+
+          <p style="margin-top: 16px;">
+            For detailed information, contact us at <strong>03008076625</strong> or email <strong>toheedahmed918@gmail.com</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE CENTRES SECTION -->
+    <section class="info-section" id="service-centres">
+      <div class="section-header">
+        <h2>Service Centres</h2>
+      </div>
+
+      <div class="section-body">
+        <div class="policy-card">
+          <strong>Authorized Service Network</strong>
+          <p>
+            We partner with authorized service centers across Pakistan to ensure your appliances 
+            receive professional maintenance and repair services.
+          </p>
+
+          <strong>Our Services Include:</strong>
+          <ul>
+            <li>Warranty repairs and servicing</li>
+            <li>Technical support and troubleshooting</li>
+            <li>Parts replacement and upgrades</li>
+            <li>Annual maintenance packages</li>
+            <li>Extended warranty options</li>
+          </ul>
+
+          <strong>Service Coverage</strong>
+          <ul>
+            <li>All authorized brands (PEL, Dawlance, Samsung, Haier, Orient, etc.)</li>
+            <li>Home service available in major cities</li>
+            <li>Walk-in service at our branches</li>
+            <li>Express service for urgent repairs</li>
+          </ul>
+
+          <strong>How to Schedule Service</strong>
+          <p>
+            Contact us at <strong>03008076625</strong> via WhatsApp or call us directly. 
+            Our team will guide you through the service process and schedule an appointment at your convenience.
+          </p>
+
+          <p style="margin-top: 16px;">
+            Email: <strong>toheedahmed918@gmail.com</strong> | <strong>fasihtoheed918@gmail.com</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TERMS & CONDITIONS SECTION -->
+    <section class="info-section" id="terms">
+      <div class="section-header">
+        <h2>Terms & Conditions</h2>
+      </div>
+
+      <div class="section-body">
+        <div class="policy-card">
+          <strong>General Terms</strong>
+          <p>
+            By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. 
+            If you do not agree to abide by the above, please do not use this service.
+          </p>
+
+          <strong>Product Information</strong>
+          <ul>
+            <li>All products are genuine and sourced from authorized distributors</li>
+            <li>Product images on our website are for reference only</li>
+            <li>Specifications are subject to change without notice</li>
+            <li>Prices are subject to market changes and stock availability</li>
+          </ul>
+
+          <strong>Payment & Delivery</strong>
+          <ul>
+            <li>Cash on Delivery available nationwide</li>
+            <li>Online payment options including JazzCash and bank transfers</li>
+            <li>Delivery timeframe: 2-5 business days depending on location</li>
+            <li>Delivery charges may apply for remote areas</li>
+          </ul>
+
+          <strong>Warranty & Liability</strong>
+          <ul>
+            <li>All products carry official manufacturer warranty</li>
+            <li>Warranty does not cover physical damage or misuse</li>
+            <li>Delight Domestics is not liable for indirect or consequential damages</li>
+            <li>Warranty claims must be filed within specified timeframes</li>
+          </ul>
+
+          <strong>User Responsibilities</strong>
+          <ul>
+            <li>You are responsible for maintaining confidentiality of account information</li>
+            <li>Prohibited: Harassment, abuse, or inappropriate conduct</li>
+            <li>You agree not to reproduce or distribute website content without permission</li>
+            <li>All purchases are subject to verification and approval</li>
+          </ul>
+
+          <strong>Limitation of Liability</strong>
+          <p>
+            Delight Domestics shall not be liable for any direct, indirect, incidental, special, consequential, 
+            or punitive damages arising from your use of our website or products.
+          </p>
+
+          <strong>Dispute Resolution</strong>
+          <p>
+            Any disputes shall be resolved through mutual agreement. If unresolved, disputes shall be subject to 
+            the jurisdiction of courts in Pakistan.
+          </p>
+
+          <p style="margin-top: 24px; padding-top: 24px; border-top: 2px solid var(--border);">
+            <strong>Last Updated:</strong> March 2026<br>
+            For questions about these terms, contact us at <strong>03008076625</strong> or <strong>toheedahmed918@gmail.com</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <span class="footer-logo">Delight<span> Domestics</span></span>
+        <p class="footer-about">
+          Pakistan's trusted destination for premium electric appliances. 
+          Authorized dealer for PEL, Dawlance, Samsung, Haier, and more. 
+          Serving customers nationwide with genuine products and excellent service.
+        </p>
+        <div class="footer-social">
+          <div class="social-btn" onclick="window.open('https://facebook.com','_blank')" title="Facebook">f</div>
+          <div class="social-btn" onclick="window.open('https://instagram.com','_blank')" title="Instagram">in</div>
+          <div class="social-btn" onclick="window.open('https://youtube.com','_blank')" title="YouTube">yt</div>
+          <div class="social-btn" onclick="window.open('https://wa.me/923008076625','_blank')" title="WhatsApp">wa</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="index.html">All Products</a></li>
+          <li><a href="index.html#products" onclick="goCategory(null,'Kitchen')">Kitchen Appliances</a></li>
+          <li><a href="index.html#products" onclick="goCategory(null,'Fans')">Fans</a></li>
+          <li><a href="index.html#products" onclick="goCategory(null,'Washing')">Washing Machines</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#return-policy">Return Policy</a></li>
+          <li><a href="#service-centres">Service Centers</a></li>
+          <li><a href="https://wa.me/923008076625?text=Hi! I want to track my order." target="_blank">Track Order</a></li>
+          <li><a href="https://wa.me/923008076625" target="_blank">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="https://wa.me/923008076625" target="_blank">WhatsApp: 03008076625</a></li>
+          <li><a href="mailto:toheedahmed918@gmail.com">toheedahmed918@gmail.com</a></li>
+          <li><a href="mailto:fasihtoheed918@gmail.com">fasihtoheed918@gmail.com</a></li>
+          <li><a href="#about-us">About Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-marquee">
+        <div class="footer-bottom-item"><span class="bdot">✦</span> © 2026 Delight Domestics Pakistan</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: PEL</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Dawlance</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Samsung</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Haier</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Cash on Delivery</div>
+        <div class="footer-bottom-item"><span class="bdot">💵</span> JazzCash Accepted</div>
+        <div class="footer-bottom-item"><span class="bdot">🏦</span> MCB Bank Transfer</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> All Rights Reserved</div>
+        <!-- Duplicate for seamless loop -->
+        <div class="footer-bottom-item"><span class="bdot">✦</span> © 2026 Delight Domestics Pakistan</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: PEL</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Dawlance</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Samsung</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Authorized Dealer: Haier</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> Cash on Delivery</div>
+        <div class="footer-bottom-item"><span class="bdot">💵</span> JazzCash Accepted</div>
+        <div class="footer-bottom-item"><span class="bdot">🏦</span> MCB Bank Transfer</div>
+        <div class="footer-bottom-item"><span class="bdot">✦</span> All Rights Reserved</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Carousel auto-rotation
+    (function startCarousel() {
+      const imgs = document.querySelectorAll('.carousel-img');
+      let current = 0;
+      
+      setInterval(function() {
+        imgs[current].classList.remove('active');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('active');
+      }, 5000);
+    })();
+
+    // Smooth scroll on anchor click
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href !== '#') {
+          e.preventDefault();
+          const element = document.querySelector(href);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
