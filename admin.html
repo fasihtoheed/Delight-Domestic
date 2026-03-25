@@ -640,13 +640,15 @@ function renderProductsAdmin(prods) {
       +'<div class="pac-field"><label>Stock Quantity</label><input class="pac-input" type="number" id="stock_'+p.id+'" value="'+(p.stock||0)+'" min="0"></div>'
       +'<div class="pac-field"><label>Badge</label>'
       +'<select class="pac-input" id="badge_'+p.id+'"><option value="">None</option><option value="New"'+(p.badge==='New'?' selected':'')+'>New</option><option value="Sale"'+(p.badge==='Sale'?' selected':'')+'>Sale</option><option value="Hot"'+(p.badge==='Hot'?' selected':'')+'>Hot</option></select></div>'
+      // NEW: Warranty, Rating, and COD fields
+      +'<div class="pac-field"><label>Warranty</label><input class="pac-input" id="warranty_'+p.id+'" value="'+(p.warranty||'')+'" placeholder="e.g. 1 Year, 2 Years"></div>'
+      +'<div class="pac-field"><label>Rating</label><input class="pac-input" type="number" id="rating_'+p.id+'" value="'+(p.rating||'')+'" placeholder="4.5" min="0" max="5" step="0.1"></div>'
+      +'<div class="pac-field"><label>Cash on Delivery</label>'
+      +'<select class="pac-input" id="cod_'+p.id+'"><option value="false"'+(p.cod===false || !p.cod?' selected':'')+'>No</option><option value="true"'+(p.cod===true?' selected':'')+'>Yes</option></select></div>'
       +'<div class="pac-field"><label style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="this.nextSibling.style.display=this.nextSibling.style.display===\'none\'?\'block\':\'none\'">Product Specifications <span>▼</span></label>'
-      +'<div style="display:none;margin-top:8px;max-height:70vh;overflow-y:auto;" id="specs_wrap_'+p.id+'">'
-      + Object.keys(p.specs||{}).map(function(key, idx){ 
-        var safeId = 'spec_' + p.id + '_' + idx;
-        var keyEscaped = key.replace(/'/g, "\\'");
-        return '<div style="display:flex;gap:6px;margin-bottom:6px;align-items:center;"><input class="pac-input" style="flex:1" value="'+key+'" id="speckey_'+safeId+'" placeholder="Spec name"><input class="pac-input" style="flex:1" value="'+(p.specs[key]||'')+'" id="specval_'+safeId+'" placeholder="Value"><button onclick="removeSpec('+p.id+',\''+keyEscaped+'\')" style="background:#cc0000;color:white;border:none;border-radius:5px;padding:4px 8px;cursor:pointer;font-weight:800;">×</button></div>'; 
-      }).join('')
+      +'<div style="display:none;margin-top:8px;max-height:400px;overflow-y:auto;" id="specs_wrap_'+p.id+'">'
+      + Object.keys(p.specs||{}).map(function(key){ return '<div style="display:flex;gap:6px;margin-bottom:6px;"><input class="pac-input" style="flex:1" value="'+key+'" id="speckey_'+p.id+'_'+key.replace(/\s/g,"_")+'" placeholder="Spec name"><input class="pac-input" style="flex:1" value="'+(p.specs[key]||'')+'" id="specval_'+p.id+'_'+key.replace(/\s/g,"_")+'" placeholder="Value"><button onclick="removeSpec('+p.id+',\''+key+'\')" style="background:#cc0000;color:white;border:none;border-radius:5px;padding:4px 8px;cursor:pointer;font-weight:800;">×</button></div>'; }).join('')
+      +'<div id="newspec_'+p.id+'"><div style="display:flex;gap:6px;margin-bottom:6px;"><input class="pac-input" style="flex:1" id="newspeckey_'+p.id+'" placeholder="New spec name"><input class="pac-input" style="flex:1" id="newspecval_'+p.id+'" placeholder="Value"></div>'
       +'<button onclick="addSpec('+p.id+')" style="width:100%;background:#1a1a1a;color:white;border:none;padding:6px;border-radius:5px;font-family:Nunito,sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;">+ Add Spec</button></div>'
       +'</div></div>'
       +'<button class="btn-save-product" id="savebtn_'+p.id+'" onclick="saveProduct('+p.id+')">💾 Save Changes</button>'
@@ -721,40 +723,51 @@ window.deleteProductImage = async function(id, index) {
   }
 };
 window.saveProduct = async function(id) {
-  var p = allProducts.find(function(x){ return x.id === id; });
-  if (!p) return;
-  var newPrice = document.getElementById('price_'+id).value;
-  var newOldPrice = document.getElementById('oldprice_'+id).value;
-  var newDiscount = document.getElementById('discount_'+id).value;
-  var newBadge = document.getElementById('badge_'+id).value;
-  var btn = document.getElementById('savebtn_'+id);
-  btn.textContent = 'Saving...';
   try {
-    var newName = document.getElementById('pname_'+id).value;
-    var newDesc = document.getElementById('pdesc_'+id).value;
-    var newBrand = document.getElementById('pbrand_'+id).value;
-    // Collect updated specs
+    var p = allProducts.find(function(x){ return x.id===id; });
+    if (!p) return;
+    
+    // Get values from form inputs
+    p.name = document.getElementById('pname_'+id).value.trim();
+    p.brand = document.getElementById('pbrand_'+id).value.trim();
+    p.desc = document.getElementById('pdesc_'+id).value.trim();
+    p.price = document.getElementById('price_'+id).value.trim();
+    p.oldPrice = document.getElementById('oldprice_'+id).value.trim() || null;
+    p.discount = document.getElementById('discount_'+id).value.trim() || null;
+    p.stock = parseInt(document.getElementById('stock_'+id).value) || 0;
+    p.badge = document.getElementById('badge_'+id).value || '';
+    // NEW: Get warranty, rating, and COD values
+    p.warranty = document.getElementById('warranty_'+id).value.trim() || null;
+    p.rating = parseFloat(document.getElementById('rating_'+id).value) || null;
+    p.cod = document.getElementById('cod_'+id).value === 'true';
+    
+    // Update specs from the form inputs
     var newSpecs = {};
-    var specsWrap = document.getElementById('specs_wrap_'+id);
-    if (specsWrap) {
-      Object.keys(p.specs||{}).forEach(function(key) {
-        var safeKey = key.replace(/\s/g,'_');
-        var keyEl = document.getElementById('speckey_'+id+'_'+safeKey);
-        var valEl = document.getElementById('specval_'+id+'_'+safeKey);
-        if (keyEl && valEl && keyEl.value.trim()) {
-          newSpecs[keyEl.value.trim()] = valEl.value.trim();
-        }
-      });
-    }
-    await setDoc(doc(db, 'products', String(id)), {
-      ...p, name: newName, brand: newBrand, desc: newDesc, price: newPrice, oldPrice: newOldPrice, discount: newDiscount, badge: newBadge, specs: newSpecs, updatedAt: new Date().toISOString()
+    document.querySelectorAll('#specs_wrap_'+id+' > div').forEach(function(div){
+      var inputs = div.querySelectorAll('input');
+      if (inputs.length >= 2) {
+        var key = inputs[0].value.trim();
+        var val = inputs[1].value.trim();
+        if (key && val) newSpecs[key] = val;
+      }
     });
-    p.name = newName; p.brand = newBrand; p.desc = newDesc; p.price = newPrice; p.oldPrice = newOldPrice; p.discount = newDiscount; p.badge = newBadge; p.specs = newSpecs;
-    btn.textContent = '✓ Saved!'; btn.classList.add('saved');
-    setTimeout(function(){ btn.textContent = '💾 Save Changes'; btn.classList.remove('saved'); }, 2000);
+    if (Object.keys(newSpecs).length > 0) p.specs = newSpecs;
+    
+    // Update in Firestore
+    var docRef = doc(db, 'products', p.id.toString());
+    await updateDoc(docRef, p);
+    
+    // Show success feedback
+    var btn = document.getElementById('savebtn_'+id);
+    btn.classList.add('saved');
+    btn.textContent = '✓ Saved!';
+    setTimeout(function(){ 
+      btn.classList.remove('saved');
+      btn.textContent = '💾 Save Changes';
+    }, 2000);
   } catch(e) {
-    btn.textContent = '❌ Error — try again';
-    setTimeout(function(){ btn.textContent = '💾 Save Changes'; }, 2000);
+    alert('Error saving product: ' + e.message);
+    console.error(e);
   }
 };
 
