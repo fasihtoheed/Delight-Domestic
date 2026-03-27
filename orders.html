@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/jpeg" href="images/logos/delight-logo.jpeg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Orders — Delight Domestics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #f4f6fb; --bg-white: #ffffff; --action: #cc0000; --action-hover: #aa0000;
+      --text-dark: #1a1a1a; --text-body: #444; --text-muted: #888;
+      --border: #e8d8d8; --green: #00a651;
+      --shadow-sm: 0 2px 12px rgba(0,0,0,.08);
+      --shadow-md: 0 8px 32px rgba(0,0,0,.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text-dark); font-family: 'Nunito', sans-serif; }
+    
+    /* NAVBAR (same as index) */
+    nav { background: white; border-bottom: 3px solid var(--action); position: sticky; top: 0; z-index: 200; box-shadow: var(--shadow-sm); }
+    .nav-inner { max-width: 1300px; margin: 0 auto; padding: 0 32px; height: 70px; display: flex; align-items: center; gap: 24px; }
+    .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .logo-parallelogram { position: absolute; left: -8px; top: 50%; transform: translateY(-50%) skewX(-12deg); width: calc(100% + 16px); height: 38px; background: linear-gradient(135deg, #1a1a1a 0%, #cc0000 100%); border-radius: 3px; }
+    .logo-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; flex-shrink: 0; }
+    .logo-text { font-size: 1.15rem; font-weight: 900; position: relative; z-index: 1; white-space: nowrap; }
+    .logo-text .d1 { color: #fff; } .logo-text .d2 { color: #ffcccc; }
+    
+    /* MAIN CONTENT */
+    .container { max-width: 1000px; margin: 40px auto; padding: 0 32px; }
+    .page-title { font-size: 2rem; font-weight: 900; margin-bottom: 30px; }
+    
+    /* LOGIN STATE */
+    .login-prompt { background: white; border: 2px solid var(--border); border-radius: 12px; padding: 40px; text-align: center; }
+    .login-prompt h2 { font-size: 1.3rem; margin-bottom: 10px; }
+    .login-prompt p { color: var(--text-muted); margin-bottom: 20px; }
+    .btn-login { background: var(--action); color: white; border: none; padding: 12px 32px; border-radius: 6px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .9rem; cursor: pointer; }
+    .btn-login:hover { background: var(--action-hover); }
+    
+    /* ORDERS LIST */
+    .orders-list { display: grid; gap: 20px; }
+    .order-card { background: white; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .order-header { background: #f9f9f9; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+    .order-number { font-size: 1.1rem; font-weight: 900; color: var(--action); }
+    .order-status { font-size: .75rem; font-weight: 800; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; background: #ffeaea; color: var(--action); }
+    .order-status.completed { background: #e8f5e9; color: var(--green); }
+    .order-body { padding: 20px; }
+    .order-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .info-item { }
+    .info-label { font-size: .75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); letter-spacing: .06em; margin-bottom: 4px; }
+    .info-value { font-size: .9rem; font-weight: 700; color: var(--text-dark); }
+    .order-items { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .order-items-title { font-size: .75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; color: var(--text-muted); }
+    .item-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: .85rem; }
+    .item-row-name { font-weight: 600; }
+    .item-row-price { color: var(--text-muted); }
+    .order-total { display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--border); margin-top: 12px; font-size: 1rem; font-weight: 900; }
+    
+    .empty-state { text-align: center; padding: 40px; }
+    .empty-icon { font-size: 3rem; margin-bottom: 10px; }
+    .empty-text { color: var(--text-muted); }
+    
+    @media (max-width: 768px) {
+      .container { padding: 0 16px; }
+      .page-title { font-size: 1.5rem; }
+      .order-info { grid-template-columns: 1fr; }
+      .order-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" style="position: relative;">
+      <div class="logo-parallelogram"></div>
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <span class="logo-text"><span class="d1">Delight</span>&nbsp;<span class="d2">Domestics</span></span>
+    </a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="page-title">📦 Track Your Orders</h1>
+  
+  <!-- LOGIN PROMPT (shown when not logged in) -->
+  <div class="login-prompt" id="loginPrompt" style="display: none;">
+    <div class="empty-icon">🔐</div>
+    <h2>Sign in to view your orders</h2>
+    <p>You need to be logged in to track your orders.</p>
+    <button class="btn-login" onclick="loginWithGoogle()">Sign In with Google</button>
+  </div>
+  
+  <!-- ORDERS LIST (shown when logged in) -->
+  <div id="ordersContainer" style="display: none;">
+    <div class="orders-list" id="ordersList"></div>
+  </div>
+  
+  <!-- EMPTY ORDERS STATE -->
+  <div class="empty-state" id="emptyOrders" style="display: none;">
+    <div class="empty-icon">📭</div>
+    <div class="empty-text">No orders yet. <a href="index.html" style="color: var(--action); font-weight: 700;">Start shopping</a></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBwvJO0xnSZsZrgS9HH8WvPRnHGfdxssHY",
+  authDomain: "delight-domestics.firebaseapp.com",
+  projectId: "delight-domestics",
+  storageBucket: "delight-domestics.firebasestorage.app",
+  messagingSenderId: "173273036262",
+  appId: "1:173273036262:web:1483a4a86783cc82279227"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+window.loginWithGoogle = async function() {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch(e) {
+    console.error(e);
+  }
+};
+
+onAuthStateChanged(auth, async function(user) {
+  if (user) {
+    // User is logged in - fetch their orders
+    await loadUserOrders(user.email);
+  } else {
+    // User is not logged in - show login prompt
+    document.getElementById('loginPrompt').style.display = 'block';
+    document.getElementById('ordersContainer').style.display = 'none';
+    document.getElementById('emptyOrders').style.display = 'none';
+  }
+});
+
+async function loadUserOrders(userEmail) {
+  try {
+    const ordersRef = collection(db, 'orders');
+    const q = query(ordersRef, where('email', '==', userEmail));
+    const snapshot = await getDocs(q);
+    
+    const orders = [];
+    snapshot.forEach(doc => {
+      orders.push({ id: doc.id, ...doc.data() });
+    });
+    
+    // Sort by date (newest first)
+    orders.sort((a, b) => new Date(b.createdAt?.toDate?.() || 0) - new Date(a.createdAt?.toDate?.() || 0));
+    
+    document.getElementById('loginPrompt').style.display = 'none';
+    
+    if (orders.length === 0) {
+      document.getElementById('emptyOrders').style.display = 'block';
+      document.getElementById('ordersContainer').style.display = 'none';
+    } else {
+      document.getElementById('emptyOrders').style.display = 'none';
+      document.getElementById('ordersContainer').style.display = 'block';
+      renderOrders(orders);
+    }
+  } catch (error) {
+    console.error('Error loading orders:', error);
+  }
+}
+
+function renderOrders(orders) {
+  const listContainer = document.getElementById('ordersList');
+  
+  listContainer.innerHTML = orders.map(order => `
+    <div class="order-card">
+      <div class="order-header">
+        <div>
+          <div class="order-number">Order #${order.orderNumber}</div>
+        </div>
+        <div class="order-status ${order.status === 'completed' ? 'completed' : ''}">
+          ${order.status || 'Pending'}
+        </div>
+      </div>
+      <div class="order-body">
+        <div class="order-info">
+          <div class="info-item">
+            <div class="info-label">Customer Name</div>
+            <div class="info-value">${order.name || 'N/A'}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Phone</div>
+            <div class="info-value">${order.phone || 'N/A'}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Address</div>
+            <div class="info-value">${order.address || 'N/A'}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Payment Method</div>
+            <div class="info-value">${order.payment || 'N/A'}</div>
+          </div>
+        </div>
+        
+        <div class="order-items">
+          <div class="order-items-title">Items Ordered</div>
+          ${order.items?.map(item => `
+            <div class="item-row">
+              <div class="item-row-name">${item.name} × ${item.qty}</div>
+              <div class="item-row-price">${item.price}</div>
+            </div>
+          `).join('') || '<div class="item-row">No items</div>'}
+          <div class="order-total">
+            <span>Total:</span>
+            <span>Rs. ${order.total?.toLocaleString?.() || 0}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+
+</body>
+</html>
