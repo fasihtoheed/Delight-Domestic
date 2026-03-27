@@ -513,6 +513,61 @@ loadProductsFromFirebase().then(function() {
   }
 });
 </script>
+</script>
+
+<!-- ADD THIS CODE BLOCK HERE - After line 515 -->
+<script>
+// Load saved cart and wishlist when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Load cart from localStorage
+  var savedCart = localStorage.getItem('dd_cart');
+  if (savedCart) {
+    try {
+      window.cartItems = JSON.parse(savedCart);
+      var cartTotal = window.cartItems.reduce(function(s,x){ return s+x.qty; }, 0);
+      
+      // Update cart badge
+      var cartEl = document.getElementById('cartCount');
+      if (cartEl) {
+        cartEl.textContent = cartTotal;
+        if (cartTotal > 0) cartEl.classList.add('show');
+      }
+      console.log('Cart loaded:', window.cartItems);
+    } catch(e) {
+      console.log('Error loading cart:', e);
+    }
+  }
+  
+  // Load wishlist from localStorage
+  var savedWish = localStorage.getItem('dd_wish');
+  if (savedWish) {
+    try {
+      window.wishItems = JSON.parse(savedWish);
+      var wishTotal = window.wishItems.length;
+      
+      // Update wishlist badge
+      var wishEl = document.getElementById('wishlistCount');
+      if (wishEl) {
+        wishEl.textContent = wishTotal;
+        if (wishTotal > 0) wishEl.classList.add('show');
+      }
+      
+      // Mark items as liked if they're in wishlist
+      window.wishItems.forEach(function(item) {
+        var btn = document.querySelector('.wishlist-card[data-id="' + item.id + '"]');
+        if (btn) btn.classList.add('liked');
+      });
+      
+      console.log('Wishlist loaded:', window.wishItems);
+    } catch(e) {
+      console.log('Error loading wishlist:', e);
+    }
+  }
+});
+</script>
+
+<script src="products-data.js"></script>
+<script src="app-script.js"></script>
 </head>
 <body>
 
@@ -1042,7 +1097,7 @@ loadProductsFromFirebase().then(function() {
         <li><a href="information.html#return-policy">Return Policy</a></li>
         <li><a href="information.html#service-centres">Service Centers</a></li>
         <li><a href="information.html#terms">Terms & Conditions</a></li>
-        <li><a href="https://wa.me/923008076625?text=Hi! I want to track my order." target="_blank">Track Order</a></li>
+        <li><a href="orders.html">Track Order</a></li>
       </ul>
     </div>
     <div class="footer-col">
