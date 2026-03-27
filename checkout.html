@@ -502,6 +502,13 @@ window.validateForm = function() {
 
 window.placeOrder = async function() {
   if (!validateForm()) return;
+  
+  // Check if user is logged in
+  if (!window.currentUser) {
+    alert('Please sign in first to place your order');
+    return;
+  }
+  
   var orderNum = getNextOrderNumber();
   orderData = {
     orderNum: orderNum,
@@ -514,12 +521,14 @@ window.placeOrder = async function() {
     total: cartItems.reduce(function(s,x){ return s + pNum(x.price)*x.qty; }, 0),
     notes: document.getElementById('notes').value
   };
+  
   try {
+    // Save to Firebase with user email for tracking
     await addDoc(collection(db, 'orders'), {
       orderNumber: orderData.orderNum,
       name: orderData.name,
       phone: orderData.phone,
-      email: orderData.email,
+      email: orderData.email,  // This is the key for filtering orders
       address: orderData.address,
       payment: orderData.payment,
       items: orderData.items,
@@ -528,12 +537,28 @@ window.placeOrder = async function() {
       status: 'pending',
       createdAt: serverTimestamp()
     });
-  } catch(e) { console.error('Firebase save error:', e); }
+    
+    console.log('Order saved to Firebase:', orderData);
+  } catch(e) { 
+    console.error('Firebase save error:', e); 
+  }
+  
+  // Clear cart after successful order
+  localStorage.removeItem('dd_cart');
+  cartItems = [];
+  
   showSuccess();
 }
 
 window.placeOrderWhatsApp = function(){
   if (!validateForm()) return;
+  
+  // Check if user is logged in
+  if (!window.currentUser) {
+    alert('Please sign in first to place your order');
+    return;
+  }
+  
   var orderNum = getNextOrderNumber();
   var itemsList = cartItems.map(function(x){ return '• '+x.name+' x'+x.qty+' ('+x.price+')'; }).join('\n');
   var total = cartItems.reduce(function(s,x){ return s + pNum(x.price)*x.qty; }, 0);
@@ -548,12 +573,25 @@ window.placeOrderWhatsApp = function(){
     + 'Items:\n' + itemsList + '\n\n'
     + 'Total: Rs. ' + total.toLocaleString()
     + (document.getElementById('notes').value ? '\n\nNotes: ' + document.getElementById('notes').value : '');
-  orderData = {orderNum:orderNum, name:document.getElementById('fname').value, phone:document.getElementById('phone').value, email:document.getElementById('email').value, address:document.getElementById('address').value+', '+document.getElementById('city').value, payment:payMethod, items:cartItems.slice(), total:total};
+  
+  orderData = {
+    orderNum: orderNum,
+    name: document.getElementById('fname').value,
+    phone: document.getElementById('phone').value,
+    email: document.getElementById('email').value,
+    address: document.getElementById('address').value+', '+document.getElementById('city').value,
+    payment: payMethod,
+    items: cartItems.slice(),
+    total: total
+  };
+  
+  // Clear cart
   localStorage.removeItem('dd_cart');
+  cartItems = [];
+  
   window.open('https://wa.me/923008076625?text=' + encodeURIComponent(msg), '_blank');
   showSuccess();
 }
-
 window.showSuccess = function() {
   localStorage.removeItem('dd_cart');
   document.getElementById('checkoutWrap').style.display = 'none';
