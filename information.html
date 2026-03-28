@@ -6,15 +6,11 @@
   <title>About Us | Delight Domestics</title>
   <link rel="icon" type="image/jpeg" href="images/logos/delight-logo.jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
+
   <style>
     :root {
       --bg: #f4f6fb;
       --bg-white: #ffffff;
-      --bg-section: #f8f0f0;
-      --brand: #1a1a1a;
-      --brand-dark: #000000;
-      --brand-light: #f5e8e8;
       --action: #cc0000;
       --action-hover: #aa0000;
       --text-dark: #1a1a1a;
@@ -23,117 +19,15 @@
       --border: #e8d8d8;
       --shadow-sm: 0 2px 12px rgba(0,0,0,0.08);
       --shadow-md: 0 8px 32px rgba(0,0,0,0.12);
-      --shadow-lg: 0 20px 60px rgba(0,0,0,0.16);
-      --green: #00a651;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text-dark);
-      font-family: 'Nunito', sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* ── HERO BACKGROUND ── */
-    .hero-background {
-      position: relative;
-      height: 70vh;
-      min-height: 420px;
-      background: linear-gradient(135deg, #0d0d0d 0%, #1a0000 40%, #3a0000 70%, #cc0000 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* Large watermark logo — centred, fills the hero */
-    .logo-background {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .logo-background img {
-      width: min(70vw, 520px);
-      height: auto;
-      max-height: 90%;
-      object-fit: contain;
-      opacity: 0.18;
-      filter: grayscale(20%) brightness(1.4);
-    }
-
-    /* Subtle radial vignette so hero text stays readable */
-    .hero-background::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 30%, rgba(10,0,0,0.55) 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      color: white;
-      padding: 0 24px;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background: rgba(204, 0, 0, 0.85);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 30px;
-      padding: 5px 18px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #fff;
-      margin-bottom: 18px;
-    }
-
-    .hero-content h1 {
-      font-size: clamp(2rem, 5vw, 3.6rem);
-      font-weight: 900;
-      margin-bottom: 14px;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
-    }
-
-    .hero-content p {
-      font-size: clamp(0.95rem, 2vw, 1.15rem);
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 500;
-    }
-
-    .hero-divider {
-      width: 60px;
-      height: 3px;
-      background: var(--action);
-      border-radius: 3px;
-      margin: 18px auto 0;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text-dark); font-family: 'Nunito', sans-serif; overflow-x: hidden; }
 
     /* ── TOP BAR ── */
     .topbar {
-      background: #111111;
+      background: #111;
       color: white;
       padding: 9px 40px;
       display: flex;
@@ -143,36 +37,11 @@
       font-weight: 600;
       border-bottom: 1px solid rgba(204,0,0,0.35);
     }
-
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .topbar a {
-      color: rgba(255, 255, 255, 0.75);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .topbar a:hover {
-      color: white;
-    }
-
-    .topbar-highlight {
-      background: var(--action);
-      padding: 3px 12px;
-      border-radius: 3px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
+    .topbar-left { display: flex; align-items: center; gap: 24px; }
+    .topbar-right { display: flex; align-items: center; gap: 20px; }
+    .topbar a { color: rgba(255,255,255,0.75); text-decoration: none; transition: color 0.2s; }
+    .topbar a:hover { color: white; }
+    .topbar-highlight { background: var(--action); padding: 3px 12px; border-radius: 3px; font-weight: 700; }
 
     /* ── NAVBAR ── */
     nav {
@@ -183,7 +52,6 @@
       z-index: 200;
       box-shadow: 0 2px 16px rgba(0,0,0,0.10);
     }
-
     .nav-inner {
       max-width: 1300px;
       margin: 0 auto;
@@ -191,61 +59,83 @@
       height: 72px;
       display: flex;
       align-items: center;
-      gap: 24px;
     }
-
-    .nav-logo {
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-      position: relative;
-    }
-
+    .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; position: relative; }
     .logo-parallelogram {
-      position: absolute;
-      left: -8px;
-      top: 50%;
+      position: absolute; left: -8px; top: 50%;
       transform: translateY(-50%) skewX(-12deg);
-      width: calc(100% + 16px);
-      height: 40px;
+      width: calc(100% + 16px); height: 40px;
       background: linear-gradient(135deg, #1a1a1a 0%, #cc0000 100%);
-      border-radius: 4px;
-      z-index: 0;
+      border-radius: 4px; z-index: 0;
     }
+    .logo-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; flex-shrink: 0; }
+    .logo-text { font-size: 1.15rem; font-weight: 900; position: relative; z-index: 1; white-space: nowrap; }
+    .logo-text .d1 { color: #fff; }
+    .logo-text .d2 { color: #ffcccc; }
 
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      background: transparent;
+    /* ── HERO ── */
+    .hero-background {
+      position: relative;
+      height: 70vh;
+      min-height: 420px;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a0000 40%, #3a0000 70%, #cc0000 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 4px;
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
+      overflow: hidden;
     }
-
-    .logo-text {
-      font-size: 1.15rem;
+    .logo-background {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* ════ LINE 97: Hero logo size — change width to make logo bigger/smaller ════ */
+    .logo-background img {
+      width: min(70vw, 520px);
+      height: auto;
+      max-height: 90%;
+      object-fit: contain;
+      opacity: 0.18;
+      filter: grayscale(20%) brightness(1.4);
+    }
+    .hero-background::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(10,0,0,0.55) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; text-align: center; color: white; padding: 0 24px; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(204,0,0,0.85);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      padding: 5px 18px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+    .hero-content h1 {
+      font-size: clamp(2rem, 5vw, 3.6rem);
       font-weight: 900;
-      letter-spacing: -0.01em;
-      position: relative;
-      z-index: 1;
-      white-space: nowrap;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
     }
+    .hero-content p { font-size: clamp(0.95rem, 2vw, 1.15rem); color: rgba(255,255,255,0.8); font-weight: 500; }
+    .hero-divider { width: 60px; height: 3px; background: var(--action); border-radius: 3px; margin: 18px auto 0; }
 
-    .logo-text .d1 { color: #ffffff; }
-    .logo-text .d2 { color: #ffcccc; }
-
-    /* ── BRANCHES PHOTO SECTION (scroll-reveal) ── */
-    .branches-photo-section {
-      background: #0d0d0d;
-      padding: 64px 20px;
-    }
-
+    /* ── BRANCHES PHOTO SECTION ── */
+    .branches-photo-section { background: #0d0d0d; padding: 64px 20px; }
     .branches-photo-section .section-label {
       text-align: center;
       font-size: 0.72rem;
@@ -255,16 +145,13 @@
       color: var(--action);
       margin-bottom: 10px;
     }
-
     .branches-photo-section h2 {
       text-align: center;
       font-size: clamp(1.5rem, 3vw, 2.2rem);
       font-weight: 900;
       color: #fff;
       margin-bottom: 48px;
-      letter-spacing: -0.01em;
     }
-
     .branches-photos-grid {
       max-width: 1200px;
       margin: 0 auto;
@@ -274,39 +161,11 @@
     }
 
     /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(48px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-    }
+    .reveal-left  { opacity: 0; transform: translateX(-48px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal-right { opacity: 0; transform: translateX(48px);  transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: none; }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .reveal-left {
-      opacity: 0;
-      transform: translateX(-48px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-    }
-
-    .reveal-left.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    .reveal-right {
-      opacity: 0;
-      transform: translateX(48px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-    }
-
-    .reveal-right.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
+    /* ── BRANCH PHOTO CARD ── */
     .branch-photo-card {
       background: #1a1a1a;
       border: 1px solid rgba(204,0,0,0.25);
@@ -314,32 +173,47 @@
       overflow: hidden;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
+    .branch-photo-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(204,0,0,0.25); }
 
-    .branch-photo-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 50px rgba(204,0,0,0.25);
-    }
-
-    .branch-photo-img {
+    /* Branch 1 image wrapper — landscape photo, zoomed out to show full width */
+    /* ════ LINE 190: Branch 1 image container height ════ */
+    .branch1-img-wrap {
       width: 100%;
-      height: 260px;
-      object-fit: cover;
+      height: 280px;
+      overflow: hidden;
+      background: #111;
+    }
+    /* ════ LINE 197: Branch 1 image — object-fit:contain shows the full image without cropping ════ */
+    .branch1-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
       display: block;
       transition: transform 0.4s ease;
     }
+    .branch-photo-card:hover .branch1-img-wrap img { transform: scale(1.03); }
 
-    .branch-photo-card:hover .branch-photo-img {
-      transform: scale(1.04);
+    /* Branch 2 image wrapper — portrait/vertical photo, taller container */
+    /* ════ LINE 210: Branch 2 image container height — taller to suit vertical photo ════ */
+    .branch2-img-wrap {
+      width: 100%;
+      height: 360px;
+      overflow: hidden;
+      background: #111;
     }
-
-    /* ─── CHANGE LINE BELOW to update the image path for each branch ─── */
-    /* Branch 1 image: src="images/logos/shop1.jpg" */
-    /* Branch 2 image: src="images/logos/shop2.jpg" */
-
-    .branch-photo-body {
-      padding: 24px 24px 28px;
+    /* ════ LINE 217: Branch 2 image — object-fit:contain so the full vertical image shows ════ */
+    .branch2-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center top;
+      display: block;
+      transition: transform 0.4s ease;
     }
+    .branch-photo-card:hover .branch2-img-wrap img { transform: scale(1.03); }
 
+    .branch-photo-body { padding: 24px 24px 28px; }
     .branch-photo-tag {
       display: inline-block;
       background: rgba(204,0,0,0.15);
@@ -353,488 +227,151 @@
       border-radius: 30px;
       margin-bottom: 10px;
     }
+    .branch-photo-title { font-size: 1.25rem; font-weight: 900; color: #fff; margin-bottom: 6px; }
+    .branch-photo-address { font-size: 0.87rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 14px; }
 
-    .branch-photo-title {
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-
-    .branch-photo-address {
-      font-size: 0.87rem;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.6;
+    /* Manager info block */
+    .branch-manager-info {
+      background: rgba(204,0,0,0.08);
+      border: 1px solid rgba(204,0,0,0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
       margin-bottom: 18px;
     }
-
-    .branch-photo-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn-maps {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--action);
-      color: #fff;
-      padding: 9px 18px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.83rem;
+    .branch-manager-info .manager-label {
+      font-size: 0.68rem;
       font-weight: 800;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,130,130,0.8);
+      margin-bottom: 4px;
+    }
+    /* ════ LINE 253: Branch manager name text styling ════ */
+    .branch-manager-info .manager-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    /* ════ LINE 259: Branch manager phone text styling ════ */
+    .branch-manager-info .manager-phone {
+      font-size: 0.87rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 600;
+    }
+    .branch-manager-info .manager-phone a {
+      color: #ff8080;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .branch-manager-info .manager-phone a:hover { text-decoration: underline; }
+
+    .branch-photo-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-maps {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--action); color: #fff;
+      padding: 9px 18px; border-radius: 8px;
+      text-decoration: none; font-size: 0.83rem; font-weight: 800;
       transition: background 0.2s, transform 0.2s;
     }
-
-    .btn-maps:hover {
-      background: var(--action-hover);
-      transform: translateY(-2px);
-    }
-
+    .btn-maps:hover { background: var(--action-hover); transform: translateY(-2px); }
     .btn-whatsapp {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-flex; align-items: center; gap: 6px;
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
-      color: #fff;
-      padding: 9px 18px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.83rem;
-      font-weight: 700;
+      color: #fff; padding: 9px 18px; border-radius: 8px;
+      text-decoration: none; font-size: 0.83rem; font-weight: 700;
       transition: background 0.2s, transform 0.2s;
     }
-
-    .btn-whatsapp:hover {
-      background: rgba(255,255,255,0.15);
-      transform: translateY(-2px);
-    }
+    .btn-whatsapp:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
 
     /* ── CONTENT SECTIONS ── */
-    .content-wrapper {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
+    .content-wrapper { max-width: 1300px; margin: 0 auto; padding: 0 32px; }
+    .info-section { padding: 68px 0; border-bottom: 1.5px solid var(--border); animation: fadeUp 0.65s ease-out both; }
+    .info-section:last-child { border-bottom: none; }
 
-    .info-section {
-      padding: 68px 0;
-      border-bottom: 1.5px solid var(--border);
-    }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .section-header::before { content: ''; display: inline-block; width: 5px; height: 28px; background: var(--action); border-radius: 3px; flex-shrink: 0; }
+    .section-header h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 900; color: var(--text-dark); letter-spacing: -0.02em; }
 
-    .info-section:last-child {
-      border-bottom: none;
-    }
+    .section-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 24px; }
 
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
-    .section-header::before {
-      content: '';
-      display: inline-block;
-      width: 5px;
-      height: 28px;
-      background: var(--action);
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
-
-    .section-header h2 {
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      font-weight: 900;
-      color: var(--text-dark);
-      letter-spacing: -0.02em;
-    }
-
-    .section-body {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-top: 24px;
-    }
-
-    .info-card {
-      background: var(--bg-white);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 30px 26px;
-      transition: all 0.3s ease;
-    }
-
-    .info-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-      border-color: var(--action);
-    }
-
-    .card-icon {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      margin-bottom: 12px;
-    }
-
-    .card-content {
-      font-size: 0.95rem;
-      color: var(--text-body);
-      line-height: 1.65;
-    }
-
-    .card-content a {
-      color: var(--action);
-      text-decoration: none;
-      font-weight: 700;
-      transition: color 0.2s;
-    }
-
-    .card-content a:hover {
-      color: var(--action-hover);
-      text-decoration: underline;
-    }
-
-    /* ── ABOUT US ── */
-    #about-us .section-body {
-      grid-template-columns: 1fr;
-    }
-
+    /* About us */
+    #about-us .section-body { grid-template-columns: 1fr; }
     .about-intro {
       background: linear-gradient(135deg, #fff8f8, #ffe8e8);
       border: 1.5px solid var(--border);
       border-radius: 14px;
       padding: 36px;
-      margin-bottom: 28px;
       position: relative;
       overflow: hidden;
     }
+    .about-intro::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--action); border-radius: 3px 0 0 3px; }
+    .about-intro p { font-size: 1rem; color: var(--text-body); line-height: 1.85; margin-bottom: 16px; }
+    .about-intro p:last-child { margin-bottom: 0; }
 
-    .about-intro::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 5px;
-      height: 100%;
-      background: var(--action);
-      border-radius: 3px 0 0 3px;
-    }
-
-    .about-intro p {
-      font-size: 1rem;
-      color: var(--text-body);
-      line-height: 1.85;
-      margin-bottom: 16px;
-    }
-
-    .about-intro p:last-child {
-      margin-bottom: 0;
-    }
-
-    .branches-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      margin-top: 8px;
-    }
-
-    .branch-card {
-      background: var(--bg-white);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 28px 24px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .branch-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-      border-color: var(--action);
-    }
-
-    .branch-icon {
-      font-size: 2.2rem;
-      margin-bottom: 12px;
-    }
-
-    .branch-name {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      margin-bottom: 8px;
-    }
-
-    .branch-link {
-      display: inline-block;
-      background: var(--action);
-      color: white;
-      padding: 9px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.85rem;
-      transition: background 0.2s, transform 0.2s;
-      margin-top: 12px;
-    }
-
-    .branch-link:hover {
-      background: var(--action-hover);
-      transform: translateY(-2px);
-    }
-
-    /* ── POLICY CARDS ── */
-    #return-policy .section-body,
-    #service-centres .section-body,
-    #terms .section-body {
-      grid-template-columns: 1fr;
-    }
-
-    .policy-card {
-      background: var(--bg-white);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 36px;
-    }
-
-    .policy-card p {
-      font-size: 0.95rem;
-      color: var(--text-body);
-      line-height: 1.85;
-      margin-bottom: 18px;
-    }
-
-    .policy-card ul {
-      margin-left: 20px;
-      margin-bottom: 18px;
-    }
-
-    .policy-card li {
-      font-size: 0.95rem;
-      color: var(--text-body);
-      line-height: 1.85;
-      margin-bottom: 8px;
-    }
-
+    /* Policy cards */
+    #return-policy .section-body, #service-centres .section-body, #terms .section-body { grid-template-columns: 1fr; }
+    .policy-card { background: var(--bg-white); border: 1.5px solid var(--border); border-radius: 14px; padding: 36px; }
+    .policy-card p { font-size: 0.95rem; color: var(--text-body); line-height: 1.85; margin-bottom: 18px; }
+    .policy-card ul { margin-left: 20px; margin-bottom: 18px; }
+    .policy-card li { font-size: 0.95rem; color: var(--text-body); line-height: 1.85; margin-bottom: 8px; }
     .policy-card strong {
-      display: block;
-      color: var(--text-dark);
-      font-weight: 800;
-      font-size: 1rem;
-      margin-bottom: 10px;
-      margin-top: 6px;
-      padding-bottom: 6px;
-      border-bottom: 2px solid #f0d8d8;
+      display: block; color: var(--text-dark); font-weight: 800; font-size: 1rem;
+      margin-bottom: 10px; margin-top: 6px; padding-bottom: 6px; border-bottom: 2px solid #f0d8d8;
     }
-
-    .policy-card strong:first-child {
-      color: var(--action);
-      font-size: 1.1rem;
-      margin-top: 0;
-    }
+    .policy-card strong:first-child { color: var(--action); font-size: 1.1rem; margin-top: 0; }
 
     /* ── FOOTER ── */
-    footer {
-      background: #111111;
-      color: white;
-      margin-top: 40px;
-      border-top: 3px solid var(--action);
-    }
-
+    footer { background: #111; color: white; margin-top: 40px; border-top: 3px solid var(--action); }
     .footer-inner {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 52px 32px 36px;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 36px;
+      max-width: 1300px; margin: 0 auto; padding: 52px 32px 36px;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 36px;
     }
-
-    .footer-logo {
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: white;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    .footer-logo span {
-      color: var(--action);
-    }
-
-    .footer-about {
-      color: rgba(255, 255, 255, 0.55);
-      font-size: 0.84rem;
-      line-height: 1.75;
-      margin-bottom: 20px;
-    }
-
-    .footer-social {
-      display: flex;
-      gap: 8px;
-    }
-
+    .footer-logo { font-size: 1.5rem; font-weight: 900; color: white; letter-spacing: -0.02em; margin-bottom: 12px; display: block; }
+    .footer-logo span { color: var(--action); }
+    .footer-about { color: rgba(255,255,255,0.55); font-size: 0.84rem; line-height: 1.75; margin-bottom: 20px; }
+    .footer-social { display: flex; gap: 8px; }
     .social-btn {
-      width: 36px;
-      height: 36px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      font-size: 0.82rem;
-      font-weight: 700;
+      width: 36px; height: 36px; background: rgba(255,255,255,0.08);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s, transform 0.2s; font-size: 0.82rem; font-weight: 700;
     }
-
-    .social-btn:hover {
-      background: var(--action);
-      transform: translateY(-3px);
-    }
-
+    .social-btn:hover { background: var(--action); transform: translateY(-3px); }
     .footer-col h4 {
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: white;
-      margin-bottom: 18px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
+      color: white; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-
-    .footer-col ul {
-      list-style: none;
-    }
-
-    .footer-col li {
-      margin-bottom: 10px;
-    }
-
-    .footer-col a {
-      color: rgba(255, 255, 255, 0.52);
-      font-size: 0.84rem;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .footer-col a:hover {
-      color: white;
-    }
-
-    .footer-bottom {
-      background: rgba(204, 0, 0, 0.15);
-      overflow: hidden;
-      border-top: 1px solid rgba(204, 0, 0, 0.25);
-    }
-
-    .footer-bottom-marquee {
-      display: flex;
-      animation: marquee 28s linear infinite;
-      width: max-content;
-      padding: 14px 0;
-    }
-
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { color: rgba(255,255,255,0.52); font-size: 0.84rem; text-decoration: none; transition: color 0.2s; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom { background: rgba(204,0,0,0.15); overflow: hidden; border-top: 1px solid rgba(204,0,0,0.25); }
+    .footer-bottom-marquee { display: flex; animation: marquee 28s linear infinite; width: max-content; padding: 14px 0; }
     .footer-bottom-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0 28px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.4);
-      white-space: nowrap;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-      transition: color 0.2s;
+      display: flex; align-items: center; gap: 10px; padding: 0 28px;
+      font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.4);
+      white-space: nowrap; letter-spacing: 0.06em; text-transform: uppercase;
+      border-right: 1px solid rgba(255,255,255,0.08); transition: color 0.2s;
     }
+    .footer-bottom-item:hover { color: rgba(255,255,255,0.8); }
+    .footer-bottom-item .bdot { color: var(--action); }
 
-    .footer-bottom-item:hover {
-      color: rgba(255, 255, 255, 0.8);
-    }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 
-    .footer-bottom-item .bdot {
-      color: var(--action);
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .info-section {
-      animation: fadeUp 0.65s ease-out both;
-    }
-
-    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .hero-background {
-        height: 50vh;
-        min-height: 320px;
-      }
-
-      .branches-photos-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-inner {
-        grid-template-columns: 1fr;
-        padding: 32px 16px;
-        gap: 24px;
-      }
-
-      .topbar {
-        padding: 7px 16px;
-        font-size: 0.72rem;
-      }
-
-      .topbar-right {
-        display: none;
-      }
-
-      .nav-inner {
-        padding: 0 16px;
-      }
-
-      .content-wrapper {
-        padding: 0 16px;
-      }
-
-      .info-section {
-        padding: 44px 0;
-      }
-
-      .section-body {
-        grid-template-columns: 1fr;
-      }
-
-      .about-intro {
-        padding: 24px 20px 24px 28px;
-      }
-
-      .policy-card {
-        padding: 24px 20px;
-      }
+      .hero-background { height: 50vh; min-height: 320px; }
+      .branches-photos-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; padding: 32px 16px; gap: 24px; }
+      .topbar { padding: 7px 16px; font-size: 0.72rem; }
+      .topbar-right { display: none; }
+      .nav-inner { padding: 0 16px; }
+      .content-wrapper { padding: 0 16px; }
+      .info-section { padding: 44px 0; }
+      .section-body { grid-template-columns: 1fr; }
+      .about-intro { padding: 24px 20px 24px 28px; }
+      .policy-card { padding: 24px 20px; }
     }
   </style>
 </head>
@@ -867,15 +404,10 @@
     </div>
   </nav>
 
-  <!-- HERO SECTION WITH LARGE LOGO BACKGROUND -->
+  <!-- HERO SECTION -->
   <section class="hero-background">
     <div class="logo-background">
-      <!--
-        ════════════════════════════════════════════════
-        TO CHANGE THE HERO LOGO IMAGE:
-        Edit the src attribute below.
-        ════════════════════════════════════════════════
-      -->
+      <!-- LINE 419: Change src to update the hero background logo -->
       <img src="images/logos/delight-logo.jpeg" alt="Delight Domestics Logo">
     </div>
     <div class="hero-content">
@@ -886,105 +418,89 @@
     </div>
   </section>
 
-  <!-- ════════════════════════════════════════════════
-       BRANCH PHOTOS SECTION — scroll into view to reveal
-       
-       TO CHANGE BRANCH IMAGES:
-       • Branch 1: change src="images/logos/shop1.jpg" on the first <img> below
-       • Branch 2: change src="images/logos/shop2.jpg" on the second <img> below
-
-       TO CHANGE BRANCH NAMES / ADDRESSES:
-       • Edit the text inside <div class="branch-photo-title"> and
-         <div class="branch-photo-address"> for each card.
-
-       TO ADD GOOGLE MAPS LINK:
-       1. Go to Google Maps and find your branch location.
-       2. Click Share → Embed a map → Copy Link (not the embed code).
-          It will look like: https://maps.google.com/?q=...
-       3. Replace BRANCH_1_GOOGLE_MAPS_LINK_HERE / BRANCH_2_GOOGLE_MAPS_LINK_HERE
-          in the href of the "View on Map" button below.
-       ════════════════════════════════════════════════ -->
+  <!-- ══════════════════════════════════════════════════
+       OUR BRANCHES — SCROLL REVEAL SECTION
+       ══════════════════════════════════════════════════ -->
   <section class="branches-photo-section">
     <div class="section-label">Delight Domestics</div>
     <h2>Our Branches</h2>
 
     <div class="branches-photos-grid">
 
-      <!-- ── BRANCH 1 CARD ── -->
+      <!-- ══ BRANCH 1 CARD ══ -->
       <div class="branch-photo-card reveal-left">
-        <!--
-          BRANCH 1 IMAGE: Change src below to update the photo
-        -->
-        <img
-          src="images/logos/shop1.jpg"
-          alt="Branch 1"
-          class="branch-photo-img"
-          onerror="this.style.background='#2a0000';this.style.height='160px'"
-        >
+
+        <!-- LINE 441: Change src to update Branch 1 image -->
+        <div class="branch1-img-wrap">
+          <img src="images/logos/shop1.jpg" alt="Branch 1"
+               onerror="this.parentElement.style.background='#2a0000'">
+        </div>
+
         <div class="branch-photo-body">
           <div class="branch-photo-tag">Branch 01</div>
-          <!--
-            BRANCH 1 NAME: Change the text below
-          -->
+
+          <!-- LINE 449: Change Branch 1 store name -->
           <div class="branch-photo-title">Branch 1 — Main Store</div>
-          <!--
-            BRANCH 1 ADDRESS: Change the text below
-          -->
+
+          <!-- LINE 452: Change Branch 1 address -->
           <div class="branch-photo-address">
-            114 R, Aziz Road, Chah Miran,<br>
-            Lahore, Pakistan
+            Add your Branch 1 address here,<br>City, Pakistan
           </div>
+
+          <!-- BRANCH 1 MANAGER INFO
+               LINE 458: Change manager name
+               LINE 461: Change manager phone number / WhatsApp link -->
+          <div class="branch-manager-info">
+            <div class="manager-label">Branch Manager</div>
+            <div class="manager-name">Manager Name Here</div>
+            <div class="manager-phone">
+              <a href="tel:+92XXXXXXXXXX">0300-XXXXXXX</a>
+            </div>
+          </div>
+
           <div class="branch-photo-actions">
-            <!--
-              BRANCH 1 GOOGLE MAPS:
-              Replace BRANCH_1_GOOGLE_MAPS_LINK_HERE with the Google Maps share link
-              Example: https://maps.google.com/?q=31.5204,74.3587
-            -->
-            <a href="https://maps.app.goo.gl/Gbc5MygdRhbSsekm7" target="_blank" class="btn-maps">
-              📍 View on Map
-            </a>
-            <a href="https://wa.me/923008076625?text=Hi! I want to visit Branch 1" target="_blank" class="btn-whatsapp">
-              💬 WhatsApp
-            </a>
+            <!-- LINE 468: Replace BRANCH_1_MAPS_LINK with your Google Maps share link -->
+            <a href="BRANCH_1_MAPS_LINK" target="_blank" class="btn-maps">📍 View on Map</a>
+            <a href="https://wa.me/923008076625?text=Hi! Branch 1" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
           </div>
         </div>
       </div>
 
-      <!-- ── BRANCH 2 CARD ── -->
+      <!-- ══ BRANCH 2 CARD ══ -->
       <div class="branch-photo-card reveal-right">
-        <!--
-          BRANCH 2 IMAGE: Change src below to update the photo
-        -->
-        <img
-          src="images/logos/shop2.jpg"
-          alt="Branch 2"
-          class="branch-photo-img"
-          onerror="this.style.background='#2a0000';this.style.height='360px'"
-        >
+
+        <!-- LINE 477: Change src to update Branch 2 image -->
+        <div class="branch2-img-wrap">
+          <img src="images/logos/shop2.jpg" alt="Branch 2"
+               onerror="this.parentElement.style.background='#2a0000'">
+        </div>
+
         <div class="branch-photo-body">
           <div class="branch-photo-tag">Branch 02</div>
-          <!--
-            BRANCH 2 NAME: Change the text below
-          -->
+
+          <!-- LINE 485: Change Branch 2 store name -->
           <div class="branch-photo-title">Branch 2 — Second Store</div>
-          <!--
-            BRANCH 2 ADDRESS: Change the text below
-          -->
+
+          <!-- LINE 488: Change Branch 2 address -->
           <div class="branch-photo-address">
-            PIA Main Boulevard, Block A1 Block A 1 Pia Housing Scheme,<br>
-            Lahore, Pakistan
+            Add your Branch 2 address here,<br>City, Pakistan
           </div>
+
+          <!-- BRANCH 2 MANAGER INFO
+               LINE 494: Change manager name
+               LINE 497: Change manager phone number / WhatsApp link -->
+          <div class="branch-manager-info">
+            <div class="manager-label">Branch Manager</div>
+            <div class="manager-name">Manager Name Here</div>
+            <div class="manager-phone">
+              <a href="tel:+92XXXXXXXXXX">0300-XXXXXXX</a>
+            </div>
+          </div>
+
           <div class="branch-photo-actions">
-            <!--
-              BRANCH 2 GOOGLE MAPS:
-              Replace BRANCH_2_GOOGLE_MAPS_LINK_HERE with the Google Maps share link
-            -->
-            <a href="https://maps.app.goo.gl/whyN2sefZaa8c2Jv9" target="_blank" class="btn-maps">
-              📍 View on Map
-            </a>
-            <a href="https://wa.me/923008076625?text=Hi! I want to visit Branch 2" target="_blank" class="btn-whatsapp">
-              💬 WhatsApp
-            </a>
+            <!-- LINE 503: Replace BRANCH_2_MAPS_LINK with your Google Maps share link -->
+            <a href="BRANCH_2_MAPS_LINK" target="_blank" class="btn-maps">📍 View on Map</a>
+            <a href="https://wa.me/923008076625?text=Hi! Branch 2" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
           </div>
         </div>
       </div>
@@ -995,90 +511,43 @@
   <!-- CONTENT SECTIONS -->
   <div class="content-wrapper">
 
-    <!-- ABOUT US SECTION -->
+    <!-- ABOUT US -->
     <section class="info-section" id="about-us">
       <div class="section-header">
         <h2>About Us</h2>
       </div>
-
-      <!--
-        ════════════════════════════════════════════════
-        TO CHANGE THE ABOUT US DESCRIPTION:
-        Edit the <p> paragraphs inside .about-intro below.
-        ════════════════════════════════════════════════
-      -->
+      <!-- LINE 518: Edit About Us description paragraphs below -->
       <div class="about-intro">
         <p>
-          <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">Delight Domestics</strong> is Pakistan's trusted destination for premium electric appliances. 
-          We are authorized dealers of leading global brands including PEL, Dawlance, Samsung, Haier, and more. 
-          With a commitment to quality and customer satisfaction, we serve customers nationwide with genuine products, 
+          <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">Delight Domestics</strong>
+          is Pakistan's trusted destination for premium electric appliances.
+          We are authorized dealers of leading global brands including PEL, Dawlance, Samsung, Haier, and more.
+          With a commitment to quality and customer satisfaction, we serve customers nationwide with genuine products,
           competitive pricing, and excellent after-sales service.
         </p>
         <p>
-          Operating since 1987, we pride ourselves on offering authentic appliances backed by official warranty and 
+          Operating since 1987, we pride ourselves on offering authentic appliances backed by official warranty and
           nationwide cash-on-delivery service. Our team is dedicated to helping you find the perfect appliance for your home.
         </p>
       </div>
-
-      <div class="section-header" style="margin-top: 36px;">
-        <h2>Visit Our Branches</h2>
-      </div>
-
-      <div class="branches-grid">
-        <div class="branch-card">
-          <div class="branch-icon">🏪</div>
-          <div class="branch-name">Branch 1</div>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin: 8px 0;">
-            Location details and contact info
-          </p>
-          <a href="https://wa.me/923008076625?text=Hi! I want to visit Branch 1" target="_blank" class="branch-link">
-            Visit Branch 1
-          </a>
-        </div>
-
-        <div class="branch-card">
-          <div class="branch-icon">🏪</div>
-          <div class="branch-name">Branch 2</div>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin: 8px 0;">
-            Location details and contact info
-          </p>
-          <a href="https://wa.me/923008076625?text=Hi! I want to visit Branch 2" target="_blank" class="branch-link">
-            Visit Branch 2
-          </a>
-        </div>
-      </div>
     </section>
 
-    <!-- RETURN POLICY SECTION -->
+    <!-- RETURN POLICY -->
     <section class="info-section" id="return-policy">
       <div class="section-header">
         <h2>Return Policy</h2>
       </div>
-
-      <!--
-        ════════════════════════════════════════════════
-        TO CHANGE THE RETURN POLICY:
-        Edit the text inside the .policy-card below.
-        • Change <strong> headings to rename sections
-        • Change <li> items to update the bullet points
-        • Change <p> text for paragraph descriptions
-        ════════════════════════════════════════════════
-      -->
+      <!-- LINE 540: Edit Return Policy content below -->
       <div class="section-body">
         <div class="policy-card">
           <strong>Easy Returns &amp; Exchange</strong>
-          <p>
-            We believe in customer satisfaction. If you're not completely happy with your purchase, 
-            we offer hassle-free returns and exchanges.
-          </p>
-
+          <p>We believe in customer satisfaction. If you're not completely happy with your purchase, we offer hassle-free returns and exchanges.</p>
           <strong>Return Window</strong>
           <ul>
             <li>7 days from delivery date for unopened/unused items</li>
             <li>14 days for items with manufacturing defects</li>
             <li>30 days extended warranty items</li>
           </ul>
-
           <strong>Return Process</strong>
           <ul>
             <li>Contact us via WhatsApp or email within the return window</li>
@@ -1086,7 +555,6 @@
             <li>We'll arrange free pickup from your location</li>
             <li>Refund processed within 5-7 business days after inspection</li>
           </ul>
-
           <strong>Conditions</strong>
           <ul>
             <li>Product must be in original condition with all packaging</li>
@@ -1094,36 +562,26 @@
             <li>No physical damage or signs of misuse</li>
             <li>All accessories and manuals must be included</li>
           </ul>
-
-          <p style="margin-top: 20px;">
-            For detailed information, contact us at <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">03008076625</strong> or email <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">toheedahmed918@gmail.com</strong>
+          <p style="margin-top:20px;">
+            For detailed information, contact us at
+            <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">03008076625</strong>
+            or email
+            <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">toheedahmed918@gmail.com</strong>
           </p>
         </div>
       </div>
     </section>
 
-    <!-- SERVICE CENTRES SECTION -->
+    <!-- SERVICE CENTRES -->
     <section class="info-section" id="service-centres">
       <div class="section-header">
         <h2>Service Centres</h2>
       </div>
-
-      <!--
-        ════════════════════════════════════════════════
-        TO CHANGE SERVICE CENTRES:
-        Edit the text inside the .policy-card below.
-        Same approach as Return Policy — edit <strong>,
-        <ul>/<li>, and <p> tags as needed.
-        ════════════════════════════════════════════════
-      -->
+      <!-- LINE 579: Edit Service Centres content below -->
       <div class="section-body">
         <div class="policy-card">
           <strong>Authorized Service Network</strong>
-          <p>
-            We partner with authorized service centers across Pakistan to ensure your appliances 
-            receive professional maintenance and repair services.
-          </p>
-
+          <p>We partner with authorized service centers across Pakistan to ensure your appliances receive professional maintenance and repair services.</p>
           <strong>Our Services Include:</strong>
           <ul>
             <li>Warranty repairs and servicing</li>
@@ -1132,7 +590,6 @@
             <li>Annual maintenance packages</li>
             <li>Extended warranty options</li>
           </ul>
-
           <strong>Service Coverage</strong>
           <ul>
             <li>All authorized brands (PEL, Dawlance, Samsung, Haier, Orient, etc.)</li>
@@ -1140,41 +597,32 @@
             <li>Walk-in service at our branches</li>
             <li>Express service for urgent repairs</li>
           </ul>
-
           <strong>How to Schedule Service</strong>
           <p>
-            Contact us at <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">03008076625</strong> via WhatsApp or call us directly. 
-            Our team will guide you through the service process and schedule an appointment at your convenience.
+            Contact us at
+            <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">03008076625</strong>
+            via WhatsApp or call us directly.
           </p>
-
-          <p style="margin-top: 20px;">
-            Email: <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">toheedahmed918@gmail.com</strong> | <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">fasihtoheed918@gmail.com</strong>
+          <p style="margin-top:20px;">
+            Email:
+            <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">toheedahmed918@gmail.com</strong>
+            |
+            <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">fasihtoheed918@gmail.com</strong>
           </p>
         </div>
       </div>
     </section>
 
-    <!-- TERMS & CONDITIONS SECTION -->
+    <!-- TERMS & CONDITIONS -->
     <section class="info-section" id="terms">
       <div class="section-header">
         <h2>Terms &amp; Conditions</h2>
       </div>
-
-      <!--
-        ════════════════════════════════════════════════
-        TO CHANGE TERMS & CONDITIONS:
-        Edit the text inside the .policy-card below.
-        Same approach — edit <strong>, <ul>/<li>, and <p>.
-        ════════════════════════════════════════════════
-      -->
+      <!-- LINE 617: Edit Terms & Conditions content below -->
       <div class="section-body">
         <div class="policy-card">
           <strong>General Terms</strong>
-          <p>
-            By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. 
-            If you do not agree to abide by the above, please do not use this service.
-          </p>
-
+          <p>By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.</p>
           <strong>Product Information</strong>
           <ul>
             <li>All products are genuine and sourced from authorized distributors</li>
@@ -1182,7 +630,6 @@
             <li>Specifications are subject to change without notice</li>
             <li>Prices are subject to market changes and stock availability</li>
           </ul>
-
           <strong>Payment &amp; Delivery</strong>
           <ul>
             <li>Cash on Delivery available nationwide</li>
@@ -1190,7 +637,6 @@
             <li>Delivery timeframe: 2-5 business days depending on location</li>
             <li>Delivery charges may apply for remote areas</li>
           </ul>
-
           <strong>Warranty &amp; Liability</strong>
           <ul>
             <li>All products carry official manufacturer warranty</li>
@@ -1198,7 +644,6 @@
             <li>Delight Domestics is not liable for indirect or consequential damages</li>
             <li>Warranty claims must be filed within specified timeframes</li>
           </ul>
-
           <strong>User Responsibilities</strong>
           <ul>
             <li>You are responsible for maintaining confidentiality of account information</li>
@@ -1206,22 +651,16 @@
             <li>You agree not to reproduce or distribute website content without permission</li>
             <li>All purchases are subject to verification and approval</li>
           </ul>
-
           <strong>Limitation of Liability</strong>
-          <p>
-            Delight Domestics shall not be liable for any direct, indirect, incidental, special, consequential, 
-            or punitive damages arising from your use of our website or products.
-          </p>
-
+          <p>Delight Domestics shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from your use of our website or products.</p>
           <strong>Dispute Resolution</strong>
-          <p>
-            Any disputes shall be resolved through mutual agreement. If unresolved, disputes shall be subject to 
-            the jurisdiction of courts in Pakistan.
-          </p>
-
-          <p style="margin-top: 24px; padding-top: 24px; border-top: 2px solid var(--border);">
+          <p>Any disputes shall be resolved through mutual agreement. If unresolved, disputes shall be subject to the jurisdiction of courts in Pakistan.</p>
+          <p style="margin-top:24px; padding-top:24px; border-top:2px solid var(--border);">
             <strong style="display:inline;color:var(--text-muted);font-size:0.85rem;font-weight:700;border:none;padding:0;margin:0;">Last Updated:</strong> March 2026<br>
-            For questions about these terms, contact us at <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">03008076625</strong> or <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">toheedahmed918@gmail.com</strong>
+            For questions contact us at
+            <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">03008076625</strong>
+            or
+            <strong style="display:inline;color:var(--action);font-size:inherit;border:none;padding:0;margin:0;">toheedahmed918@gmail.com</strong>
           </p>
         </div>
       </div>
@@ -1234,11 +673,7 @@
     <div class="footer-inner">
       <div>
         <span class="footer-logo">Delight<span> Domestics</span></span>
-        <p class="footer-about">
-          Pakistan's trusted destination for premium electric appliances. 
-          Authorized dealer for PEL, Dawlance, Samsung, Haier, and more. 
-          Serving customers nationwide with genuine products and excellent service.
-        </p>
+        <p class="footer-about">Pakistan's trusted destination for premium electric appliances. Authorized dealer for PEL, Dawlance, Samsung, Haier, and more.</p>
         <div class="footer-social">
           <div class="social-btn" onclick="window.open('https://facebook.com','_blank')" title="Facebook">f</div>
           <div class="social-btn" onclick="window.open('https://instagram.com','_blank')" title="Instagram">in</div>
@@ -1250,9 +685,9 @@
         <h4>Shop</h4>
         <ul>
           <li><a href="index.html">All Products</a></li>
-          <li><a href="index.html#products" onclick="goCategory(null,'Kitchen')">Kitchen Appliances</a></li>
-          <li><a href="index.html#products" onclick="goCategory(null,'Fans')">Fans</a></li>
-          <li><a href="index.html#products" onclick="goCategory(null,'Washing')">Washing Machines</a></li>
+          <li><a href="index.html#products">Kitchen Appliances</a></li>
+          <li><a href="index.html#products">Fans</a></li>
+          <li><a href="index.html#products">Washing Machines</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1299,30 +734,25 @@
   </footer>
 
   <script>
-    /* ─── SCROLL REVEAL ─── */
-    (function initReveal() {
-      const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-      const io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            io.unobserve(entry.target);
-          }
+    /* Scroll reveal */
+    (function() {
+      var els = document.querySelectorAll('.reveal-left, .reveal-right');
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
         });
       }, { threshold: 0.15 });
       els.forEach(function(el) { io.observe(el); });
     })();
 
-    /* ─── SMOOTH SCROLL ON ANCHOR CLICK ─── */
-    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-      anchor.addEventListener('click', function(e) {
+    /* Smooth scroll */
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+      a.addEventListener('click', function(e) {
         var href = this.getAttribute('href');
         if (href !== '#') {
           e.preventDefault();
-          var element = document.querySelector(href);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+          var el = document.querySelector(href);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
     });
