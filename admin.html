@@ -397,7 +397,24 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+window.updateOrderStatus = async function(id, status) {
+  try {
+    await setDoc(doc(db, 'orders', id), { status: status }, { merge: true });
+    var o = allOrders.find(function(x){ return x.id === id; });
+    if (o) o.status = status;
+    showToast('✅', 'Order status updated to ' + status);
+  } catch(e) {
+    alert('Error updating status: ' + e.message);
+  }
+};
 
+function showToast(icon, msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:white;border:1.5px solid #e8d8d8;border-left:4px solid #00a651;border-radius:8px;padding:12px 20px;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.12);';
+  t.textContent = icon + ' ' + msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 3000);
+}
 
 const firebaseConfig = {
   apiKey: "AIzaSyBwvJO0xnSZsZrgS9HH8WvPRnHGfdxssHY",
@@ -571,8 +588,14 @@ function renderOrderRow(o) {
     +'<div class="order-cell">'+o.payment+'</div>'
     +'<div class="order-cell" style="font-weight:900">Rs. '+(o.total||0).toLocaleString()+'</div>'
     +'<div class="order-cell">'+date+'</div>'
-    +'<div class="order-cell"><button class="btn-view-order" onclick="openOrderModal(\''+o.id+'\')">View</button></div>'
-    +'</div>';
+    +'<div class="order-cell" style="display:flex;gap:4px;flex-direction:column;">'
+    +'<button class="btn-view-order" onclick="openOrderModal(\''+o.id+'\')">View</button>'
+    +'<select onchange="updateOrderStatus(\''+o.id+'\',this.value)" style="font-size:.65rem;padding:3px 6px;border:1.5px solid var(--border);border-radius:4px;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;background:white;">'
+    +'<option value="pending"'+((!o.status||o.status==='pending')?' selected':'')+'>Pending</option>'
+    +'<option value="shipped"'+(o.status==='shipped'?' selected':'')+'>Shipped</option>'
+    +'<option value="delivered"'+(o.status==='delivered'?' selected':'')+'>Delivered</option>'
+    +'</select>'
+    +'</div>'    +'</div>';
 }
 
 window.filterOrders = function(q) {
